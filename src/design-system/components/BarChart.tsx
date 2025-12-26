@@ -141,7 +141,7 @@ export function BarChart({
   const hasGroupedData = data.length > 0 && data.every(isGroupedPoint);
 
   const derivedGroupOrder = React.useMemo(() => {
-    if (!hasGroupedData) return providedGroups ?? [];
+    if (!hasGroupedData) return [];
     const seen = new Set<string>();
     const order: string[] = [];
     for (const point of data) {
@@ -156,7 +156,7 @@ export function BarChart({
     return order;
   }, [data, hasGroupedData, providedGroups]);
 
-  const resolvedGroups = React.useMemo(() => {
+  const resolvedGroups = React.useMemo<BarChartGroupMeta[]>(() => {
     if (hasGroupedData && derivedGroupOrder.length === 0) return [];
     const metaById = new Map(providedGroups?.map((group) => [group.id, group]));
 
