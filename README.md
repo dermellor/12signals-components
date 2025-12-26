@@ -8,6 +8,26 @@ Private Design System package for 12signals projects.
 npm install git+ssh://<host>/<org>/12signals-components.git
 ```
 
+## Local development with git dependency
+
+Keep the app's dependency pointing to the Git URL (deploy-friendly) and use npm link locally:
+
+```bash
+cd /path/to/12signals-components
+npm install
+npm link
+
+cd /path/to/12signals-app
+npm link 12signals-components
+```
+
+Run a watcher for live rebuilds:
+
+```bash
+cd /path/to/12signals-components
+npm run dev
+```
+
 ## Usage
 
 ```ts
