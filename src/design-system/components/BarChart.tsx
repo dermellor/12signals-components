@@ -200,24 +200,20 @@ export function BarChart({
       }));
     }
 
-    return data.map((point) => {
-      if (!isGroupedPoint(point)) {
-        return { label: point.label, detail: undefined, bars: [] };
-      }
-      return {
-        label: point.label,
-        detail: point.detail,
-        bars: resolvedGroups.map((group) => {
-          const match = point.groups.find((item) => item.id === group.id);
-          return {
-            id: group.id,
-            value: match?.value ?? 0,
-            detail: match?.detail ?? point.detail,
-            variant: group.variant,
-          };
-        }),
-      };
-    });
+    const groupedData = data.filter(isGroupedPoint);
+    return groupedData.map((point) => ({
+      label: point.label,
+      detail: point.detail,
+      bars: resolvedGroups.map((group) => {
+        const match = point.groups.find((item) => item.id === group.id);
+        return {
+          id: group.id,
+          value: match?.value ?? 0,
+          detail: match?.detail ?? point.detail,
+          variant: group.variant,
+        };
+      }),
+    }));
   }, [data, resolvedGroups, hasGroupedData]);
 
   const chartData: ChartDataPoint[] = React.useMemo(
