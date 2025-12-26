@@ -1,0 +1,5 @@
+/* Minimal Reset + Focus sichtbar */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin:0; font-family: var(--font-base); }
+:focus-visible { outline: 2px solid var(--color-primary-bg); outline-offset: 2px; }

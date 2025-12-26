@@ -1,0 +1,25 @@
+:root{
+  /* Map DS tokens to existing app theme variables */
+  --color-primary-bg: hsl(var(--primary));
+  --color-primary-fg: hsl(var(--primary-foreground));
+  --color-neutral-bg: hsl(var(--background));
+  --color-neutral-fg: hsl(var(--foreground));
+  --color-danger-bg:  hsl(var(--destructive));
+  --color-danger-fg:  hsl(var(--destructive-foreground));
+  --color-success-bg: hsl(var(--success));
+  --color-success-fg: hsl(var(--success-foreground));
+  --color-warning-bg: hsl(var(--warning));
+  --color-warning-fg: hsl(var(--warning-foreground));
+  --color-accent-bg: hsl(var(--accent));
+  --color-accent-fg: hsl(var(--accent-foreground));
+  --color-secondary-bg: hsl(var(--secondary));
+  --color-secondary-fg: hsl(var(--secondary-foreground));
+  --color-border-default: hsl(var(--border));
+
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:24px;
+  --radius-sm:6px; --radius-md:10px; --radius-lg:var(--radius); --radius-pill:9999px;
+
+  --font-base: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: var(--shadow-card);
+}
