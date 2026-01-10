@@ -48,9 +48,24 @@ export function ActivityCard({
           </div>
         )}
 
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-sm)", marginBottom: "var(--space-xs)" }}>
-            <div style={titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : undefined}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--space-sm)",
+              marginBottom: "var(--space-xs)",
+              flexWrap: "wrap",
+            }}
+          >
+            <div
+              style={{
+                ...(titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : undefined),
+                minWidth: 0,
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
+              }}
+            >
               {titleNode || (
                 <Text as="span" size="sm" weight="medium">{title}</Text>
               )}
@@ -64,7 +79,7 @@ export function ActivityCard({
           </div>
 
           {description && (
-            <div style={{ marginBottom: "var(--space-sm)" }}>
+            <div style={{ marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }}>
               <Text as="div" size="sm" tone="muted">
                 {description}
               </Text>

@@ -610,6 +610,158 @@
 .ds-Select { width: 100%; height: 2.5rem; padding: 0 var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); background: hsl(var(--background)); color: hsl(var(--foreground)); font: inherit; font-size: 0.875rem; line-height: 1.4; }
 .ds-Select[data-size="sm"] { height: 2.25rem; }
 .ds-Select[data-size="lg"] { height: 2.75rem; }
+.ds-SelectWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.ds-SelectWrap .ds-Select--icon {
+  background: transparent;
+}
+.ds-SelectWrap .ds-Select {
+  flex: 1 1 auto;
+}
+.ds-SelectChevron {
+  position: absolute;
+  right: var(--space-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.85rem;
+  height: 0.85rem;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+}
+.ds-SelectChevron svg {
+  width: 100%;
+  height: 100%;
+}
+.ds-Select--header {
+  background: transparent;
+  border-color: transparent;
+  color: hsl(var(--sidebar-foreground));
+  font-weight: 600;
+  padding-left: var(--space-xs);
+  padding-right: calc(var(--space-md) + var(--space-xs));
+  width: auto;
+  min-width: 0;
+}
+.ds-Select--icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  outline: none;
+  box-shadow: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.ds-Select--icon option {
+  color: initial;
+}
+.ds-Select--icon:hover,
+.ds-Select--icon:focus-visible,
+.ds-Select--icon:active {
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+.ds-Select--icon:focus {
+  outline: none;
+  box-shadow: none;
+}
+.ds-SelectWrap:hover .ds-Select--icon {
+  background: transparent;
+}
+.ds-SelectWrap:focus-within .ds-Select--icon {
+  background: transparent;
+}
+.ds-Select--header:hover,
+.ds-Select--header:focus-visible {
+  border-color: var(--color-border-default);
+  background: hsl(var(--sidebar-accent));
+}
+.ds-SelectMenu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.ds-SelectMenuTrigger {
+  height: 2.25rem;
+  padding: 0 var(--space-xs);
+  border: 0;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.ds-SelectMenuTrigger:hover {
+  background: hsl(var(--sidebar-accent) / 0.35);
+}
+.ds-SelectMenuTrigger:focus-visible {
+  outline: none;
+}
+.ds-SelectMenuChevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.85rem;
+  height: 0.85rem;
+}
+.ds-SelectMenuLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(var(--sidebar-foreground));
+}
+.ds-SelectMenuChevron svg {
+  width: 100%;
+  height: 100%;
+}
+.ds-SelectMenuContent {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  min-width: 12rem;
+  max-width: 16rem;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+  background: hsl(var(--background));
+  box-shadow: var(--shadow-sm);
+  z-index: 20;
+  box-sizing: border-box;
+}
+.ds-SelectMenuContent[data-align="right"] { right: 0; }
+.ds-SelectMenuContent[data-align="left"] { left: 0; }
+.ds-SelectMenuOption {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+  color: hsl(var(--foreground));
+}
+.ds-SelectMenuOption:hover {
+  background: hsl(var(--muted));
+}
+.ds-SelectMenuOption[aria-selected="true"] {
+  background: hsl(var(--muted));
+}
+.ds-SelectMenuOption:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.ds-SelectMenuOptionLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
 
 /* Table */
 .ds-TableContainer {
@@ -792,6 +944,95 @@
 .ds-NavigationBadge {
   font-size: 0.75rem;
   color: hsl(var(--muted-foreground));
+}
+.ds-NavigationBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border-default);
+  background: hsl(var(--sidebar-background));
+  color: hsl(var(--sidebar-foreground));
+}
+.ds-NavigationBarLeading {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.ds-NavigationBarBrand {
+  display: grid;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.ds-NavigationBarBrandContent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 2.25rem;
+}
+.ds-NavigationBarBrandAccessory {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.ds-NavigationBarActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+.ds-NavigationBrand {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-sm);
+}
+.ds-NavigationBrandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: inherit;
+  text-decoration: none;
+}
+.ds-NavigationBrandLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+.ds-NavigationBrandLogo img {
+  display: block;
+}
+.ds-NavigationBrandLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.ds-NavigationToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid hsl(var(--sidebar-border));
+  background: transparent;
+  color: hsl(var(--sidebar-foreground));
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.ds-NavigationToggle:hover {
+  background: hsl(var(--sidebar-accent));
+  color: hsl(var(--sidebar-accent-foreground));
+}
+.ds-NavigationToggle:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-primary-bg) 60%, transparent);
+  outline-offset: 2px;
+}
+.ds-NavigationToggleIcon svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .ds-TabNav { border-bottom: 1px solid var(--color-border-default); }
