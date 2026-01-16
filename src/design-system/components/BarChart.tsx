@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 import type { TooltipProps } from "recharts";
+import { Heading } from "./Heading";
 
 export type BarChartGroupVariant =
   | "primary"
@@ -240,9 +241,9 @@ export function BarChart({
     <figure className="ds-BarChart" role="group" aria-label={ariaLabel}>
       <div className="ds-BarChartGrid">
         {yAxisLabel && (
-          <div className="ds-BarChartAxisLabel" aria-hidden>
+          <Heading level={3} aria-hidden>
             {yAxisLabel}
-          </div>
+          </Heading>
         )}
         <div className="ds-BarChartChart">
           <ResponsiveContainer width="100%" height="100%">

@@ -31,3 +31,4 @@ export * from "./Navigation";
 export * from "./NavigationBar";
 export * from "./NavigationBrand";
 export * from "./NavigationToggle";
+export * from "./Heading";

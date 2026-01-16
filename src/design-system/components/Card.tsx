@@ -28,9 +28,23 @@ function CardContent({ children, className, ...rest }: React.HTMLAttributes<HTML
   );
 }
 
-function CardTitle({ children, className, ...rest }: React.HTMLAttributes<HTMLHeadingElement>) {
+type CardTitleProps<T extends keyof JSX.IntrinsicElements = "h3"> = {
+  as?: T;
+} & React.ComponentPropsWithoutRef<T>;
+
+function CardTitle<T extends keyof JSX.IntrinsicElements = "h3">({
+  as,
+  children,
+  className,
+  ...rest
+}: CardTitleProps<T>) {
+  const Comp = (as || "h3") as React.ElementType;
   const cn = ["ds-CardTitle", className].filter(Boolean).join(" ");
-  return <h3 className={cn} {...rest}>{children}</h3>;
+  return (
+    <Comp className={cn} {...rest}>
+      {children}
+    </Comp>
+  );
 }
 
 function CardDescription({ children, className, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) {

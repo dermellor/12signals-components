@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type ButtonProps = {
-  variant?: "primary" | "ghost" | "danger" | "accent" | "success";
+  variant?: "primary" | "ghost" | "danger" | "accent" | "success" | "link";
   size?: "sm" | "md" | "lg";
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
