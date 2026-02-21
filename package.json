@@ -26,13 +26,17 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "prepare": "tsup"
+    "prepare": "tsup",
+    "generate-assets": "node scripts/generate-logo-assets.mjs"
   },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "lucide-react": "^0.300.0 || ^0.462.0",
     "recharts": "^2.0.0"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.0"
   },
   "dependencies": {
     "@types/react": "^18.0.0",
