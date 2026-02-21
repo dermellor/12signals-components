@@ -162,6 +162,24 @@
   background: color-mix(in oklab, var(--color-warning-bg) 90%, var(--color-neutral-bg));
   border-color: color-mix(in oklab, var(--color-warning-bg) 95%, var(--color-neutral-bg));
 }
+.ds-ActionIconButton[data-action="star"] {
+  border-color: color-mix(in oklab, var(--color-warning-bg) 30%, var(--color-border-default));
+}
+.ds-ActionIconButton[data-action="star"]:not([data-selected="true"]):not(:disabled):hover {
+  border-color: color-mix(in oklab, var(--color-warning-bg) 50%, var(--color-border-default));
+}
+.ds-ActionIconButton[data-action="star"][data-selected="true"] {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  border-color: var(--color-warning-bg);
+}
+.ds-ActionIconButton[data-action="star"][data-selected="true"] svg {
+  fill: currentColor;
+}
+.ds-ActionIconButton[data-action="star"][data-selected="true"]:not(:disabled):hover {
+  background: color-mix(in oklab, var(--color-warning-bg) 90%, var(--color-neutral-bg));
+  border-color: color-mix(in oklab, var(--color-warning-bg) 95%, var(--color-neutral-bg));
+}
 .ds-ActionIconButton[data-loading="true"] {
   opacity: .75;
   cursor: wait;
@@ -1180,3 +1198,6 @@
 .ds-RichText ul { list-style: disc; padding-left: var(--space-xl); margin: 0 0 var(--space-sm); }
 .ds-RichText ol { list-style: decimal; padding-left: var(--space-xl); margin: 0 0 var(--space-sm); }
 .ds-RichText li { margin: 0 0 var(--space-xs); }
+
+/* Logo */
+.ds-Logo { display: block; flex-shrink: 0; }

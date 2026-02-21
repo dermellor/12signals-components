@@ -32,3 +32,5 @@ export * from "./NavigationBar";
 export * from "./NavigationBrand";
 export * from "./NavigationToggle";
 export * from "./Heading";
+export * from "./Logo";
+export * from "./Wordmark";
