@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<!--
+  12signals Logo Sprite
+  Usage: <svg><use href="logos.svg#logo-default" /></svg>
+  Symbols: logo-default, logo-inverted, logo-monochrome, wordmark
+-->
+
+<!-- ============================================================
+     logo-default — Gradient Flow
+     ============================================================ -->
+<symbol id="logo-default" viewBox="8 10 82 80">
+  <defs>
+    <linearGradient id="logo-default-main" gradientUnits="userSpaceOnUse" x1="42.6" y1="53.1" x2="82.8" y2="36.4">
+      <stop offset="0%" stop-color="#441B67" />
+      <stop offset="100%" stop-color="#E838A2" />
+    </linearGradient>
+    <linearGradient id="logo-default-arc" x1="30%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%" stop-color="#441B67" />
+      <stop offset="50%" stop-color="#7D3BA3" />
+      <stop offset="100%" stop-color="#E838A2" />
+    </linearGradient>
+    <linearGradient id="logo-default-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5C2580" />
+      <stop offset="100%" stop-color="#C835A5" />
+    </linearGradient>
+  </defs>
+  <path d="M 56.5 16.6 A 34 34 0 1 0 54.1 83.8" fill="none" stroke="url(#logo-default-arc)" stroke-width="6" stroke-linecap="butt" />
+  <path d="M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z" fill="url(#logo-default-ring)" />
+  <line x1="50" y1="50" x2="82.8" y2="36.4" stroke="url(#logo-default-main)" stroke-width="6" stroke-linecap="round" />
+  <circle cx="50" cy="50" r="7" fill="url(#logo-default-main)" />
+  <circle cx="67.0" cy="20.5" r="3" fill="#441B67" />
+  <circle cx="77.8" cy="30.5" r="3" fill="#5C2580" />
+  <circle cx="83.5" cy="44.1" r="3" fill="#7D3BA3" />
+  <circle cx="82.8" cy="58.8" r="3" fill="#A832A8" />
+  <circle cx="76.0" cy="71.8" r="3" fill="#C835A5" />
+  <circle cx="64.3" cy="80.8" r="3" fill="#E838A2" />
+</symbol>
+
+<!-- ============================================================
+     logo-inverted — White on gradient background
+     ============================================================ -->
+<symbol id="logo-inverted" viewBox="-9 -9 117 117">
+  <defs>
+    <linearGradient id="logo-inverted-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#441B67" />
+      <stop offset="100%" stop-color="#E838A2" />
+    </linearGradient>
+    <linearGradient id="logo-inverted-arc" x1="30%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="white" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="white" stop-opacity="0.3" />
+    </linearGradient>
+    <linearGradient id="logo-inverted-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="white" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="white" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="logo-inverted-main" gradientUnits="userSpaceOnUse" x1="42.6" y1="53.1" x2="82.8" y2="36.4">
+      <stop offset="0%" stop-color="white" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="white" stop-opacity="0.3" />
+    </linearGradient>
+    <mask id="logo-inverted-needle">
+      <line x1="50" y1="50" x2="82.8" y2="36.4" stroke="white" stroke-width="5.5" stroke-linecap="round" />
+      <circle cx="50" cy="50" r="7" fill="white" />
+    </mask>
+  </defs>
+  <rect x="-9" y="-9" width="117" height="117" rx="26" ry="26" fill="url(#logo-inverted-bg)" />
+  <path d="M 56.5 16.6 A 34 34 0 1 0 54.1 83.8" fill="none" stroke="url(#logo-inverted-arc)" stroke-width="5.5" stroke-linecap="butt" />
+  <path d="M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z" fill="url(#logo-inverted-ring)" />
+  <rect x="0" y="0" width="100" height="100" fill="url(#logo-inverted-main)" mask="url(#logo-inverted-needle)" />
+  <circle cx="67.0" cy="20.5" r="2.8" fill="white" opacity="0.8" />
+  <circle cx="77.8" cy="30.5" r="2.8" fill="white" opacity="0.7" />
+  <circle cx="83.5" cy="44.1" r="2.8" fill="white" opacity="0.65" />
+  <circle cx="82.8" cy="58.8" r="2.8" fill="white" opacity="0.5" />
+  <circle cx="76.0" cy="71.8" r="2.8" fill="white" opacity="0.4" />
+  <circle cx="64.3" cy="80.8" r="2.8" fill="white" opacity="0.35" />
+</symbol>
+
+<!-- ============================================================
+     logo-monochrome — Flat dark
+     ============================================================ -->
+<symbol id="logo-monochrome" viewBox="8 10 82 80">
+  <path d="M 56.5 16.6 A 34 34 0 1 0 54.1 83.8" fill="none" stroke="#1A1C1E" stroke-width="6" stroke-linecap="butt" />
+  <path d="M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z" fill="#1A1C1E" />
+  <line x1="50" y1="50" x2="82.8" y2="36.4" stroke="#1A1C1E" stroke-width="6" stroke-linecap="round" />
+  <circle cx="50" cy="50" r="7" fill="#1A1C1E" />
+  <circle cx="67.0" cy="20.5" r="3" fill="#333333" />
+  <circle cx="77.8" cy="30.5" r="3" fill="#555555" />
+  <circle cx="83.5" cy="44.1" r="3" fill="#777777" />
+  <circle cx="82.8" cy="58.8" r="3" fill="#999999" />
+  <circle cx="76.0" cy="71.8" r="3" fill="#BBBBBB" />
+  <circle cx="64.3" cy="80.8" r="3" fill="#DDDDDD" />
+</symbol>
+
+<!-- ============================================================
+     wordmark — Logo + "12signals" text
+     ============================================================ -->
+<symbol id="wordmark" viewBox="0 0 420 100">
+  <defs>
+    <linearGradient id="wordmark-main" gradientUnits="userSpaceOnUse" x1="42.6" y1="53.1" x2="82.8" y2="36.4">
+      <stop offset="0%" stop-color="#441B67" />
+      <stop offset="100%" stop-color="#E838A2" />
+    </linearGradient>
+    <linearGradient id="wordmark-arc" x1="30%" y1="100%" x2="70%" y2="0%">
+      <stop offset="0%" stop-color="#441B67" />
+      <stop offset="50%" stop-color="#7D3BA3" />
+      <stop offset="100%" stop-color="#E838A2" />
+    </linearGradient>
+    <linearGradient id="wordmark-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5C2580" />
+      <stop offset="100%" stop-color="#C835A5" />
+    </linearGradient>
+  </defs>
+  <path d="M 56.5 16.6 A 34 34 0 1 0 54.1 83.8" fill="none" stroke="url(#wordmark-arc)" stroke-width="6" stroke-linecap="butt" />
+  <path d="M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z" fill="url(#wordmark-ring)" />
+  <line x1="50" y1="50" x2="82.8" y2="36.4" stroke="url(#wordmark-main)" stroke-width="6" stroke-linecap="round" />
+  <circle cx="50" cy="50" r="7" fill="url(#wordmark-main)" />
+  <circle cx="67.0" cy="20.5" r="3" fill="#441B67" />
+  <circle cx="77.8" cy="30.5" r="3" fill="#5C2580" />
+  <circle cx="83.5" cy="44.1" r="3" fill="#7D3BA3" />
+  <circle cx="82.8" cy="58.8" r="3" fill="#A832A8" />
+  <circle cx="76.0" cy="71.8" r="3" fill="#C835A5" />
+  <circle cx="64.3" cy="80.8" r="3" fill="#E838A2" />
+  <text x="105" y="50" dominant-baseline="central" font-family="ABCFavorit, system-ui, sans-serif" font-size="70" font-weight="400" letter-spacing="-0.01em" fill="currentColor">12signals</text>
+</symbol>
+
+</svg>

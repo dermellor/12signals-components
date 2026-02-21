@@ -19,7 +19,8 @@
     "./tokens.css": "./src/design-system/tokens/tokens.css",
     "./tokens.json": "./src/design-system/tokens/tokens.json",
     "./reset.css": "./src/design-system/styles/reset.css",
-    "./globals.css": "./src/design-system/styles/globals.css"
+    "./globals.css": "./src/design-system/styles/globals.css",
+    "./logos.svg": "./src/design-system/assets/logos.svg"
   },
   "scripts": {
     "build": "tsup",
