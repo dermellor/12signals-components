@@ -1199,5 +1199,28 @@
 .ds-RichText ol { list-style: decimal; padding-left: var(--space-xl); margin: 0 0 var(--space-sm); }
 .ds-RichText li { margin: 0 0 var(--space-xs); }
 
+/* Breadcrumb */
+.ds-Breadcrumb { font-size: 0.875rem; }
+.ds-BreadcrumbList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+.ds-BreadcrumbItem { display: flex; align-items: center; gap: var(--space-xs); }
+.ds-BreadcrumbLink,
+.ds-BreadcrumbLink a {
+  color: hsl(var(--muted-foreground));
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.ds-BreadcrumbLink:hover,
+.ds-BreadcrumbLink a:hover { color: hsl(var(--foreground)); }
+.ds-BreadcrumbSeparator { color: hsl(var(--muted-foreground)); opacity: 0.5; user-select: none; }
+.ds-BreadcrumbCurrent { color: hsl(var(--foreground)); font-weight: 500; }
+
 /* Logo */
 .ds-Logo { display: block; flex-shrink: 0; }

@@ -34,3 +34,4 @@ export * from "./NavigationToggle";
 export * from "./Heading";
 export * from "./Logo";
 export * from "./Wordmark";
+export * from "./Breadcrumb";
