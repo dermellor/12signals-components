@@ -47,9 +47,4 @@ function CardTitle<T extends keyof JSX.IntrinsicElements = "h3">({
   );
 }
 
-function CardDescription({ children, className, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) {
-  const cn = ["ds-CardDescription", className].filter(Boolean).join(" ");
-  return <p className={cn} {...rest}>{children}</p>;
-}
-
-export const Card = Object.assign(CardRoot, { Header: CardHeader, Content: CardContent, Title: CardTitle, Description: CardDescription });
+export const Card = Object.assign(CardRoot, { Header: CardHeader, Content: CardContent, Title: CardTitle });
