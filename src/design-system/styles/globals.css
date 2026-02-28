@@ -326,7 +326,7 @@
 .ds-CardHeader { padding: var(--space-xl); border-bottom: 1px solid var(--color-border-default); }
 .ds-CardContent { padding: var(--space-xl); }
 .ds-CardTitle { font-size: 1.125rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
-.ds-CardDescription { font-size: 0.875rem; color: hsl(var(--muted-foreground)); }
+
 
 /* Card hover variants */
 .ds-Card[data-hover="glow"][data-clickable="true"] { cursor: pointer; }
@@ -424,6 +424,11 @@
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-lg);
   background: color-mix(in oklab, var(--color-neutral-bg) 80%, transparent);
+}
+.ds-PieChartChart--plain {
+  border: none;
+  background: none;
+  padding: 0;
 }
 .ds-PieChartCenter {
   position: absolute;

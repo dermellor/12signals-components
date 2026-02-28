@@ -42,6 +42,8 @@ type PieChartProps = {
   ariaLabel: string;
   valueFormatter?: (value: number) => string;
   centerLabel?: PieChartCenterLabel;
+  showLegend?: boolean;
+  variant?: "default" | "plain";
 };
 
 const VARIANT_CYCLE: PieChartSliceVariant[] = [
@@ -119,6 +121,8 @@ export function PieChart({
   ariaLabel,
   valueFormatter = (value) => `${value}`,
   centerLabel,
+  showLegend = true,
+  variant = "default",
 }: PieChartProps) {
   const slices = React.useMemo<NormalizedSlice[]>(() => normalizeSlices(data), [data]);
   const total = React.useMemo(
@@ -132,7 +136,7 @@ export function PieChart({
 
   return (
     <figure className="ds-PieChart" role="group" aria-label={ariaLabel}>
-      <div className="ds-PieChartChart">
+      <div className={variant === "plain" ? "ds-PieChartChart ds-PieChartChart--plain" : "ds-PieChartChart"}>
         <ResponsiveContainer width="100%" height="100%">
           <RCPieChart>
             <Pie
@@ -172,15 +176,17 @@ export function PieChart({
           </div>
         )}
       </div>
-      <ul className="ds-PieChartLegend" role="list">
-        {slices.map((slice) => (
-          <li key={`legend-${slice.id}`} className="ds-PieChartLegendItem">
-            <span className="ds-PieChartLegendSwatch" data-variant={slice.variant} aria-hidden />
-            <span className="ds-PieChartLegendLabel">{slice.label}</span>
-            <span className="ds-PieChartLegendValue">{valueFormatter(slice.value)}</span>
-          </li>
-        ))}
-      </ul>
+      {showLegend && (
+        <ul className="ds-PieChartLegend" role="list">
+          {slices.map((slice) => (
+            <li key={`legend-${slice.id}`} className="ds-PieChartLegendItem">
+              <span className="ds-PieChartLegendSwatch" data-variant={slice.variant} aria-hidden />
+              <span className="ds-PieChartLegendLabel">{slice.label}</span>
+              <span className="ds-PieChartLegendValue">{valueFormatter(slice.value)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
       <dl className="ds-PieChartTable">
         {slices.map((slice) => (
           <div key={`table-${slice.id}`} className="ds-PieChartTableRow">
