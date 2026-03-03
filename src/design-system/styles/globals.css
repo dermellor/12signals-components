@@ -1174,6 +1174,8 @@
 /* Tooltip */
 .ds-TooltipRoot { position: relative; display: inline-block; }
 .ds-TooltipContent { position: absolute; z-index: 50; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm); font-size: 0.75rem; box-shadow: var(--shadow-sm); white-space: nowrap; }
+.ds-TooltipContent--portal { position: fixed; top: auto; left: auto; transform: translate(-50%, 0); pointer-events: none; }
+.ds-TooltipContent--multiline { white-space: normal; max-width: 240px; }
 
 /* Toast */
 .ds-ToastViewport { position: fixed; bottom: var(--space-xl); right: var(--space-xl); display: grid; gap: var(--space-sm); z-index: 60; }
