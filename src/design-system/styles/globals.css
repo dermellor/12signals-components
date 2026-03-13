@@ -1231,3 +1231,20 @@
 
 /* Logo */
 .ds-Logo { display: block; flex-shrink: 0; }
+
+/* ClaimTimeline */
+.ds-claim-timeline-mobile,
+.ds-claim-timeline-desktop {
+  --tl-bar-1: var(--primary);
+  --tl-bar-2: var(--secondary);
+}
+.dark .ds-claim-timeline-mobile,
+.dark .ds-claim-timeline-desktop {
+  --tl-bar-1: var(--success);
+  --tl-bar-2: var(--secondary);
+}
+.ds-claim-timeline-mobile { display: none; }
+@media (max-width: 768px) {
+  .ds-claim-timeline-mobile { display: flex; }
+  .ds-claim-timeline-desktop { display: none; }
+}
