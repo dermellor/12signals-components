@@ -28,7 +28,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "prepare": "tsup",
+    "prepublishOnly": "tsup",
     "generate-assets": "node scripts/generate-logo-assets.mjs"
   },
   "peerDependencies": {
