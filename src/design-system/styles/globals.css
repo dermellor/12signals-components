@@ -332,6 +332,18 @@
 .ds-Card[data-hover="glow"][data-clickable="true"] { cursor: pointer; }
 .ds-Card[data-hover="glow"]:hover { box-shadow: var(--shadow-glow); }
 
+/* Touch devices: play a one-shot glow pulse when the card scrolls into view */
+@keyframes ds-glow-pulse {
+  0%   { box-shadow: var(--shadow-card); }
+  40%  { box-shadow: var(--shadow-glow); }
+  100% { box-shadow: var(--shadow-card); }
+}
+@media (hover: none) {
+  .ds-Card[data-hover="glow"][data-visible="true"] {
+    animation: ds-glow-pulse 1.2s ease-out;
+  }
+}
+
 .ds-TextField { display: grid; gap: var(--space-sm); }
 .ds-TextFieldLabel { font-weight: 500; font-size: 0.875rem; line-height: 1.4; }
 .ds-TextFieldInput { width: 100%; height: 2.5rem; padding: 0 var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); background: transparent; color: inherit; font: inherit; font-size: 0.875rem; line-height: 1.4; }

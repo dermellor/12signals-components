@@ -6,9 +6,29 @@ type CardRootProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 function CardRoot({ children, variant = "default", hover = "none", className, ...rest }: CardRootProps) {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || hover !== "glow") return;
+    if (!window.matchMedia("(hover: none)").matches) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.setAttribute("data-visible", "true");
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hover]);
+
   const cn = ["ds-Card", className].filter(Boolean).join(" ");
   return (
-    <div className={cn} data-variant={variant} data-hover={hover} {...rest}>
+    <div ref={ref} className={cn} data-variant={variant} data-hover={hover} {...rest}>
       {children}
     </div>
   );
