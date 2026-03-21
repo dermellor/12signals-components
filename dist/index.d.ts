@@ -205,6 +205,8 @@ type ActivityCardProps = {
     icon?: React$1.ReactNode;
     title: string;
     titleNode?: React$1.ReactNode;
+    headline?: string;
+    competitorIcon?: React$1.ReactNode;
     categoryLabel?: string;
     categoryVariant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary";
     categoryTone?: "solid" | "subtle";
@@ -215,7 +217,7 @@ type ActivityCardProps = {
     ariaLabel?: string;
     hover?: "none" | "glow";
 };
-declare function ActivityCard({ icon, title, titleNode, categoryLabel, categoryVariant, categoryTone, meta, description, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
+declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, meta, description, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
 
 type RichTextProps = React$1.HTMLAttributes<HTMLDivElement> & {
     as?: keyof JSX.IntrinsicElements;

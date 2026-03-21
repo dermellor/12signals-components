@@ -586,6 +586,8 @@ function ActivityCard({
   icon,
   title,
   titleNode,
+  headline,
+  competitorIcon,
   categoryLabel,
   categoryVariant = "outline",
   categoryTone = "solid",
@@ -596,6 +598,52 @@ function ActivityCard({
   ariaLabel,
   hover = "glow"
 }) {
+  const badge = categoryLabel ? /* @__PURE__ */ jsx21(Badge, { variant: categoryVariant, tone: categoryTone, "aria-label": `Kategorie: ${categoryLabel}`, children: categoryLabel }) : null;
+  const hasTitleContent = Boolean(titleNode || title);
+  const competitorNode = hasTitleContent ? /* @__PURE__ */ jsx21(
+    "div",
+    {
+      style: {
+        ...titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : void 0,
+        minWidth: 0,
+        overflowWrap: "anywhere",
+        wordBreak: "break-word"
+      },
+      children: headline ? titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: title }) : titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: title })
+    }
+  ) : null;
+  const headerRow = headline ? /* @__PURE__ */ jsxs11(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--space-sm)",
+        marginBottom: "var(--space-xs)",
+        flexWrap: "wrap"
+      },
+      children: [
+        /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }),
+        badge
+      ]
+    }
+  ) : /* @__PURE__ */ jsxs11(
+    "div",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--space-sm)",
+        marginBottom: "var(--space-xs)",
+        flexWrap: "wrap"
+      },
+      children: [
+        competitorNode,
+        badge,
+        meta && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: meta })
+      ]
+    }
+  );
   return /* @__PURE__ */ jsxs11(
     Card,
     {
@@ -604,40 +652,13 @@ function ActivityCard({
       style: { position: "relative", padding: "var(--space-lg)" },
       "data-clickable": href ? "true" : "false",
       role: "article",
-      "aria-label": ariaLabel || title,
+      "aria-label": ariaLabel || headline || title,
       children: [
-        /* @__PURE__ */ jsxs11("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-md)" }, children: [
-          icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center" }, children: icon }),
+        /* @__PURE__ */ jsxs11("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-lg)" }, children: [
+          icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: icon }),
           /* @__PURE__ */ jsxs11("div", { style: { flex: 1, minWidth: 0 }, children: [
-            /* @__PURE__ */ jsxs11(
-              "div",
-              {
-                style: {
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "var(--space-sm)",
-                  marginBottom: "var(--space-xs)",
-                  flexWrap: "wrap"
-                },
-                children: [
-                  /* @__PURE__ */ jsx21(
-                    "div",
-                    {
-                      style: {
-                        ...titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : void 0,
-                        minWidth: 0,
-                        overflowWrap: "anywhere",
-                        wordBreak: "break-word"
-                      },
-                      children: titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: title })
-                    }
-                  ),
-                  categoryLabel && /* @__PURE__ */ jsx21(Badge, { variant: categoryVariant, tone: categoryTone, "aria-label": `Kategorie: ${categoryLabel}`, children: categoryLabel }),
-                  meta && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: meta })
-                ]
-              }
-            ),
-            description && /* @__PURE__ */ jsx21("div", { style: { marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
+            headerRow,
+            description && /* @__PURE__ */ jsx21("div", { style: { marginTop: "var(--space-xs)", marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
             /* @__PURE__ */ jsx21("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: timestamp && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
           ] })
         ] }),
@@ -647,7 +668,7 @@ function ActivityCard({
             href,
             target: "_blank",
             rel: "noopener noreferrer",
-            "aria-label": ariaLabel || title,
+            "aria-label": ariaLabel || headline || title,
             style: { position: "absolute", inset: 0, zIndex: 1 }
           }
         )
