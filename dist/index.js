@@ -581,7 +581,7 @@ function PageHeader({ title, subtitle, actions, ...rest }) {
 }
 
 // src/design-system/components/ActivityCard.tsx
-import { jsx as jsx21, jsxs as jsxs11 } from "react/jsx-runtime";
+import { Fragment as Fragment2, jsx as jsx21, jsxs as jsxs11 } from "react/jsx-runtime";
 function ActivityCard({
   icon,
   title,
@@ -612,22 +612,13 @@ function ActivityCard({
       children: headline ? titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: title }) : titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: title })
     }
   ) : null;
-  const headerRow = headline ? /* @__PURE__ */ jsxs11(
-    "div",
-    {
-      style: {
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--space-sm)",
-        marginBottom: "var(--space-xs)",
-        flexWrap: "wrap"
-      },
-      children: [
-        /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }),
-        badge
-      ]
-    }
-  ) : /* @__PURE__ */ jsxs11(
+  const headerRow = headline ? /* @__PURE__ */ jsxs11("div", { style: { marginBottom: "var(--space-xs)" }, className: "ds-ActivityCard-headline", children: [
+    /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }),
+    badge && /* @__PURE__ */ jsxs11(Fragment2, { children: [
+      " ",
+      badge
+    ] })
+  ] }) : /* @__PURE__ */ jsxs11(
     "div",
     {
       style: {
@@ -653,11 +644,14 @@ function ActivityCard({
       "data-clickable": href ? "true" : "false",
       role: "article",
       "aria-label": ariaLabel || headline || title,
+      className: "ds-ActivityCard",
       children: [
-        /* @__PURE__ */ jsxs11("div", { style: { display: "flex", alignItems: "flex-start", gap: "var(--space-lg)" }, children: [
-          icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: icon }),
-          /* @__PURE__ */ jsxs11("div", { style: { flex: 1, minWidth: 0 }, children: [
-            headerRow,
+        /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-layout", children: [
+          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-header", children: [
+            icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 4 }, children: icon }),
+            /* @__PURE__ */ jsx21("div", { style: { flex: 1, minWidth: 0 }, children: headerRow })
+          ] }),
+          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-body", children: [
             description && /* @__PURE__ */ jsx21("div", { style: { marginTop: "var(--space-xs)", marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
             /* @__PURE__ */ jsx21("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: timestamp && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
           ] })
@@ -1271,7 +1265,7 @@ function ActionIconButton({
 
 // src/design-system/components/Navigation.tsx
 import * as React15 from "react";
-import { Fragment as Fragment2, jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
 function Navigation({
   items,
   value,
@@ -1299,7 +1293,7 @@ function Navigation({
       style,
       children: /* @__PURE__ */ jsx30("ul", { className: "ds-NavigationList", children: items.map((item) => {
         const active = item.value === value;
-        const content = /* @__PURE__ */ jsxs17(Fragment2, { children: [
+        const content = /* @__PURE__ */ jsxs17(Fragment3, { children: [
           item.icon && /* @__PURE__ */ jsx30("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
           /* @__PURE__ */ jsxs17("span", { className: "ds-NavigationText", children: [
             /* @__PURE__ */ jsx30("span", { className: "ds-NavigationLabel", children: item.label }),
@@ -1342,7 +1336,7 @@ function Navigation({
 }
 
 // src/design-system/components/NavigationBar.tsx
-import { Fragment as Fragment3, jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
 function NavigationBar({
   title,
   subtitle,
@@ -1358,13 +1352,13 @@ function NavigationBar({
   const showLeadingRight = leading && leadingPosition === "right";
   return /* @__PURE__ */ jsxs18("header", { className: ["ds-NavigationBar", className].filter(Boolean).join(" "), ...rest, children: [
     showLeadingLeft && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarLeading", children: leading }),
-    /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment3, { children: [
+    /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment4, { children: [
       /* @__PURE__ */ jsxs18("div", { className: "ds-NavigationBarBrandContent", children: [
         brand,
         brandAccessory && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
       ] }),
       subtitle && /* @__PURE__ */ jsx31(Text, { size: "xs", tone: "muted", children: subtitle })
-    ] }) : /* @__PURE__ */ jsxs18(Fragment3, { children: [
+    ] }) : /* @__PURE__ */ jsxs18(Fragment4, { children: [
       title != null && /* @__PURE__ */ jsx31(Text, { as: "div", weight: "semibold", children: title }),
       subtitle && /* @__PURE__ */ jsx31(Text, { size: "xs", tone: "muted", children: subtitle })
     ] }) }),
@@ -1374,9 +1368,9 @@ function NavigationBar({
 }
 
 // src/design-system/components/NavigationBrand.tsx
-import { Fragment as Fragment4, jsx as jsx32, jsxs as jsxs19 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx32, jsxs as jsxs19 } from "react/jsx-runtime";
 function NavigationBrand({ href, logo, label, className, ...rest }) {
-  const content = /* @__PURE__ */ jsxs19(Fragment4, { children: [
+  const content = /* @__PURE__ */ jsxs19(Fragment5, { children: [
     logo && /* @__PURE__ */ jsx32("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
     label && /* @__PURE__ */ jsx32("span", { className: "ds-NavigationBrandLabel", children: label })
   ] });
@@ -1685,7 +1679,7 @@ function detectABTestGroups(ranges) {
 }
 
 // src/competitor/ClaimTimeline.tsx
-import { Fragment as Fragment5, jsx as jsx37, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx37, jsxs as jsxs24 } from "react/jsx-runtime";
 function ClaimTimeline({
   claimRanges,
   loading = false,
@@ -1949,7 +1943,7 @@ function ClaimTimeline({
       }) })
     ] })
   ] }) });
-  return /* @__PURE__ */ jsxs24(Fragment5, { children: [
+  return /* @__PURE__ */ jsxs24(Fragment6, { children: [
     renderMobile(),
     renderDesktop()
   ] });

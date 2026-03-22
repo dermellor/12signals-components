@@ -58,17 +58,9 @@ export function ActivityCard({
   ) : null;
 
   const headerRow = headline ? (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--space-sm)",
-        marginBottom: "var(--space-xs)",
-        flexWrap: "wrap",
-      }}
-    >
+    <div style={{ marginBottom: "var(--space-xs)" }} className="ds-ActivityCard-headline">
       <Text as="span" size="sm" weight="medium">{headline}</Text>
-      {badge}
+      {badge && <> {badge}</>}
     </div>
   ) : (
     <div
@@ -96,17 +88,22 @@ export function ActivityCard({
       data-clickable={href ? "true" : "false"}
       role="article"
       aria-label={ariaLabel || headline || title}
+      className="ds-ActivityCard"
     >
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "var(--space-lg)" }}>
-        {icon && (
-          <div aria-hidden style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            {icon}
+      <div className="ds-ActivityCard-layout">
+        <div className="ds-ActivityCard-header">
+          {icon && (
+            <div aria-hidden style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 4 }}>
+              {icon}
+            </div>
+          )}
+
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {headerRow}
           </div>
-        )}
+        </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {headerRow}
-
+        <div className="ds-ActivityCard-body">
           {description && (
             <div style={{ marginTop: "var(--space-xs)", marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }}>
               <Text as="div" size="sm" tone="muted">

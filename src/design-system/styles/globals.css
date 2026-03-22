@@ -41,6 +41,29 @@
   --shadow-md: var(--shadow-card);
 }
 
+/* ActivityCard – mobile: description left-aligned below icon row */
+.ds-ActivityCard-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ds-ActivityCard-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-lg);
+}
+.ds-ActivityCard-body {
+  padding-left: calc(28px + var(--space-lg)); /* icon width + gap */
+}
+@media (max-width: 640px) {
+  .ds-ActivityCard-body {
+    padding-left: 0;
+  }
+  .ds-ActivityCard-headline {
+    min-height: calc(0.875rem * 1.5 * 2); /* 2 lines of sm text */
+  }
+}
+
 /* Design System Component Styles */
 .ds-Button {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
