@@ -5,8 +5,18 @@ type CardRootProps = React.HTMLAttributes<HTMLDivElement> & {
   hover?: "none" | "glow";
 };
 
+const CardNestingContext = React.createContext(false);
+
 function CardRoot({ children, variant = "default", hover = "none", className, ...rest }: CardRootProps) {
+  const isNested = React.useContext(CardNestingContext);
   const ref = React.useRef<HTMLDivElement>(null);
+
+  if (isNested) {
+    throw new Error(
+      "[ds-Card] Nested Card detected. Cards must not be placed inside other Cards — " +
+      "use a plain container (div, section) or a different visual treatment instead.",
+    );
+  }
 
   React.useEffect(() => {
     const el = ref.current;
@@ -28,9 +38,11 @@ function CardRoot({ children, variant = "default", hover = "none", className, ..
 
   const cn = ["ds-Card", className].filter(Boolean).join(" ");
   return (
-    <div ref={ref} className={cn} data-variant={variant} data-hover={hover} {...rest}>
-      {children}
-    </div>
+    <CardNestingContext.Provider value={true}>
+      <div ref={ref} className={cn} data-variant={variant} data-hover={hover} {...rest}>
+        {children}
+      </div>
+    </CardNestingContext.Provider>
   );
 }
 
