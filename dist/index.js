@@ -53,8 +53,15 @@ function Text({
 // src/design-system/components/Card.tsx
 import * as React from "react";
 import { jsx as jsx3 } from "react/jsx-runtime";
+var CardNestingContext = React.createContext(false);
 function CardRoot({ children, variant = "default", hover = "none", className, ...rest }) {
+  const isNested = React.useContext(CardNestingContext);
   const ref = React.useRef(null);
+  if (isNested) {
+    throw new Error(
+      "[ds-Card] Nested Card detected. Cards must not be placed inside other Cards \u2014 use a plain container (div, section) or a different visual treatment instead."
+    );
+  }
   React.useEffect(() => {
     const el = ref.current;
     if (!el || hover !== "glow") return;
@@ -72,7 +79,7 @@ function CardRoot({ children, variant = "default", hover = "none", className, ..
     return () => observer.disconnect();
   }, [hover]);
   const cn = ["ds-Card", className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ jsx3("div", { ref, className: cn, "data-variant": variant, "data-hover": hover, ...rest, children });
+  return /* @__PURE__ */ jsx3(CardNestingContext.Provider, { value: true, children: /* @__PURE__ */ jsx3("div", { ref, className: cn, "data-variant": variant, "data-hover": hover, ...rest, children }) });
 }
 function CardHeader({ children, className, ...rest }) {
   const cn = ["ds-CardHeader", className].filter(Boolean).join(" ");
@@ -1263,9 +1270,30 @@ function ActionIconButton({
   );
 }
 
+// src/design-system/components/InlineEditButton.tsx
+import { Pencil as Pencil2 } from "lucide-react";
+import { jsx as jsx30 } from "react/jsx-runtime";
+function InlineEditButton({
+  "aria-label": ariaLabel,
+  title,
+  ...rest
+}) {
+  return /* @__PURE__ */ jsx30(
+    "button",
+    {
+      type: "button",
+      className: "ds-InlineEditButton",
+      "aria-label": ariaLabel != null ? ariaLabel : "Bearbeiten",
+      title: title != null ? title : "Bearbeiten",
+      ...rest,
+      children: /* @__PURE__ */ jsx30(Pencil2, { "aria-hidden": true, focusable: false })
+    }
+  );
+}
+
 // src/design-system/components/Navigation.tsx
 import * as React15 from "react";
-import { Fragment as Fragment3, jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx31, jsxs as jsxs17 } from "react/jsx-runtime";
 function Navigation({
   items,
   value,
@@ -1284,24 +1312,24 @@ function Navigation({
     },
     [onValueChange]
   );
-  return /* @__PURE__ */ jsx30(
+  return /* @__PURE__ */ jsx31(
     "nav",
     {
       className: ["ds-Navigation", className].filter(Boolean).join(" "),
       "aria-label": ariaLabel,
       "data-orientation": orientation,
       style,
-      children: /* @__PURE__ */ jsx30("ul", { className: "ds-NavigationList", children: items.map((item) => {
+      children: /* @__PURE__ */ jsx31("ul", { className: "ds-NavigationList", children: items.map((item) => {
         const active = item.value === value;
         const content = /* @__PURE__ */ jsxs17(Fragment3, { children: [
-          item.icon && /* @__PURE__ */ jsx30("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
+          item.icon && /* @__PURE__ */ jsx31("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
           /* @__PURE__ */ jsxs17("span", { className: "ds-NavigationText", children: [
-            /* @__PURE__ */ jsx30("span", { className: "ds-NavigationLabel", children: item.label }),
-            item.description && /* @__PURE__ */ jsx30("span", { className: "ds-NavigationDescription", children: item.description })
+            /* @__PURE__ */ jsx31("span", { className: "ds-NavigationLabel", children: item.label }),
+            item.description && /* @__PURE__ */ jsx31("span", { className: "ds-NavigationDescription", children: item.description })
           ] }),
-          item.badge && /* @__PURE__ */ jsx30("span", { className: "ds-NavigationBadge", children: item.badge })
+          item.badge && /* @__PURE__ */ jsx31("span", { className: "ds-NavigationBadge", children: item.badge })
         ] });
-        return /* @__PURE__ */ jsx30("li", { className: "ds-NavigationItem", children: item.href ? /* @__PURE__ */ jsx30(
+        return /* @__PURE__ */ jsx31("li", { className: "ds-NavigationItem", children: item.href ? /* @__PURE__ */ jsx31(
           "a",
           {
             href: item.href,
@@ -1318,7 +1346,7 @@ function Navigation({
             },
             children: content
           }
-        ) : /* @__PURE__ */ jsx30(
+        ) : /* @__PURE__ */ jsx31(
           "button",
           {
             type: "button",
@@ -1336,7 +1364,7 @@ function Navigation({
 }
 
 // src/design-system/components/NavigationBar.tsx
-import { Fragment as Fragment4, jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx32, jsxs as jsxs18 } from "react/jsx-runtime";
 function NavigationBar({
   title,
   subtitle,
@@ -1351,45 +1379,45 @@ function NavigationBar({
   const showLeadingLeft = leading && leadingPosition === "left";
   const showLeadingRight = leading && leadingPosition === "right";
   return /* @__PURE__ */ jsxs18("header", { className: ["ds-NavigationBar", className].filter(Boolean).join(" "), ...rest, children: [
-    showLeadingLeft && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarLeading", children: leading }),
-    /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment4, { children: [
+    showLeadingLeft && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarLeading", children: leading }),
+    /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment4, { children: [
       /* @__PURE__ */ jsxs18("div", { className: "ds-NavigationBarBrandContent", children: [
         brand,
-        brandAccessory && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
+        brandAccessory && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
       ] }),
-      subtitle && /* @__PURE__ */ jsx31(Text, { size: "xs", tone: "muted", children: subtitle })
+      subtitle && /* @__PURE__ */ jsx32(Text, { size: "xs", tone: "muted", children: subtitle })
     ] }) : /* @__PURE__ */ jsxs18(Fragment4, { children: [
-      title != null && /* @__PURE__ */ jsx31(Text, { as: "div", weight: "semibold", children: title }),
-      subtitle && /* @__PURE__ */ jsx31(Text, { size: "xs", tone: "muted", children: subtitle })
+      title != null && /* @__PURE__ */ jsx32(Text, { as: "div", weight: "semibold", children: title }),
+      subtitle && /* @__PURE__ */ jsx32(Text, { size: "xs", tone: "muted", children: subtitle })
     ] }) }),
-    actions && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarActions", children: actions }),
-    showLeadingRight && /* @__PURE__ */ jsx31("div", { className: "ds-NavigationBarLeading", children: leading })
+    actions && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarActions", children: actions }),
+    showLeadingRight && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarLeading", children: leading })
   ] });
 }
 
 // src/design-system/components/NavigationBrand.tsx
-import { Fragment as Fragment5, jsx as jsx32, jsxs as jsxs19 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx33, jsxs as jsxs19 } from "react/jsx-runtime";
 function NavigationBrand({ href, logo, label, className, ...rest }) {
   const content = /* @__PURE__ */ jsxs19(Fragment5, { children: [
-    logo && /* @__PURE__ */ jsx32("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
-    label && /* @__PURE__ */ jsx32("span", { className: "ds-NavigationBrandLabel", children: label })
+    logo && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
+    label && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationBrandLabel", children: label })
   ] });
-  return /* @__PURE__ */ jsx32("div", { className: ["ds-NavigationBrand", className].filter(Boolean).join(" "), ...rest, children: href ? /* @__PURE__ */ jsx32("a", { className: "ds-NavigationBrandLink", href, children: content }) : /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBrandLink", children: content }) });
+  return /* @__PURE__ */ jsx33("div", { className: ["ds-NavigationBrand", className].filter(Boolean).join(" "), ...rest, children: href ? /* @__PURE__ */ jsx33("a", { className: "ds-NavigationBrandLink", href, children: content }) : /* @__PURE__ */ jsx33("div", { className: "ds-NavigationBrandLink", children: content }) });
 }
 
 // src/design-system/components/NavigationToggle.tsx
-import { jsx as jsx33, jsxs as jsxs20 } from "react/jsx-runtime";
+import { jsx as jsx34, jsxs as jsxs20 } from "react/jsx-runtime";
 function NavigationToggle({ ariaLabel = "Toggle navigation", icon, ...rest }) {
-  return /* @__PURE__ */ jsx33("button", { type: "button", className: "ds-NavigationToggle", "aria-label": ariaLabel, ...rest, children: /* @__PURE__ */ jsx33("span", { className: "ds-NavigationToggleIcon", "aria-hidden": true, children: icon != null ? icon : /* @__PURE__ */ jsxs20("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", children: [
-    /* @__PURE__ */ jsx33("path", { d: "M4 7h16" }),
-    /* @__PURE__ */ jsx33("path", { d: "M4 12h16" }),
-    /* @__PURE__ */ jsx33("path", { d: "M4 17h16" })
+  return /* @__PURE__ */ jsx34("button", { type: "button", className: "ds-NavigationToggle", "aria-label": ariaLabel, ...rest, children: /* @__PURE__ */ jsx34("span", { className: "ds-NavigationToggleIcon", "aria-hidden": true, children: icon != null ? icon : /* @__PURE__ */ jsxs20("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", children: [
+    /* @__PURE__ */ jsx34("path", { d: "M4 7h16" }),
+    /* @__PURE__ */ jsx34("path", { d: "M4 12h16" }),
+    /* @__PURE__ */ jsx34("path", { d: "M4 17h16" })
   ] }) }) });
 }
 
 // src/design-system/components/Logo.tsx
 import { useId as useId4 } from "react";
-import { jsx as jsx34, jsxs as jsxs21 } from "react/jsx-runtime";
+import { jsx as jsx35, jsxs as jsxs21 } from "react/jsx-runtime";
 function LogoSvg({ uid, variant, sizeStyle, className, ...rest }) {
   const cls = ["ds-Logo", className].filter(Boolean).join(" ");
   const shared = { xmlns: "http://www.w3.org/2000/svg", className: cls, "data-variant": variant, role: "img", "aria-label": "12signals", style: sizeStyle, ...rest };
@@ -1398,79 +1426,79 @@ function LogoSvg({ uid, variant, sizeStyle, className, ...rest }) {
       return /* @__PURE__ */ jsxs21("svg", { viewBox: "-9 -9 117 117", ...shared, children: [
         /* @__PURE__ */ jsxs21("defs", { children: [
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-bg`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "#E838A2" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-inv-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.8" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "50%", stopColor: "white", stopOpacity: "0.55" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.8" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "50%", stopColor: "white", stopOpacity: "0.55" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
           ] }),
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-inv-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.75" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.4" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.75" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.4" })
           ] }),
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-inv-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.85" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.85" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
           ] })
         ] }),
-        /* @__PURE__ */ jsx34("rect", { x: "-9", y: "-9", width: "117", height: "117", rx: "26", ry: "26", fill: `url(#${uid}-bg)` }),
-        /* @__PURE__ */ jsx34("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-inv-arc)`, strokeWidth: "5.5", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx34("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-inv-ring)` }),
+        /* @__PURE__ */ jsx35("rect", { x: "-9", y: "-9", width: "117", height: "117", rx: "26", ry: "26", fill: `url(#${uid}-bg)` }),
+        /* @__PURE__ */ jsx35("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-inv-arc)`, strokeWidth: "5.5", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx35("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-inv-ring)` }),
         /* @__PURE__ */ jsxs21("mask", { id: `${uid}-inv-needle`, children: [
-          /* @__PURE__ */ jsx34("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "white", strokeWidth: "5.5", strokeLinecap: "round" }),
-          /* @__PURE__ */ jsx34("circle", { cx: "50", cy: "50", r: "7", fill: "white" })
+          /* @__PURE__ */ jsx35("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "white", strokeWidth: "5.5", strokeLinecap: "round" }),
+          /* @__PURE__ */ jsx35("circle", { cx: "50", cy: "50", r: "7", fill: "white" })
         ] }),
-        /* @__PURE__ */ jsx34("rect", { x: "0", y: "0", width: "100", height: "100", fill: `url(#${uid}-inv-main)`, mask: `url(#${uid}-inv-needle)` }),
-        /* @__PURE__ */ jsx34("circle", { cx: "67.0", cy: "20.5", r: "2.8", fill: "white", opacity: "0.8" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "77.8", cy: "30.5", r: "2.8", fill: "white", opacity: "0.7" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "83.5", cy: "44.1", r: "2.8", fill: "white", opacity: "0.65" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "82.8", cy: "58.8", r: "2.8", fill: "white", opacity: "0.5" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "76.0", cy: "71.8", r: "2.8", fill: "white", opacity: "0.4" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "64.3", cy: "80.8", r: "2.8", fill: "white", opacity: "0.35" })
+        /* @__PURE__ */ jsx35("rect", { x: "0", y: "0", width: "100", height: "100", fill: `url(#${uid}-inv-main)`, mask: `url(#${uid}-inv-needle)` }),
+        /* @__PURE__ */ jsx35("circle", { cx: "67.0", cy: "20.5", r: "2.8", fill: "white", opacity: "0.8" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "77.8", cy: "30.5", r: "2.8", fill: "white", opacity: "0.7" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "83.5", cy: "44.1", r: "2.8", fill: "white", opacity: "0.65" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "82.8", cy: "58.8", r: "2.8", fill: "white", opacity: "0.5" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "76.0", cy: "71.8", r: "2.8", fill: "white", opacity: "0.4" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "64.3", cy: "80.8", r: "2.8", fill: "white", opacity: "0.35" })
       ] });
     case "monochrome":
       return /* @__PURE__ */ jsxs21("svg", { viewBox: "8 10 82 80", ...shared, children: [
-        /* @__PURE__ */ jsx34("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx34("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: "#1A1C1E" }),
-        /* @__PURE__ */ jsx34("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "round" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "50", cy: "50", r: "7", fill: "#1A1C1E" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#333333" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#555555" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#777777" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#999999" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#BBBBBB" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#DDDDDD" })
+        /* @__PURE__ */ jsx35("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx35("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: "#1A1C1E" }),
+        /* @__PURE__ */ jsx35("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "round" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "50", cy: "50", r: "7", fill: "#1A1C1E" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#333333" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#555555" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#777777" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#999999" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#BBBBBB" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#DDDDDD" })
       ] });
     // "default" = V2 Gradient Flow
     default:
       return /* @__PURE__ */ jsxs21("svg", { viewBox: "8 10 82 80", ...shared, children: [
         /* @__PURE__ */ jsxs21("defs", { children: [
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "#E838A2" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "50%", stopColor: "#7D3BA3" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "#E838A2" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "50%", stopColor: "#7D3BA3" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
           /* @__PURE__ */ jsxs21("linearGradient", { id: `${uid}-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx34("stop", { offset: "0%", stopColor: "#5C2580" }),
-            /* @__PURE__ */ jsx34("stop", { offset: "100%", stopColor: "#C835A5" })
+            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#5C2580" }),
+            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#C835A5" })
           ] })
         ] }),
-        /* @__PURE__ */ jsx34("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx34("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
-        /* @__PURE__ */ jsx34("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
-        /* @__PURE__ */ jsx34("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
-        /* @__PURE__ */ jsx34("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" })
+        /* @__PURE__ */ jsx35("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx35("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
+        /* @__PURE__ */ jsx35("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
+        /* @__PURE__ */ jsx35("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
+        /* @__PURE__ */ jsx35("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" })
       ] });
   }
 }
@@ -1480,7 +1508,7 @@ function Logo({ variant = "default", size = 36, sprite, className, style, ...res
   const sizeStyle = { width: size, height: size, ...style };
   const cls = ["ds-Logo", className].filter(Boolean).join(" ");
   if (sprite) {
-    return /* @__PURE__ */ jsx34(
+    return /* @__PURE__ */ jsx35(
       "svg",
       {
         xmlns: "http://www.w3.org/2000/svg",
@@ -1490,11 +1518,11 @@ function Logo({ variant = "default", size = 36, sprite, className, style, ...res
         "aria-label": "12signals",
         style: sizeStyle,
         ...rest,
-        children: /* @__PURE__ */ jsx34("use", { href: `${sprite}#logo-${variant}`, width: "100%", height: "100%" })
+        children: /* @__PURE__ */ jsx35("use", { href: `${sprite}#logo-${variant}`, width: "100%", height: "100%" })
       }
     );
   }
-  return /* @__PURE__ */ jsx34(LogoSvg, { uid, variant, sizeStyle, className, ...rest });
+  return /* @__PURE__ */ jsx35(LogoSvg, { uid, variant, sizeStyle, className, ...rest });
 }
 var LOGO_VARIANTS = [
   { value: "default", label: "Gradient Flow" },
@@ -1504,13 +1532,13 @@ var LOGO_VARIANTS = [
 
 // src/design-system/components/Wordmark.tsx
 import { useId as useId5 } from "react";
-import { jsx as jsx35, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx36, jsxs as jsxs22 } from "react/jsx-runtime";
 function Wordmark({ height = 36, className, sprite, style, ...rest }) {
   const reactId = useId5();
   const uid = reactId.replace(/:/g, "");
   const cls = ["ds-Wordmark", className].filter(Boolean).join(" ");
   if (sprite) {
-    return /* @__PURE__ */ jsx35(
+    return /* @__PURE__ */ jsx36(
       "svg",
       {
         viewBox: "0 0 396 100",
@@ -1520,7 +1548,7 @@ function Wordmark({ height = 36, className, sprite, style, ...rest }) {
         "aria-label": "12signals",
         style: { height, width: "auto", ...style },
         ...rest,
-        children: /* @__PURE__ */ jsx35("use", { href: `${sprite}#wordmark`, width: "396", height: "100" })
+        children: /* @__PURE__ */ jsx36("use", { href: `${sprite}#wordmark`, width: "396", height: "100" })
       }
     );
   }
@@ -1537,39 +1565,39 @@ function Wordmark({ height = 36, className, sprite, style, ...rest }) {
       children: [
         /* @__PURE__ */ jsxs22("defs", { children: [
           /* @__PURE__ */ jsxs22("linearGradient", { id: `${uid}-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
-            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#E838A2" })
+            /* @__PURE__ */ jsx36("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx36("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
           /* @__PURE__ */ jsxs22("linearGradient", { id: `${uid}-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
-            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx35("stop", { offset: "50%", stopColor: "#7D3BA3" }),
-            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#E838A2" })
+            /* @__PURE__ */ jsx36("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx36("stop", { offset: "50%", stopColor: "#7D3BA3" }),
+            /* @__PURE__ */ jsx36("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
           /* @__PURE__ */ jsxs22("linearGradient", { id: `${uid}-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx35("stop", { offset: "0%", stopColor: "#5C2580" }),
-            /* @__PURE__ */ jsx35("stop", { offset: "100%", stopColor: "#C835A5" })
+            /* @__PURE__ */ jsx36("stop", { offset: "0%", stopColor: "#5C2580" }),
+            /* @__PURE__ */ jsx36("stop", { offset: "100%", stopColor: "#C835A5" })
           ] })
         ] }),
-        /* @__PURE__ */ jsx35("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx35("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
-        /* @__PURE__ */ jsx35("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
-        /* @__PURE__ */ jsx35("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
-        /* @__PURE__ */ jsx35("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" }),
+        /* @__PURE__ */ jsx36("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx36("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
+        /* @__PURE__ */ jsx36("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
+        /* @__PURE__ */ jsx36("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
+        /* @__PURE__ */ jsx36("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" }),
         /* @__PURE__ */ jsxs22("g", { style: { fill: "hsl(var(--primary))" }, children: [
-          /* @__PURE__ */ jsx35("path", { d: "M192 0H288V700H213L33 525V405L192 559Z", transform: "translate(105.00,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M50 0H523V90H162L349 263C430 338 513 412 513 523C513 643 412 710 292 710C158 710 58 625 57 491H157C157 568 210 625 287 625H297C363 625 415 584 415 518C415 432 338 380 276 321L50 106Z", transform: "translate(130.90,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(170.38,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M75 0H170V500H75ZM70 590H175V700H70Z", transform: "translate(203.84,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M268 -220C423 -220 513 -125 513 0V500H418V430C398 470 343 510 268 510C150 510 46 430 46 255C46 80 153 0 268 0C343 0 393 40 418 80V10C418 -95 358 -140 273 -140H263C195 -140 141 -115 131 -65H36C46 -155 128 -220 268 -220ZM141 255C141 380 206 430 277 430H285C354 430 418 365 418 255C418 145 349 80 280 80H272C201 80 141 130 141 255Z", transform: "translate(220.29,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M75 0H170V280C170 375 235 430 306 430H314C385 430 415 385 415 315V0H510V335C510 440 445 510 330 510C250 510 200 475 170 430V500H75Z", transform: "translate(260.75,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M210 -10C290 -10 350 35 370 80C370 75 370 25 375 0H465C460 35 460 80 460 110V320C460 422 390 510 257 510C144 510 61 447 55 355H150C156 405 201 430 253 430H261C325 430 365 390 365 320V304L227 293C146 286 45 252 45 138C45 53 115 -10 210 -10ZM140 142C140 188 182 216 240 221L365 231V180C365 120 290 70 229 70H221C174 70 140 101 140 142Z", transform: "translate(300.65,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M75 0H170V700H75Z", transform: "translate(337.05,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx35("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(353.50,74.50) scale(0.070000,-0.070000)" })
+          /* @__PURE__ */ jsx36("path", { d: "M192 0H288V700H213L33 525V405L192 559Z", transform: "translate(105.00,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M50 0H523V90H162L349 263C430 338 513 412 513 523C513 643 412 710 292 710C158 710 58 625 57 491H157C157 568 210 625 287 625H297C363 625 415 584 415 518C415 432 338 380 276 321L50 106Z", transform: "translate(130.90,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(170.38,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M75 0H170V500H75ZM70 590H175V700H70Z", transform: "translate(203.84,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M268 -220C423 -220 513 -125 513 0V500H418V430C398 470 343 510 268 510C150 510 46 430 46 255C46 80 153 0 268 0C343 0 393 40 418 80V10C418 -95 358 -140 273 -140H263C195 -140 141 -115 131 -65H36C46 -155 128 -220 268 -220ZM141 255C141 380 206 430 277 430H285C354 430 418 365 418 255C418 145 349 80 280 80H272C201 80 141 130 141 255Z", transform: "translate(220.29,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M75 0H170V280C170 375 235 430 306 430H314C385 430 415 385 415 315V0H510V335C510 440 445 510 330 510C250 510 200 475 170 430V500H75Z", transform: "translate(260.75,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M210 -10C290 -10 350 35 370 80C370 75 370 25 375 0H465C460 35 460 80 460 110V320C460 422 390 510 257 510C144 510 61 447 55 355H150C156 405 201 430 253 430H261C325 430 365 390 365 320V304L227 293C146 286 45 252 45 138C45 53 115 -10 210 -10ZM140 142C140 188 182 216 240 221L365 231V180C365 120 290 70 229 70H221C174 70 140 101 140 142Z", transform: "translate(300.65,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M75 0H170V700H75Z", transform: "translate(337.05,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx36("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(353.50,74.50) scale(0.070000,-0.070000)" })
         ] })
       ]
     }
@@ -1577,19 +1605,19 @@ function Wordmark({ height = 36, className, sprite, style, ...rest }) {
 }
 
 // src/design-system/components/Breadcrumb.tsx
-import { jsx as jsx36, jsxs as jsxs23 } from "react/jsx-runtime";
+import { jsx as jsx37, jsxs as jsxs23 } from "react/jsx-runtime";
 function Breadcrumb({ items, renderLink, className, style }) {
-  return /* @__PURE__ */ jsx36(
+  return /* @__PURE__ */ jsx37(
     "nav",
     {
       "aria-label": "Breadcrumb",
       className: ["ds-Breadcrumb", className].filter(Boolean).join(" "),
       style,
-      children: /* @__PURE__ */ jsx36("ol", { className: "ds-BreadcrumbList", children: items.map((item, i) => {
+      children: /* @__PURE__ */ jsx37("ol", { className: "ds-BreadcrumbList", children: items.map((item, i) => {
         const isLast = i === items.length - 1;
         return /* @__PURE__ */ jsxs23("li", { className: "ds-BreadcrumbItem", children: [
-          item.href && !isLast ? renderLink ? /* @__PURE__ */ jsx36("span", { className: "ds-BreadcrumbLink", children: renderLink(item.href, item.label) }) : /* @__PURE__ */ jsx36("a", { className: "ds-BreadcrumbLink", href: item.href, children: item.label }) : /* @__PURE__ */ jsx36("span", { className: "ds-BreadcrumbCurrent", "aria-current": isLast ? "page" : void 0, children: item.label }),
-          !isLast && /* @__PURE__ */ jsx36("span", { className: "ds-BreadcrumbSeparator", "aria-hidden": "true", children: "/" })
+          item.href && !isLast ? renderLink ? /* @__PURE__ */ jsx37("span", { className: "ds-BreadcrumbLink", children: renderLink(item.href, item.label) }) : /* @__PURE__ */ jsx37("a", { className: "ds-BreadcrumbLink", href: item.href, children: item.label }) : /* @__PURE__ */ jsx37("span", { className: "ds-BreadcrumbCurrent", "aria-current": isLast ? "page" : void 0, children: item.label }),
+          !isLast && /* @__PURE__ */ jsx37("span", { className: "ds-BreadcrumbSeparator", "aria-hidden": "true", children: "/" })
         ] }, i);
       }) })
     }
@@ -1679,7 +1707,7 @@ function detectABTestGroups(ranges) {
 }
 
 // src/competitor/ClaimTimeline.tsx
-import { Fragment as Fragment6, jsx as jsx37, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
 function ClaimTimeline({
   claimRanges,
   loading = false,
@@ -1695,10 +1723,10 @@ function ClaimTimeline({
     ] });
   }
   if (error) {
-    return /* @__PURE__ */ jsx37(Text, { size: "sm", className: "text-destructive", children: "Konnte Positionierung nicht laden." });
+    return /* @__PURE__ */ jsx38(Text, { size: "sm", className: "text-destructive", children: "Konnte Positionierung nicht laden." });
   }
   if (claimRanges.length === 0) {
-    return /* @__PURE__ */ jsx37(Text, { size: "sm", tone: "muted", children: "Keine Claims gefunden." });
+    return /* @__PURE__ */ jsx38(Text, { size: "sm", tone: "muted", children: "Keine Claims gefunden." });
   }
   const ranges = [...claimRanges].sort(
     (a, b) => new Date(a.from).getTime() - new Date(b.from).getTime()
@@ -1755,20 +1783,20 @@ function ClaimTimeline({
   };
   const timelineEntries = detectABTestGroups(ranges);
   const entryMinHeight = (entry) => entry.kind === "abtest" ? Math.max(48, 28 + entry.variants.length * 24) : 48;
-  const renderMobile = () => /* @__PURE__ */ jsx37("div", { className: "ds-claim-timeline-mobile flex flex-col gap-3", children: timelineEntries.map((entry, idx) => {
+  const renderMobile = () => /* @__PURE__ */ jsx38("div", { className: "ds-claim-timeline-mobile flex flex-col gap-3", children: timelineEntries.map((entry, idx) => {
     if (entry.kind === "normal") {
       const r = entry.range;
       const left2 = percent(r.from);
       const rightPt2 = r.to ? percent(r.to) : 100;
       const width2 = Math.max(2, rightPt2 - left2);
       return /* @__PURE__ */ jsxs24("div", { className: "border-b border-border/40 pb-3 last:border-b-0 last:pb-0", children: [
-        /* @__PURE__ */ jsx37("div", { className: "text-sm font-medium mb-1", children: r.claim }),
+        /* @__PURE__ */ jsx38("div", { className: "text-sm font-medium mb-1", children: r.claim }),
         /* @__PURE__ */ jsxs24("div", { className: "text-xs text-muted-foreground mb-2", children: [
           fmtShort(new Date(r.from)),
           " \u2013 ",
           r.to ? fmtShort(new Date(r.to)) : "today"
         ] }),
-        /* @__PURE__ */ jsx37("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx37(
+        /* @__PURE__ */ jsx38("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx38(
           "div",
           {
             className: "absolute top-0 bottom-0 rounded border",
@@ -1786,23 +1814,23 @@ function ClaimTimeline({
         className: "border-b border-border/40 pb-3 last:border-b-0 last:pb-0 border-l-2 pl-2",
         style: { borderLeftColor: "hsl(var(--accent) / 0.5)" },
         children: [
-          /* @__PURE__ */ jsx37(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
+          /* @__PURE__ */ jsx38(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
           entry.variants.map((v, vi) => /* @__PURE__ */ jsxs24("div", { className: "flex items-center gap-1.5 mt-1", children: [
-            /* @__PURE__ */ jsx37(
+            /* @__PURE__ */ jsx38(
               "span",
               {
                 className: "inline-block w-2.5 h-2.5 rounded-full flex-shrink-0",
                 style: { background: AB_TEST_COLORS[vi % AB_TEST_COLORS.length].border }
               }
             ),
-            /* @__PURE__ */ jsx37("span", { className: "text-xs text-muted-foreground", children: v.displayClaim })
+            /* @__PURE__ */ jsx38("span", { className: "text-xs text-muted-foreground", children: v.displayClaim })
           ] }, v.key)),
           /* @__PURE__ */ jsxs24("div", { className: "text-xs text-muted-foreground mt-1 mb-2", children: [
             fmtShort(new Date(entry.from)),
             " \u2013 ",
             entry.to ? fmtShort(new Date(entry.to)) : "today"
           ] }),
-          /* @__PURE__ */ jsx37("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx37(
+          /* @__PURE__ */ jsx38("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx38(
             "div",
             {
               className: "absolute top-0 bottom-0 rounded border",
@@ -1820,9 +1848,9 @@ function ClaimTimeline({
     );
   }) });
   const lineColor = "hsl(var(--foreground) / 0.2)";
-  const renderDesktop = () => /* @__PURE__ */ jsx37("div", { className: "ds-claim-timeline-desktop", style: { "--tl-line": lineColor }, children: /* @__PURE__ */ jsxs24("div", { className: "grid grid-cols-[1fr_4fr] gap-x-4 items-center", children: [
-    /* @__PURE__ */ jsx37("div", {}),
-    /* @__PURE__ */ jsx37("div", { className: "relative h-6 text-xs text-muted-foreground", children: ticks.map((t, i) => /* @__PURE__ */ jsx37(
+  const renderDesktop = () => /* @__PURE__ */ jsx38("div", { className: "ds-claim-timeline-desktop", style: { "--tl-line": lineColor }, children: /* @__PURE__ */ jsxs24("div", { className: "grid grid-cols-[1fr_4fr] gap-x-4 items-center", children: [
+    /* @__PURE__ */ jsx38("div", {}),
+    /* @__PURE__ */ jsx38("div", { className: "relative h-6 text-xs text-muted-foreground", children: ticks.map((t, i) => /* @__PURE__ */ jsx38(
       "span",
       {
         className: "absolute -translate-x-1/2 top-0 whitespace-nowrap",
@@ -1831,15 +1859,15 @@ function ClaimTimeline({
       },
       i
     )) }),
-    /* @__PURE__ */ jsx37("div", { children: timelineEntries.map((entry, idx) => {
+    /* @__PURE__ */ jsx38("div", { children: timelineEntries.map((entry, idx) => {
       const isLast = idx === timelineEntries.length - 1;
       const rowBorder = isLast ? void 0 : "1px solid var(--tl-line)";
-      return entry.kind === "normal" ? /* @__PURE__ */ jsx37(
+      return entry.kind === "normal" ? /* @__PURE__ */ jsx38(
         "div",
         {
           className: "flex items-center h-12 pr-2",
           style: { borderBottom: rowBorder },
-          children: /* @__PURE__ */ jsx37("div", { className: "text-sm font-medium truncate", children: entry.range.claim })
+          children: /* @__PURE__ */ jsx38("div", { className: "text-sm font-medium truncate", children: entry.range.claim })
         },
         `left-${idx}`
       ) : /* @__PURE__ */ jsxs24(
@@ -1853,9 +1881,9 @@ function ClaimTimeline({
             minHeight: entryMinHeight(entry)
           },
           children: [
-            /* @__PURE__ */ jsx37(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
+            /* @__PURE__ */ jsx38(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
             entry.variants.map((v, vi) => /* @__PURE__ */ jsxs24("div", { className: "flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsx37(
+              /* @__PURE__ */ jsx38(
                 "span",
                 {
                   className: "inline-block w-2.5 h-2.5 rounded-full flex-shrink-0",
@@ -1865,7 +1893,7 @@ function ClaimTimeline({
                   }
                 }
               ),
-              /* @__PURE__ */ jsx37("span", { className: "text-xs truncate text-muted-foreground", children: v.displayClaim })
+              /* @__PURE__ */ jsx38("span", { className: "text-xs truncate text-muted-foreground", children: v.displayClaim })
             ] }, v.key))
           ]
         },
@@ -1873,7 +1901,7 @@ function ClaimTimeline({
       );
     }) }),
     /* @__PURE__ */ jsxs24("div", { className: "relative", children: [
-      /* @__PURE__ */ jsx37("div", { className: "absolute inset-0 pointer-events-none", children: ticks.map((t, i) => /* @__PURE__ */ jsx37(
+      /* @__PURE__ */ jsx38("div", { className: "absolute inset-0 pointer-events-none", children: ticks.map((t, i) => /* @__PURE__ */ jsx38(
         "div",
         {
           className: "absolute top-0 bottom-0",
@@ -1885,7 +1913,7 @@ function ClaimTimeline({
         },
         i
       )) }),
-      /* @__PURE__ */ jsx37("div", { children: timelineEntries.map((entry, idx) => {
+      /* @__PURE__ */ jsx38("div", { children: timelineEntries.map((entry, idx) => {
         const isLast = idx === timelineEntries.length - 1;
         const rowBorder = isLast ? void 0 : "1px solid var(--tl-line)";
         return entry.kind === "normal" ? (() => {
@@ -1893,12 +1921,12 @@ function ClaimTimeline({
           const left = percent(r.from);
           const rightPoint = r.to ? percent(r.to) : 100;
           const width = Math.max(1, rightPoint - left);
-          return /* @__PURE__ */ jsx37(
+          return /* @__PURE__ */ jsx38(
             "div",
             {
               className: "flex items-center h-12",
               style: { borderBottom: rowBorder },
-              children: /* @__PURE__ */ jsx37("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx37(
+              children: /* @__PURE__ */ jsx38("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx38(
                 "div",
                 {
                   className: "absolute top-1 bottom-1 rounded border",
@@ -1918,12 +1946,12 @@ function ClaimTimeline({
           const rightPoint = entry.to ? percent(entry.to) : 100;
           const width = Math.max(1, rightPoint - left);
           const variantLabels = entry.variants.map((v) => v.displayClaim).join(" / ");
-          return /* @__PURE__ */ jsx37(
+          return /* @__PURE__ */ jsx38(
             "div",
             {
               className: "flex items-center",
               style: { borderBottom: rowBorder, minHeight: entryMinHeight(entry) },
-              children: /* @__PURE__ */ jsx37("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx37(
+              children: /* @__PURE__ */ jsx38("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx38(
                 "div",
                 {
                   className: "absolute top-1 bottom-1 rounded border",
@@ -1964,6 +1992,7 @@ export {
   DevButton,
   Dialog,
   Heading,
+  InlineEditButton,
   Input,
   LOGO_VARIANTS,
   Logo,

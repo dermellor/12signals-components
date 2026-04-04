@@ -355,6 +355,9 @@ type ActionIconButtonProps = {
 } & Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children">;
 declare function ActionIconButton({ action, loading, selected, "aria-label": ariaLabel, title, ...rest }: ActionIconButtonProps): react_jsx_runtime.JSX.Element;
 
+type InlineEditButtonProps = Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children">;
+declare function InlineEditButton({ "aria-label": ariaLabel, title, ...rest }: InlineEditButtonProps): react_jsx_runtime.JSX.Element;
+
 type NavigationItem = {
     value: string;
     label: string;
@@ -542,4 +545,4 @@ type Props = {
 };
 declare function ClaimTimeline({ claimRanges, loading, error, locale, tickInterval, loadingIcon, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, Card, type ClaimRange, ClaimTimeline, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, Input, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, Wordmark, claimCompareKey, detectABTestGroups, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, Card, type ClaimRange, ClaimTimeline, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, InlineEditButton, Input, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, Wordmark, claimCompareKey, detectABTestGroups, tokens, useToast };
