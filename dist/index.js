@@ -1976,6 +1976,458 @@ function ClaimTimeline({
     renderDesktop()
   ] });
 }
+
+// src/competitor/kpi-utils.ts
+function formatKpiValue(value, unit, locale = "de-DE") {
+  const fmt = (opts) => new Intl.NumberFormat(locale, opts).format(value);
+  switch (unit) {
+    case "USD":
+      return fmt({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    case "EUR":
+      return fmt({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    case "USD_millions":
+      return `$${fmt({ maximumFractionDigits: 1 })} Mio.`;
+    case "EUR_millions":
+      return `\u20AC${fmt({ maximumFractionDigits: 1 })} Mio.`;
+    case "USD_billions":
+      return `$${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+    case "EUR_billions":
+      return `\u20AC${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+    case "CHF":
+      return `CHF ${fmt({ maximumFractionDigits: 0 })}`;
+    case "CHF_millions":
+      return `CHF ${fmt({ maximumFractionDigits: 1 })} Mio.`;
+    case "CHF_billions":
+      return `CHF ${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+    case "percent":
+      return `${fmt({ maximumFractionDigits: 1 })}%`;
+    case "count":
+      if (value >= 1e9) {
+        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e9)} Mrd.`;
+      }
+      if (value >= 1e6) {
+        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e6)} Mio.`;
+      }
+      if (value >= 1e4) {
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(Math.round(value / 1e3) * 1e3);
+      }
+      return fmt({ maximumFractionDigits: 0 });
+    case "ratio":
+    case "multiple":
+      return `${fmt({ maximumFractionDigits: 1 })}x`;
+    default:
+      return new Intl.NumberFormat(locale).format(value);
+  }
+}
+function qualifierPrefix(qualifier) {
+  switch (qualifier) {
+    case "approximately":
+      return "~";
+    case "over":
+      return ">";
+    case "under":
+      return "<";
+    default:
+      return "";
+  }
+}
+var REVENUE_KEYS = ["revenue_arr", "revenue_total", "revenue_mrr"];
+function getRevenue(snapshot) {
+  var _a;
+  if (!snapshot) return null;
+  for (const key of REVENUE_KEYS) {
+    if ((_a = snapshot.metrics[key]) == null ? void 0 : _a.length) return { entry: snapshot.metrics[key][0], key };
+  }
+  return null;
+}
+function getEmployees(snapshot) {
+  var _a, _b;
+  return (_b = (_a = snapshot == null ? void 0 : snapshot.metrics["employees"]) == null ? void 0 : _a[0]) != null ? _b : null;
+}
+function getCustomers(snapshot) {
+  var _a, _b;
+  if (!snapshot) return null;
+  const customers = (_a = snapshot.metrics["customers_total"]) == null ? void 0 : _a[0];
+  const users = (_b = snapshot.metrics["users_total"]) == null ? void 0 : _b[0];
+  if (users && customers) {
+    const ratio = users.value / customers.value;
+    if (users.value >= 1e6 || ratio >= 100) {
+      return { entry: users, key: "users_total" };
+    }
+  } else if (users && !customers) {
+    return { entry: users, key: "users_total" };
+  }
+  if (customers) return { entry: customers, key: "customers_total" };
+  return null;
+}
+function getRevenueGrowthYoY(snapshot) {
+  var _a, _b;
+  return (_b = (_a = snapshot == null ? void 0 : snapshot.metrics["revenue_growth_yoy"]) == null ? void 0 : _a[0]) != null ? _b : null;
+}
+var KPI_CATEGORIES = {
+  revenue_arr: { category: "revenue", label: "ARR" },
+  revenue_mrr: { category: "revenue", label: "MRR" },
+  revenue_total: { category: "revenue", label: "Umsatz gesamt" },
+  revenue_growth_yoy: { category: "revenue", label: "Umsatzwachstum YoY" },
+  valuation: { category: "funding", label: "Bewertung" },
+  funding_total: { category: "funding", label: "Funding gesamt" },
+  funding_round: { category: "funding", label: "Letzte Runde" },
+  funding_stage: { category: "funding", label: "Stage" },
+  ebitda: { category: "profitability", label: "EBITDA" },
+  net_income: { category: "profitability", label: "Nettoergebnis" },
+  gross_margin: { category: "profitability", label: "Bruttomarge" },
+  burn_rate: { category: "profitability", label: "Burn Rate" },
+  customers_total: { category: "customers", label: "Kunden gesamt" },
+  customers_enterprise: { category: "customers", label: "Enterprise-Kunden" },
+  nrr: { category: "customers", label: "NRR" },
+  churn_rate: { category: "customers", label: "Churn Rate" },
+  market_share: { category: "customers", label: "Marktanteil" },
+  nps: { category: "customers", label: "NPS" },
+  users_total: { category: "users", label: "User gesamt" },
+  users_paying: { category: "users", label: "Zahlende User" },
+  gmv: { category: "users", label: "GMV" },
+  employees: { category: "team", label: "Mitarbeiter" }
+};
+var CATEGORY_LABELS = {
+  revenue: "Revenue",
+  funding: "Funding",
+  profitability: "Profitability",
+  customers: "Customers",
+  users: "Users",
+  team: "Team"
+};
+function getKpiSnapshot(competitor) {
+  const raw = competitor == null ? void 0 : competitor.kpi_snapshot;
+  if (!raw || typeof raw !== "object" || !("metrics" in raw)) return null;
+  return raw;
+}
+
+// src/competitor/job-functions.ts
+var UNKNOWN_JOB_FUNCTION_CODE = "__unknown";
+var JOB_FUNCTION_LABELS = {
+  acct: "Accounting / Auditing",
+  adm: "Administrative",
+  advr: "Advertising",
+  anls: "Analyst",
+  art: "Art / Creative",
+  bd: "Business Development",
+  cnsl: "Consulting",
+  cust: "Customer Service",
+  dist: "Distribution",
+  dsgn: "Design",
+  edu: "Education",
+  eng: "Engineering",
+  fin: "Finance",
+  genb: "General Business",
+  hcpr: "HealthCare Provider",
+  hr: "Human Resources",
+  it: "Information Technology",
+  lgl: "Legal",
+  mgmt: "Management",
+  mnfc: "Manufacturing",
+  mrkt: "Marketing",
+  othr: "Other",
+  pr: "Public Relations",
+  prch: "Purchasing",
+  prdm: "Product Management",
+  prjm: "Project Management",
+  prod: "Production",
+  qa: "Quality Assurance",
+  rsch: "Research",
+  sale: "Sales",
+  sci: "Science",
+  stra: "Strategy / Planning",
+  supl: "Supply Chain",
+  trng: "Training",
+  wrt: "Writing / Editing",
+  [UNKNOWN_JOB_FUNCTION_CODE]: "Unknown"
+};
+var JOB_FUNCTION_VARIANT_MAP = {
+  mgmt: "primary",
+  stra: "primary",
+  genb: "primary",
+  bd: "primary",
+  cnsl: "primary",
+  prjm: "primary",
+  prdm: "primary",
+  sale: "accent",
+  mrkt: "accent",
+  advr: "accent",
+  pr: "accent",
+  art: "accent",
+  dsgn: "accent",
+  wrt: "accent",
+  anls: "success",
+  eng: "success",
+  it: "success",
+  qa: "success",
+  sci: "success",
+  rsch: "success",
+  supl: "warning",
+  mnfc: "warning",
+  prod: "warning",
+  dist: "warning",
+  prch: "warning",
+  hr: "secondary",
+  adm: "secondary",
+  cust: "secondary",
+  edu: "secondary",
+  trng: "secondary",
+  hcpr: "secondary",
+  acct: "neutral",
+  fin: "neutral",
+  lgl: "neutral",
+  othr: "neutral",
+  [UNKNOWN_JOB_FUNCTION_CODE]: "neutral"
+};
+
+// src/competitor/KpiCard.tsx
+import { Fragment as Fragment7, jsx as jsx39, jsxs as jsxs25 } from "react/jsx-runtime";
+function KpiCard({
+  icon: Icon,
+  label,
+  entry,
+  locale = "de-DE",
+  externalLinkIcon: ExternalLinkIcon
+}) {
+  var _a;
+  const formatted = entry ? `${qualifierPrefix(entry.qualifier)}${formatKpiValue(entry.value, entry.unit, locale)}` : null;
+  return /* @__PURE__ */ jsx39(Card, { children: /* @__PURE__ */ jsxs25(Card.Content, { children: [
+    /* @__PURE__ */ jsxs25("div", { className: "flex items-center gap-sm mb-sm", children: [
+      /* @__PURE__ */ jsx39(Icon, { className: "h-4 w-4 text-muted-foreground" }),
+      /* @__PURE__ */ jsx39(Text, { size: "sm", tone: "muted", children: label })
+    ] }),
+    entry && formatted ? /* @__PURE__ */ jsxs25(Fragment7, { children: [
+      entry.source_url ? /* @__PURE__ */ jsx39(Tooltip, { content: (_a = entry.source_title) != null ? _a : entry.source_url, children: /* @__PURE__ */ jsxs25(
+        "a",
+        {
+          href: entry.source_url,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          className: "inline-flex items-center gap-1 hover:underline",
+          children: [
+            /* @__PURE__ */ jsx39(Text, { size: "xl", weight: "bold", children: formatted }),
+            ExternalLinkIcon && /* @__PURE__ */ jsx39(ExternalLinkIcon, { className: "h-3.5 w-3.5 text-muted-foreground" })
+          ]
+        }
+      ) }) : /* @__PURE__ */ jsx39(Text, { size: "xl", weight: "bold", children: formatted }),
+      entry.period && /* @__PURE__ */ jsx39(Text, { size: "sm", tone: "muted", children: entry.period })
+    ] }) : /* @__PURE__ */ jsx39(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
+  ] }) });
+}
+
+// src/competitor/CompetitorInfoCard.tsx
+import { Fragment as Fragment8, jsx as jsx40, jsxs as jsxs26 } from "react/jsx-runtime";
+function ensureAbsolute(url) {
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`;
+}
+function cleanDomain(url) {
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+}
+function CompetitorInfoCard({
+  name,
+  website,
+  linkedinUrl,
+  description,
+  currentClaim,
+  externalLinkIcon: ExternalLinkIcon,
+  quoteIcon: QuoteIcon,
+  linkedinIcon: LinkedinIcon,
+  sidebar
+}) {
+  return /* @__PURE__ */ jsx40(Card, { children: /* @__PURE__ */ jsx40(Card.Content, { children: /* @__PURE__ */ jsxs26("div", { className: "flex flex-col lg:flex-row lg:gap-lg", children: [
+    /* @__PURE__ */ jsxs26("div", { className: "flex-1 min-w-0", children: [
+      /* @__PURE__ */ jsx40(Heading, { level: 2, children: name }),
+      /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-md text-sm", children: [
+        website ? /* @__PURE__ */ jsxs26(
+          "a",
+          {
+            href: ensureAbsolute(website),
+            target: "_blank",
+            rel: "noreferrer",
+            className: "text-primary flex items-center gap-1",
+            children: [
+              cleanDomain(website),
+              ExternalLinkIcon && /* @__PURE__ */ jsx40(ExternalLinkIcon, { className: "h-3 w-3" })
+            ]
+          }
+        ) : /* @__PURE__ */ jsx40("span", { className: "text-muted-foreground", children: "No website listed" }),
+        linkedinUrl && /* @__PURE__ */ jsxs26(Fragment8, { children: [
+          /* @__PURE__ */ jsx40("span", { className: "text-muted-foreground", children: "\xB7" }),
+          /* @__PURE__ */ jsxs26(
+            "a",
+            {
+              href: linkedinUrl,
+              target: "_blank",
+              rel: "noreferrer",
+              className: "text-primary flex items-center gap-1",
+              children: [
+                "LinkedIn",
+                ExternalLinkIcon && /* @__PURE__ */ jsx40(ExternalLinkIcon, { className: "h-3 w-3" })
+              ]
+            }
+          )
+        ] })
+      ] }),
+      description && /* @__PURE__ */ jsx40(Text, { size: "sm", tone: "muted", className: "mt-sm", children: description })
+    ] }),
+    (currentClaim || sidebar) && /* @__PURE__ */ jsxs26(Fragment8, { children: [
+      /* @__PURE__ */ jsx40("div", { className: "my-md lg:hidden", style: { height: 1, background: "var(--border)" } }),
+      /* @__PURE__ */ jsx40("div", { className: "hidden lg:block w-px bg-border shrink-0" }),
+      /* @__PURE__ */ jsxs26("div", { className: "lg:w-64 shrink-0 flex flex-col gap-md", children: [
+        currentClaim && /* @__PURE__ */ jsxs26("div", { children: [
+          /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-sm mb-xs", children: [
+            QuoteIcon && /* @__PURE__ */ jsx40(QuoteIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx40(Text, { size: "sm", tone: "muted", children: "Positioning" })
+          ] }),
+          /* @__PURE__ */ jsxs26(Text, { size: "sm", weight: "medium", className: "line-clamp-2", children: [
+            "\u201C",
+            currentClaim,
+            "\u201D"
+          ] })
+        ] }),
+        sidebar
+      ] })
+    ] })
+  ] }) }) });
+}
+
+// src/competitor/HiringOverview.tsx
+import { Fragment as Fragment9, jsx as jsx41, jsxs as jsxs27 } from "react/jsx-runtime";
+var VARIANT_CATEGORY_LABELS = {
+  primary: "Management & Strategy",
+  accent: "Marketing & Sales",
+  success: "Engineering & R&D",
+  warning: "Production & Logistics",
+  secondary: "HR & Administration",
+  neutral: "Other"
+};
+var VARIANT_BG_CLASSES = {
+  primary: "ds-bg-primary",
+  accent: "ds-bg-accent",
+  success: "ds-bg-success",
+  warning: "ds-bg-warning",
+  secondary: "ds-bg-secondary",
+  neutral: "ds-bg-neutral"
+};
+var COMPARE_WEEKS = 4;
+function countActiveAt(jobs, date) {
+  const iso = date.toISOString();
+  return jobs.filter((j) => {
+    if (!j.first_detected || j.first_detected > iso) return false;
+    if (j.ended && j.ended < iso) return false;
+    return true;
+  }).length;
+}
+function buildCategorySegments(jobs) {
+  var _a, _b, _c, _d;
+  const groups = /* @__PURE__ */ new Map();
+  for (const job of jobs) {
+    const code = (_a = job.linkedin_job_function_code) != null ? _a : "__unknown";
+    const variant = (_b = JOB_FUNCTION_VARIANT_MAP[code]) != null ? _b : "neutral";
+    const fnLabel = (_c = JOB_FUNCTION_LABELS[code]) != null ? _c : code;
+    let group = groups.get(variant);
+    if (!group) {
+      group = { total: 0, byFunction: /* @__PURE__ */ new Map() };
+      groups.set(variant, group);
+    }
+    group.total++;
+    group.byFunction.set(fnLabel, ((_d = group.byFunction.get(fnLabel)) != null ? _d : 0) + 1);
+  }
+  const total = jobs.length;
+  return [...groups.entries()].sort((a, b) => b[1].total - a[1].total).map(([variant, { total: count, byFunction }]) => ({
+    variant,
+    label: VARIANT_CATEGORY_LABELS[variant],
+    count,
+    percent: count / total * 100,
+    functions: [...byFunction.entries()].sort((a, b) => b[1] - a[1]).map(([label, c]) => ({ label, count: c }))
+  }));
+}
+function HiringOverview({
+  segments: segmentsProp,
+  activeJobs,
+  activeJobCount,
+  jobLifecycle,
+  employees,
+  employeesIcon: EmployeesIcon,
+  rolesIcon: RolesIcon,
+  trendUpIcon: TrendUpIcon,
+  trendDownIcon: TrendDownIcon,
+  unchangedIcon: UnchangedIcon
+}) {
+  var _a;
+  const segments = segmentsProp != null ? segmentsProp : activeJobs ? buildCategorySegments(activeJobs) : [];
+  const currentCount = (_a = activeJobCount != null ? activeJobCount : activeJobs == null ? void 0 : activeJobs.length) != null ? _a : 0;
+  const compareDate = /* @__PURE__ */ new Date();
+  compareDate.setDate(compareDate.getDate() - COMPARE_WEEKS * 7);
+  const previousCount = jobLifecycle ? countActiveAt(jobLifecycle, compareDate) : 0;
+  const diff = jobLifecycle ? currentCount - previousCount : 0;
+  const hasTrend = !!jobLifecycle;
+  const hasJobs = segments.length > 0;
+  return /* @__PURE__ */ jsxs27(Card, { children: [
+    /* @__PURE__ */ jsx41(Card.Header, { children: /* @__PURE__ */ jsx41(Card.Title, { as: "h2", children: "Team & Hiring" }) }),
+    /* @__PURE__ */ jsx41(Card.Content, { children: /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-md", children: [
+      /* @__PURE__ */ jsxs27("div", { className: "flex gap-xl", children: [
+        /* @__PURE__ */ jsxs27("div", { children: [
+          /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-sm mb-xs", children: [
+            EmployeesIcon && /* @__PURE__ */ jsx41(EmployeesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Employees" })
+          ] }),
+          employees ? /* @__PURE__ */ jsxs27(Fragment9, { children: [
+            /* @__PURE__ */ jsxs27(Text, { size: "xl", weight: "bold", children: [
+              qualifierPrefix(employees.qualifier),
+              formatKpiValue(employees.value, employees.unit)
+            ] }),
+            employees.period && /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: employees.period })
+          ] }) : /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
+        ] }),
+        /* @__PURE__ */ jsxs27("div", { children: [
+          /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-sm mb-xs", children: [
+            RolesIcon && /* @__PURE__ */ jsx41(RolesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Open Roles" })
+          ] }),
+          /* @__PURE__ */ jsxs27("div", { className: "flex items-baseline gap-sm", children: [
+            /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", children: currentCount }),
+            hasTrend && /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-1", children: [
+              diff > 0 && TrendUpIcon ? /* @__PURE__ */ jsx41(TrendUpIcon, { className: "h-3.5 w-3.5 text-success" }) : diff < 0 && TrendDownIcon ? /* @__PURE__ */ jsx41(TrendDownIcon, { className: "h-3.5 w-3.5 text-destructive" }) : UnchangedIcon ? /* @__PURE__ */ jsx41(UnchangedIcon, { className: "h-3.5 w-3.5 text-muted-foreground" }) : null,
+              /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: diff === 0 ? "unchanged" : `${diff > 0 ? "+" : ""}${diff} vs. ${COMPARE_WEEKS}w ago` })
+            ] })
+          ] })
+        ] })
+      ] }),
+      hasJobs && /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-sm", children: [
+        /* @__PURE__ */ jsx41(Text, { size: "xs", tone: "muted", weight: "medium", children: "Open roles by function" }),
+        /* @__PURE__ */ jsx41("div", { className: "flex h-3 w-full rounded-full overflow-hidden", children: segments.map((seg) => /* @__PURE__ */ jsx41(
+          Tooltip,
+          {
+            className: `h-full block ${VARIANT_BG_CLASSES[seg.variant]}`,
+            style: { width: `${seg.percent}%` },
+            multiline: true,
+            content: /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-0.5", children: [
+              /* @__PURE__ */ jsx41("span", { className: "font-semibold", children: seg.label }),
+              seg.functions.map((fn) => /* @__PURE__ */ jsxs27("span", { children: [
+                fn.label,
+                ": ",
+                fn.count
+              ] }, fn.label))
+            ] }),
+            children: /* @__PURE__ */ jsx41("div", { className: "h-full w-full cursor-default" })
+          },
+          seg.variant
+        )) }),
+        /* @__PURE__ */ jsx41("div", { className: "flex flex-wrap gap-x-md gap-y-xs", children: segments.map((seg) => /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-xs", children: [
+          /* @__PURE__ */ jsx41(
+            "span",
+            {
+              className: `inline-block h-2.5 w-2.5 rounded-full shrink-0 ${VARIANT_BG_CLASSES[seg.variant]}`
+            }
+          ),
+          /* @__PURE__ */ jsx41(Text, { size: "xs", tone: "muted", children: seg.label })
+        ] }, seg.variant)) })
+      ] })
+    ] }) })
+  ] });
+}
 export {
   AB_TEST_COLORS,
   ActionIconButton,
@@ -1985,15 +2437,22 @@ export {
   BarChart,
   Breadcrumb,
   Button,
+  CATEGORY_LABELS,
   Card,
   ClaimTimeline,
+  CompetitorInfoCard,
   DateTimeInput,
   DateTimeModalInput,
   DevButton,
   Dialog,
   Heading,
+  HiringOverview,
   InlineEditButton,
   Input,
+  JOB_FUNCTION_LABELS,
+  JOB_FUNCTION_VARIANT_MAP,
+  KPI_CATEGORIES,
+  KpiCard,
   LOGO_VARIANTS,
   Logo,
   Modal,
@@ -2027,9 +2486,18 @@ export {
   TextField,
   ToastProvider,
   Tooltip,
+  UNKNOWN_JOB_FUNCTION_CODE,
   Wordmark,
+  buildCategorySegments,
   claimCompareKey,
   detectABTestGroups,
+  formatKpiValue,
+  getCustomers,
+  getEmployees,
+  getKpiSnapshot,
+  getRevenue,
+  getRevenueGrowthYoY,
+  qualifierPrefix,
   tokens,
   useToast
 };

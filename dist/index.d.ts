@@ -532,7 +532,7 @@ declare const claimCompareKey: (txt: string) => string;
  */
 declare function detectABTestGroups(ranges: ClaimRange[]): TimelineEntry[];
 
-type Props = {
+type Props$3 = {
     claimRanges: ClaimRange[];
     loading?: boolean;
     error?: boolean;
@@ -543,6 +543,143 @@ type Props = {
     /** Optional loading spinner element (e.g. lucide Loader2) */
     loadingIcon?: React__default.ReactNode;
 };
-declare function ClaimTimeline({ claimRanges, loading, error, locale, tickInterval, loadingIcon, }: Props): react_jsx_runtime.JSX.Element;
+declare function ClaimTimeline({ claimRanges, loading, error, locale, tickInterval, loadingIcon, }: Props$3): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, Card, type ClaimRange, ClaimTimeline, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, InlineEditButton, Input, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, Wordmark, claimCompareKey, detectABTestGroups, tokens, useToast };
+type KpiEntry = {
+    value: number;
+    unit: string;
+    period?: string;
+    qualifier?: "exact" | "approximately" | "over" | "under" | "projected";
+    reported_at?: string;
+    context?: string;
+    source_url?: string;
+    source_title?: string;
+    source_authority?: "first_party" | "linkedin" | null;
+    outlier?: boolean;
+};
+type KpiSnapshot = {
+    metrics: Record<string, KpiEntry[]>;
+};
+declare function formatKpiValue(value: number, unit: string, locale?: string): string;
+declare function qualifierPrefix(qualifier?: string): string;
+declare function getRevenue(snapshot: KpiSnapshot | null): {
+    entry: KpiEntry;
+    key: string;
+} | null;
+declare function getEmployees(snapshot: KpiSnapshot | null): KpiEntry | null;
+/**
+ * Returns the most relevant audience metric.
+ * For B2C products (high user counts or extreme user/customer ratio),
+ * users_total is more meaningful than customers_total.
+ */
+declare function getCustomers(snapshot: KpiSnapshot | null): {
+    entry: KpiEntry;
+    key: string;
+} | null;
+declare function getRevenueGrowthYoY(snapshot: KpiSnapshot | null): KpiEntry | null;
+type KpiCategoryDef = {
+    category: string;
+    label: string;
+};
+declare const KPI_CATEGORIES: Record<string, KpiCategoryDef>;
+declare const CATEGORY_LABELS: Record<string, string>;
+declare function getKpiSnapshot(competitor: Record<string, unknown>): KpiSnapshot | null;
+
+type JobFunctionVariant = "primary" | "accent" | "success" | "warning" | "secondary" | "neutral";
+declare const UNKNOWN_JOB_FUNCTION_CODE = "__unknown";
+declare const JOB_FUNCTION_LABELS: Record<string, string>;
+declare const JOB_FUNCTION_VARIANT_MAP: Record<string, JobFunctionVariant>;
+
+type Props$2 = {
+    /** lucide-react icon component */
+    icon: React__default.ComponentType<{
+        className?: string;
+    }>;
+    label: string;
+    entry: KpiEntry | null;
+    /** Locale for number formatting (default "de-DE") */
+    locale?: string;
+    /** External link icon component (optional, for source links) */
+    externalLinkIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+};
+declare function KpiCard({ icon: Icon, label, entry, locale, externalLinkIcon: ExternalLinkIcon, }: Props$2): react_jsx_runtime.JSX.Element;
+
+type Props$1 = {
+    name: string;
+    website?: string | null;
+    linkedinUrl?: string | null;
+    description?: string | null;
+    currentClaim?: string | null;
+    /** Icon for external links (e.g. lucide ExternalLink) */
+    externalLinkIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for positioning quote (e.g. lucide MessageSquareQuote) */
+    quoteIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for LinkedIn (e.g. lucide Linkedin) */
+    linkedinIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Optional sidebar content (e.g. leadership section in app) */
+    sidebar?: React__default.ReactNode;
+};
+declare function CompetitorInfoCard({ name, website, linkedinUrl, description, currentClaim, externalLinkIcon: ExternalLinkIcon, quoteIcon: QuoteIcon, linkedinIcon: LinkedinIcon, sidebar, }: Props$1): react_jsx_runtime.JSX.Element;
+
+type FunctionBreakdown = {
+    label: string;
+    count: number;
+};
+type CategorySegment = {
+    variant: JobFunctionVariant;
+    label: string;
+    count: number;
+    percent: number;
+    functions: FunctionBreakdown[];
+};
+type ActiveJob = {
+    linkedin_job_function_code: string | null;
+};
+type JobLifecycleEntry = {
+    first_detected: string | null;
+    ended: string | null;
+};
+declare function buildCategorySegments(jobs: ActiveJob[]): CategorySegment[];
+type Props = {
+    /** Pre-computed segments, or pass activeJobs to compute automatically */
+    segments?: CategorySegment[];
+    /** Active jobs — used to compute segments if not provided */
+    activeJobs?: ActiveJob[];
+    /** Total active job count (overrides activeJobs.length) */
+    activeJobCount?: number | null;
+    /** Job lifecycle data for trend calculation */
+    jobLifecycle?: JobLifecycleEntry[];
+    /** Employee KPI entry */
+    employees: KpiEntry | null;
+    /** Icon for employees stat (e.g. lucide Building2) */
+    employeesIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for open roles stat (e.g. lucide Briefcase) */
+    rolesIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for trending up (e.g. lucide TrendingUp) */
+    trendUpIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for trending down (e.g. lucide TrendingDown) */
+    trendDownIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+    /** Icon for no change (e.g. lucide Minus) */
+    unchangedIcon?: React__default.ComponentType<{
+        className?: string;
+    }>;
+};
+declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, }: Props): react_jsx_runtime.JSX.Element;
+
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionVariant, type JobLifecycleEntry, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, Wordmark, buildCategorySegments, claimCompareKey, detectABTestGroups, formatKpiValue, getCustomers, getEmployees, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, tokens, useToast };

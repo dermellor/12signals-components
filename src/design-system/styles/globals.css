@@ -219,6 +219,37 @@
   outline-offset: 2px;
 }
 
+/* InlineEditButton — minimal pencil icon for inline field editing */
+.ds-InlineEditButton {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-neutral-fg);
+  opacity: 0.35;
+  transition: opacity 0.15s;
+  vertical-align: middle;
+  margin-left: 0.25em;
+  line-height: 1;
+}
+.ds-InlineEditButton svg {
+  width: 0.85em;
+  height: 0.85em;
+}
+.ds-InlineEditButton:hover {
+  opacity: 0.7;
+}
+.ds-InlineEditButton:focus-visible {
+  opacity: 0.7;
+  outline: 1.5px solid var(--color-primary-bg);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.ds-InlineEditButton:disabled {
+  opacity: 0.15;
+  cursor: not-allowed;
+}
+
 @keyframes ds-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -823,7 +854,7 @@
   border: 1px solid var(--color-border-default);
   background: hsl(var(--background));
   box-shadow: var(--shadow-sm);
-  z-index: 20;
+  z-index: 50;
   box-sizing: border-box;
 }
 .ds-SelectMenuContent[data-align="right"] { right: 0; }
@@ -1270,11 +1301,6 @@
 /* ClaimTimeline */
 .ds-claim-timeline-mobile,
 .ds-claim-timeline-desktop {
-  --tl-bar-1: var(--primary);
-  --tl-bar-2: var(--secondary);
-}
-.dark .ds-claim-timeline-mobile,
-.dark .ds-claim-timeline-desktop {
   --tl-bar-1: var(--success);
   --tl-bar-2: var(--secondary);
 }
