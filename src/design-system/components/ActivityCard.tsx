@@ -12,6 +12,7 @@ type ActivityCardProps = {
   categoryLabel?: string;
   categoryVariant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
   categoryTone?: "solid" | "subtle";
+  extraBadges?: React.ReactNode;
   meta?: string; // e.g., competitor or domain
   description?: React.ReactNode;
   timestamp?: string;
@@ -29,6 +30,7 @@ export function ActivityCard({
   categoryLabel,
   categoryVariant = "outline",
   categoryTone = "solid",
+  extraBadges,
   meta,
   description,
   timestamp,
@@ -75,6 +77,7 @@ export function ActivityCard({
             </div>
           )}
           {badge}
+          {extraBadges}
         </div>
 
         {/* Headline */}
