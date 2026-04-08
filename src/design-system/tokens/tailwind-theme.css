@@ -1,0 +1,11 @@
+/* Tailwind v4 theme integration for 12signals design tokens.
+   Import this in Tailwind v4 consumers to map design tokens to utility classes.
+   Tailwind v3 consumers use tailwind.config.ts instead — this file is harmless there. */
+
+@theme {
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+}

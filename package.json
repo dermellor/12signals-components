@@ -23,7 +23,8 @@
     "./tokens.json": "./src/design-system/tokens/tokens.json",
     "./reset.css": "./src/design-system/styles/reset.css",
     "./globals.css": "./src/design-system/styles/globals.css",
-    "./logos.svg": "./src/design-system/assets/logos.svg"
+    "./logos.svg": "./src/design-system/assets/logos.svg",
+    "./tailwind-theme.css": "./src/design-system/tokens/tailwind-theme.css"
   },
   "scripts": {
     "build": "tsup",

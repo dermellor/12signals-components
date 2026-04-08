@@ -56,7 +56,7 @@ declare function Modal({ open, onClose, title, children, footer }: ModalProps): 
 
 type BadgeProps<T extends keyof JSX.IntrinsicElements = "span"> = {
     as?: T;
-    variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
+    variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising" | "advertising-outline";
     tone?: "solid" | "subtle";
     size?: "sm" | "md";
 } & React$1.ComponentPropsWithoutRef<T>;
@@ -210,6 +210,7 @@ type ActivityCardProps = {
     categoryLabel?: string;
     categoryVariant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
     categoryTone?: "solid" | "subtle";
+    extraBadges?: React$1.ReactNode;
     meta?: string;
     description?: React$1.ReactNode;
     timestamp?: string;
@@ -217,7 +218,7 @@ type ActivityCardProps = {
     ariaLabel?: string;
     hover?: "none" | "glow";
 };
-declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, meta, description, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
+declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
 
 type RichTextProps = React$1.HTMLAttributes<HTMLDivElement> & {
     as?: keyof JSX.IntrinsicElements;
@@ -644,7 +645,7 @@ declare const getIsoWeekMeta: (date: Date) => {
     year: number;
 };
 declare function formatJobCount(value: number, locale?: string): string;
-declare function buildWeeklyJobData(jobs: JobLifecycleInput[], maxWeeks?: number): {
+declare function buildWeeklyJobData(jobs: JobLifecycleInput[], maxWeeks?: number, locale?: "en" | "de"): {
     weeklyJobData: WeeklyJobPoint[];
     jobFunctionGroups: JobFunctionMeta[];
 };
