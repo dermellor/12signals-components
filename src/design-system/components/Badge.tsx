@@ -2,7 +2,7 @@ import * as React from "react";
 
 type BadgeProps<T extends keyof JSX.IntrinsicElements = "span"> = {
   as?: T;
-  variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary";
+  variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
   tone?: "solid" | "subtle";
   size?: "sm" | "md";
 } & React.ComponentPropsWithoutRef<T>;

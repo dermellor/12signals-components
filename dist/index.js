@@ -588,7 +588,7 @@ function PageHeader({ title, subtitle, actions, ...rest }) {
 }
 
 // src/design-system/components/ActivityCard.tsx
-import { Fragment as Fragment2, jsx as jsx21, jsxs as jsxs11 } from "react/jsx-runtime";
+import { jsx as jsx21, jsxs as jsxs11 } from "react/jsx-runtime";
 function ActivityCard({
   icon,
   title,
@@ -607,41 +607,6 @@ function ActivityCard({
 }) {
   const badge = categoryLabel ? /* @__PURE__ */ jsx21(Badge, { variant: categoryVariant, tone: categoryTone, "aria-label": `Kategorie: ${categoryLabel}`, children: categoryLabel }) : null;
   const hasTitleContent = Boolean(titleNode || title);
-  const competitorNode = hasTitleContent ? /* @__PURE__ */ jsx21(
-    "div",
-    {
-      style: {
-        ...titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : void 0,
-        minWidth: 0,
-        overflowWrap: "anywhere",
-        wordBreak: "break-word"
-      },
-      children: headline ? titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: title }) : titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: title })
-    }
-  ) : null;
-  const headerRow = headline ? /* @__PURE__ */ jsxs11("div", { style: { marginBottom: "var(--space-xs)" }, className: "ds-ActivityCard-headline", children: [
-    /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }),
-    badge && /* @__PURE__ */ jsxs11(Fragment2, { children: [
-      " ",
-      badge
-    ] })
-  ] }) : /* @__PURE__ */ jsxs11(
-    "div",
-    {
-      style: {
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--space-sm)",
-        marginBottom: "var(--space-xs)",
-        flexWrap: "wrap"
-      },
-      children: [
-        competitorNode,
-        badge,
-        meta && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: meta })
-      ]
-    }
-  );
   return /* @__PURE__ */ jsxs11(
     Card,
     {
@@ -654,13 +619,28 @@ function ActivityCard({
       className: "ds-ActivityCard",
       children: [
         /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-layout", children: [
-          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-header", children: [
-            icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 4 }, children: icon }),
-            /* @__PURE__ */ jsx21("div", { style: { flex: 1, minWidth: 0 }, children: headerRow })
+          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-topline", children: [
+            icon && /* @__PURE__ */ jsx21("div", { "aria-hidden": true, style: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }, children: icon }),
+            hasTitleContent && /* @__PURE__ */ jsx21(
+              "div",
+              {
+                style: {
+                  minWidth: 0,
+                  overflowWrap: "anywhere",
+                  wordBreak: "break-word",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  ...titleNode ? { position: "relative", zIndex: href ? 2 : 0 } : void 0
+                },
+                children: titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: title })
+              }
+            ),
+            badge
           ] }),
+          headline && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-headline", children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }) }),
           /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-body", children: [
-            description && /* @__PURE__ */ jsx21("div", { style: { marginTop: "var(--space-xs)", marginBottom: "var(--space-sm)", overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
-            /* @__PURE__ */ jsx21("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between" }, children: timestamp && /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
+            description && /* @__PURE__ */ jsx21("div", { style: { overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
+            timestamp && /* @__PURE__ */ jsx21("div", { style: { marginTop: "var(--space-sm)" }, children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
           ] })
         ] }),
         href && /* @__PURE__ */ jsx21(
@@ -881,10 +861,12 @@ var ChartTooltip = ({
   payload,
   label,
   groups,
-  valueFormatter
+  valueFormatter,
+  tooltipFilter
 }) => {
   var _a, _b;
   if (!active || !(payload == null ? void 0 : payload.length)) return null;
+  if (tooltipFilter && !tooltipFilter(String(label))) return null;
   const detail = (_b = (_a = payload[0]) == null ? void 0 : _a.payload) == null ? void 0 : _b.detail;
   const entries = payload.filter((item) => typeof item.value === "number" && item.value > 0).map((item) => {
     var _a2, _b2;
@@ -907,13 +889,31 @@ var ChartTooltip = ({
     ] }, `${entry.id}-${entry.label}`)) })
   ] });
 };
+var FilteredCursor = (props) => {
+  var _a;
+  const { tooltipFilter, x, y, width, height, payload } = props;
+  const label = (_a = payload == null ? void 0 : payload[0]) == null ? void 0 : _a.payload;
+  const labelStr = label == null ? void 0 : label.label;
+  if (!labelStr || !tooltipFilter(labelStr)) return null;
+  return /* @__PURE__ */ jsx26(
+    "rect",
+    {
+      x,
+      y,
+      width,
+      height,
+      fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)"
+    }
+  );
+};
 function BarChart({
   data,
   ariaLabel,
   xAxisLabel,
   yAxisLabel,
   valueFormatter = (value) => `${value}`,
-  groups: providedGroups
+  groups: providedGroups,
+  tooltipFilter
 }) {
   const hasGroupedData = data.length > 0 && data.every(isGroupedPoint);
   const derivedGroupOrder = React13.useMemo(() => {
@@ -1036,8 +1036,8 @@ function BarChart({
         /* @__PURE__ */ jsx26(
           Tooltip2,
           {
-            cursor: { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" },
-            content: /* @__PURE__ */ jsx26(ChartTooltip, { groups: resolvedGroups, valueFormatter })
+            cursor: tooltipFilter ? /* @__PURE__ */ jsx26(FilteredCursor, { tooltipFilter }) : { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" },
+            content: /* @__PURE__ */ jsx26(ChartTooltip, { groups: resolvedGroups, valueFormatter, tooltipFilter })
           }
         ),
         resolvedGroups.map((group, index) => {
@@ -1293,7 +1293,7 @@ function InlineEditButton({
 
 // src/design-system/components/Navigation.tsx
 import * as React15 from "react";
-import { Fragment as Fragment3, jsx as jsx31, jsxs as jsxs17 } from "react/jsx-runtime";
+import { Fragment as Fragment2, jsx as jsx31, jsxs as jsxs17 } from "react/jsx-runtime";
 function Navigation({
   items,
   value,
@@ -1321,7 +1321,7 @@ function Navigation({
       style,
       children: /* @__PURE__ */ jsx31("ul", { className: "ds-NavigationList", children: items.map((item) => {
         const active = item.value === value;
-        const content = /* @__PURE__ */ jsxs17(Fragment3, { children: [
+        const content = /* @__PURE__ */ jsxs17(Fragment2, { children: [
           item.icon && /* @__PURE__ */ jsx31("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
           /* @__PURE__ */ jsxs17("span", { className: "ds-NavigationText", children: [
             /* @__PURE__ */ jsx31("span", { className: "ds-NavigationLabel", children: item.label }),
@@ -1364,7 +1364,7 @@ function Navigation({
 }
 
 // src/design-system/components/NavigationBar.tsx
-import { Fragment as Fragment4, jsx as jsx32, jsxs as jsxs18 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx32, jsxs as jsxs18 } from "react/jsx-runtime";
 function NavigationBar({
   title,
   subtitle,
@@ -1380,13 +1380,13 @@ function NavigationBar({
   const showLeadingRight = leading && leadingPosition === "right";
   return /* @__PURE__ */ jsxs18("header", { className: ["ds-NavigationBar", className].filter(Boolean).join(" "), ...rest, children: [
     showLeadingLeft && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarLeading", children: leading }),
-    /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment4, { children: [
+    /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs18(Fragment3, { children: [
       /* @__PURE__ */ jsxs18("div", { className: "ds-NavigationBarBrandContent", children: [
         brand,
         brandAccessory && /* @__PURE__ */ jsx32("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
       ] }),
       subtitle && /* @__PURE__ */ jsx32(Text, { size: "xs", tone: "muted", children: subtitle })
-    ] }) : /* @__PURE__ */ jsxs18(Fragment4, { children: [
+    ] }) : /* @__PURE__ */ jsxs18(Fragment3, { children: [
       title != null && /* @__PURE__ */ jsx32(Text, { as: "div", weight: "semibold", children: title }),
       subtitle && /* @__PURE__ */ jsx32(Text, { size: "xs", tone: "muted", children: subtitle })
     ] }) }),
@@ -1396,9 +1396,9 @@ function NavigationBar({
 }
 
 // src/design-system/components/NavigationBrand.tsx
-import { Fragment as Fragment5, jsx as jsx33, jsxs as jsxs19 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx33, jsxs as jsxs19 } from "react/jsx-runtime";
 function NavigationBrand({ href, logo, label, className, ...rest }) {
-  const content = /* @__PURE__ */ jsxs19(Fragment5, { children: [
+  const content = /* @__PURE__ */ jsxs19(Fragment4, { children: [
     logo && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
     label && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationBrandLabel", children: label })
   ] });
@@ -1707,7 +1707,7 @@ function detectABTestGroups(ranges) {
 }
 
 // src/competitor/ClaimTimeline.tsx
-import { Fragment as Fragment6, jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
 function ClaimTimeline({
   claimRanges,
   loading = false,
@@ -1971,7 +1971,7 @@ function ClaimTimeline({
       }) })
     ] })
   ] }) });
-  return /* @__PURE__ */ jsxs24(Fragment6, { children: [
+  return /* @__PURE__ */ jsxs24(Fragment5, { children: [
     renderMobile(),
     renderDesktop()
   ] });
@@ -1980,33 +1980,35 @@ function ClaimTimeline({
 // src/competitor/kpi-utils.ts
 function formatKpiValue(value, unit, locale = "de-DE") {
   const fmt = (opts) => new Intl.NumberFormat(locale, opts).format(value);
+  const m = locale.startsWith("de") ? "Mio." : "M";
+  const b = locale.startsWith("de") ? "Mrd." : "B";
   switch (unit) {
     case "USD":
       return fmt({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
     case "EUR":
       return fmt({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
     case "USD_millions":
-      return `$${fmt({ maximumFractionDigits: 1 })} Mio.`;
+      return `$${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "EUR_millions":
-      return `\u20AC${fmt({ maximumFractionDigits: 1 })} Mio.`;
+      return `\u20AC${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "USD_billions":
-      return `$${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+      return `$${fmt({ maximumFractionDigits: 1 })} ${b}`;
     case "EUR_billions":
-      return `\u20AC${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+      return `\u20AC${fmt({ maximumFractionDigits: 1 })} ${b}`;
     case "CHF":
       return `CHF ${fmt({ maximumFractionDigits: 0 })}`;
     case "CHF_millions":
-      return `CHF ${fmt({ maximumFractionDigits: 1 })} Mio.`;
+      return `CHF ${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "CHF_billions":
-      return `CHF ${fmt({ maximumFractionDigits: 1 })} Mrd.`;
+      return `CHF ${fmt({ maximumFractionDigits: 1 })} ${b}`;
     case "percent":
       return `${fmt({ maximumFractionDigits: 1 })}%`;
     case "count":
       if (value >= 1e9) {
-        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e9)} Mrd.`;
+        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e9)} ${b}`;
       }
       if (value >= 1e6) {
-        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e6)} Mio.`;
+        return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value / 1e6)} ${m}`;
       }
       if (value >= 1e4) {
         return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(Math.round(value / 1e3) * 1e3);
@@ -2182,7 +2184,7 @@ var JOB_FUNCTION_VARIANT_MAP = {
 };
 
 // src/competitor/KpiCard.tsx
-import { Fragment as Fragment7, jsx as jsx39, jsxs as jsxs25 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx39, jsxs as jsxs25 } from "react/jsx-runtime";
 function KpiCard({
   icon: Icon,
   label,
@@ -2197,7 +2199,7 @@ function KpiCard({
       /* @__PURE__ */ jsx39(Icon, { className: "h-4 w-4 text-muted-foreground" }),
       /* @__PURE__ */ jsx39(Text, { size: "sm", tone: "muted", children: label })
     ] }),
-    entry && formatted ? /* @__PURE__ */ jsxs25(Fragment7, { children: [
+    entry && formatted ? /* @__PURE__ */ jsxs25(Fragment6, { children: [
       entry.source_url ? /* @__PURE__ */ jsx39(Tooltip, { content: (_a = entry.source_title) != null ? _a : entry.source_url, children: /* @__PURE__ */ jsxs25(
         "a",
         {
@@ -2216,8 +2218,168 @@ function KpiCard({
   ] }) });
 }
 
+// src/competitor/CompetitorLogo.tsx
+import { useState as useState7 } from "react";
+import { jsx as jsx40 } from "react/jsx-runtime";
+function CompetitorLogo({ name, domain, brandfetchClientId, size = 28 }) {
+  const [failed, setFailed] = useState7(false);
+  const src = domain && brandfetchClientId ? `https://cdn.brandfetch.io/${domain}/fallback/404/icon.svg?c=${brandfetchClientId}` : void 0;
+  if (failed || !src) {
+    return /* @__PURE__ */ jsx40(
+      "div",
+      {
+        style: {
+          width: size,
+          height: size,
+          borderRadius: "var(--radius-sm)",
+          background: "hsl(var(--muted))",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0
+        },
+        children: /* @__PURE__ */ jsx40(Text, { as: "span", size: "sm", weight: "medium", children: (name || "?").charAt(0).toUpperCase() })
+      }
+    );
+  }
+  return /* @__PURE__ */ jsx40(
+    "img",
+    {
+      src,
+      alt: "",
+      width: size,
+      height: size,
+      style: { borderRadius: "var(--radius-sm)", objectFit: "contain", flexShrink: 0 },
+      onError: () => setFailed(true)
+    }
+  );
+}
+
+// src/competitor/hiring-chart-utils.ts
+var MS_IN_DAY = 864e5;
+var startOfIsoWeek = (date) => {
+  const result = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
+  const day = result.getUTCDay() || 7;
+  if (day !== 1) {
+    result.setUTCDate(result.getUTCDate() - (day - 1));
+  }
+  return result;
+};
+var addDays = (date, days) => new Date(date.getTime() + days * MS_IN_DAY);
+var addWeeks = (date, weeks) => addDays(date, weeks * 7);
+var getIsoWeekMeta = (date) => {
+  const target = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  );
+  const day = target.getUTCDay() || 7;
+  target.setUTCDate(target.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(
+    ((target.getTime() - yearStart.getTime()) / MS_IN_DAY + 1) / 7
+  );
+  return { week, year: target.getUTCFullYear() };
+};
+function formatJobCount(value, locale = "de-DE") {
+  if (locale.startsWith("de")) {
+    return `${value} Stelle${value === 1 ? "" : "n"}`;
+  }
+  return `${value} position${value === 1 ? "" : "s"}`;
+}
+function buildWeeklyJobData(jobs, maxWeeks = 12) {
+  const empty = { weeklyJobData: [], jobFunctionGroups: [] };
+  const now = /* @__PURE__ */ new Date();
+  const lifecycles = jobs.filter((job) => typeof job.first_detected === "string").map((job) => {
+    var _a;
+    const start = new Date(job.first_detected);
+    const resolvedEnd = job.ended ? new Date(job.ended) : now;
+    const end = resolvedEnd.getTime() < start.getTime() ? start : resolvedEnd;
+    const code = (_a = job.linkedin_job_function_code) != null ? _a : UNKNOWN_JOB_FUNCTION_CODE;
+    return { start, end, code };
+  });
+  if (lifecycles.length === 0) return empty;
+  const jobFunctions = /* @__PURE__ */ new Map();
+  lifecycles.forEach((job) => {
+    var _a;
+    if (!jobFunctions.has(job.code))
+      jobFunctions.set(job.code, (_a = JOB_FUNCTION_LABELS[job.code]) != null ? _a : job.code);
+  });
+  const variantOrder = [
+    "primary",
+    "accent",
+    "success",
+    "warning",
+    "secondary",
+    "neutral"
+  ];
+  const groupedByVariant = /* @__PURE__ */ new Map();
+  Array.from(jobFunctions.entries()).map(([code, label]) => {
+    var _a;
+    return {
+      id: code,
+      label,
+      variant: (_a = JOB_FUNCTION_VARIANT_MAP[code]) != null ? _a : "neutral"
+    };
+  }).sort((a, b) => {
+    const d = variantOrder.indexOf(a.variant) - variantOrder.indexOf(b.variant);
+    if (d !== 0) return d;
+    return a.label.localeCompare(b.label, void 0, { sensitivity: "base" });
+  }).forEach((entry) => {
+    if (!groupedByVariant.has(entry.variant)) groupedByVariant.set(entry.variant, []);
+    groupedByVariant.get(entry.variant).push(entry);
+  });
+  const groups = [];
+  groupedByVariant.forEach(
+    (list) => list.forEach((meta, idx) => groups.push({ ...meta, tintIndex: idx % 3 }))
+  );
+  if (groups.length === 0) return empty;
+  const lifecyclesByType = /* @__PURE__ */ new Map();
+  lifecycles.forEach((job) => {
+    if (!lifecyclesByType.has(job.code)) lifecyclesByType.set(job.code, []);
+    lifecyclesByType.get(job.code).push({ start: job.start, end: job.end });
+  });
+  const earliestStart = lifecycles.reduce(
+    (e, i) => i.start < e ? i.start : e,
+    lifecycles[0].start
+  );
+  const latestEnd = lifecycles.reduce(
+    (l, i) => i.end > l ? i.end : l,
+    lifecycles[0].end
+  );
+  const latestWeekStart = startOfIsoWeek(latestEnd);
+  const earliestWeekStart = startOfIsoWeek(earliestStart);
+  const desiredStart = addWeeks(latestWeekStart, -(maxWeeks - 1));
+  const rangeStart = desiredStart.getTime() < earliestWeekStart.getTime() ? earliestWeekStart : desiredStart;
+  const weeks = [];
+  for (let cursor = rangeStart; cursor.getTime() <= latestWeekStart.getTime(); cursor = addWeeks(cursor, 1)) {
+    weeks.push(cursor);
+  }
+  if (weeks.length === 0) weeks.push(latestWeekStart);
+  const dayMonthFmt = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit" });
+  let lastIsoYear = null;
+  const weeklyJobData = weeks.map((weekStart) => {
+    const weekEndExclusive = addWeeks(weekStart, 1);
+    const weekEndInclusive = addDays(weekEndExclusive, -1);
+    const { week, year } = getIsoWeekMeta(weekStart);
+    const label = lastIsoYear === null || year !== lastIsoYear ? `CW ${week} (${year})` : `CW ${week}`;
+    lastIsoYear = year;
+    const rangeLabel = `${dayMonthFmt.format(weekStart)} \u2013 ${dayMonthFmt.format(weekEndInclusive)}`;
+    const g = groups.map((gm) => {
+      var _a;
+      const items = (_a = lifecyclesByType.get(gm.id)) != null ? _a : [];
+      const value = items.reduce((acc, job) => {
+        return job.start < weekEndExclusive && job.end >= weekStart ? acc + 1 : acc;
+      }, 0);
+      return { id: gm.id, value, detail: `${gm.label} \xB7 ${rangeLabel}` };
+    });
+    return { label, detail: rangeLabel, groups: g };
+  });
+  return { weeklyJobData, jobFunctionGroups: groups };
+}
+
 // src/competitor/CompetitorInfoCard.tsx
-import { Fragment as Fragment8, jsx as jsx40, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx41, jsxs as jsxs26 } from "react/jsx-runtime";
 function ensureAbsolute(url) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`;
 }
@@ -2235,9 +2397,9 @@ function CompetitorInfoCard({
   linkedinIcon: LinkedinIcon,
   sidebar
 }) {
-  return /* @__PURE__ */ jsx40(Card, { children: /* @__PURE__ */ jsx40(Card.Content, { children: /* @__PURE__ */ jsxs26("div", { className: "flex flex-col lg:flex-row lg:gap-lg", children: [
+  return /* @__PURE__ */ jsx41(Card, { children: /* @__PURE__ */ jsx41(Card.Content, { children: /* @__PURE__ */ jsxs26("div", { className: "flex flex-col lg:flex-row lg:gap-lg", children: [
     /* @__PURE__ */ jsxs26("div", { className: "flex-1 min-w-0", children: [
-      /* @__PURE__ */ jsx40(Heading, { level: 2, children: name }),
+      /* @__PURE__ */ jsx41(Heading, { level: 2, children: name }),
       /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-md text-sm", children: [
         website ? /* @__PURE__ */ jsxs26(
           "a",
@@ -2248,12 +2410,12 @@ function CompetitorInfoCard({
             className: "text-primary flex items-center gap-1",
             children: [
               cleanDomain(website),
-              ExternalLinkIcon && /* @__PURE__ */ jsx40(ExternalLinkIcon, { className: "h-3 w-3" })
+              ExternalLinkIcon && /* @__PURE__ */ jsx41(ExternalLinkIcon, { className: "h-3 w-3" })
             ]
           }
-        ) : /* @__PURE__ */ jsx40("span", { className: "text-muted-foreground", children: "No website listed" }),
-        linkedinUrl && /* @__PURE__ */ jsxs26(Fragment8, { children: [
-          /* @__PURE__ */ jsx40("span", { className: "text-muted-foreground", children: "\xB7" }),
+        ) : /* @__PURE__ */ jsx41("span", { className: "text-muted-foreground", children: "No website listed" }),
+        linkedinUrl && /* @__PURE__ */ jsxs26(Fragment7, { children: [
+          /* @__PURE__ */ jsx41("span", { className: "text-muted-foreground", children: "\xB7" }),
           /* @__PURE__ */ jsxs26(
             "a",
             {
@@ -2263,22 +2425,22 @@ function CompetitorInfoCard({
               className: "text-primary flex items-center gap-1",
               children: [
                 "LinkedIn",
-                ExternalLinkIcon && /* @__PURE__ */ jsx40(ExternalLinkIcon, { className: "h-3 w-3" })
+                ExternalLinkIcon && /* @__PURE__ */ jsx41(ExternalLinkIcon, { className: "h-3 w-3" })
               ]
             }
           )
         ] })
       ] }),
-      description && /* @__PURE__ */ jsx40(Text, { size: "sm", tone: "muted", className: "mt-sm", children: description })
+      description && /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", className: "mt-sm", children: description })
     ] }),
-    (currentClaim || sidebar) && /* @__PURE__ */ jsxs26(Fragment8, { children: [
-      /* @__PURE__ */ jsx40("div", { className: "my-md lg:hidden", style: { height: 1, background: "var(--border)" } }),
-      /* @__PURE__ */ jsx40("div", { className: "hidden lg:block w-px bg-border shrink-0" }),
+    (currentClaim || sidebar) && /* @__PURE__ */ jsxs26(Fragment7, { children: [
+      /* @__PURE__ */ jsx41("div", { className: "my-md lg:hidden", style: { height: 1, background: "var(--border)" } }),
+      /* @__PURE__ */ jsx41("div", { className: "hidden lg:block w-px bg-border shrink-0" }),
       /* @__PURE__ */ jsxs26("div", { className: "lg:w-64 shrink-0 flex flex-col gap-md", children: [
         currentClaim && /* @__PURE__ */ jsxs26("div", { children: [
           /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-sm mb-xs", children: [
-            QuoteIcon && /* @__PURE__ */ jsx40(QuoteIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx40(Text, { size: "sm", tone: "muted", children: "Positioning" })
+            QuoteIcon && /* @__PURE__ */ jsx41(QuoteIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Positioning" })
           ] }),
           /* @__PURE__ */ jsxs26(Text, { size: "sm", weight: "medium", className: "line-clamp-2", children: [
             "\u201C",
@@ -2293,7 +2455,7 @@ function CompetitorInfoCard({
 }
 
 // src/competitor/HiringOverview.tsx
-import { Fragment as Fragment9, jsx as jsx41, jsxs as jsxs27 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx42, jsxs as jsxs27 } from "react/jsx-runtime";
 var VARIANT_CATEGORY_LABELS = {
   primary: "Management & Strategy",
   accent: "Marketing & Sales",
@@ -2335,7 +2497,11 @@ function buildCategorySegments(jobs) {
     group.byFunction.set(fnLabel, ((_d = group.byFunction.get(fnLabel)) != null ? _d : 0) + 1);
   }
   const total = jobs.length;
-  return [...groups.entries()].sort((a, b) => b[1].total - a[1].total).map(([variant, { total: count, byFunction }]) => ({
+  return [...groups.entries()].sort((a, b) => {
+    if (a[0] === "neutral") return 1;
+    if (b[0] === "neutral") return -1;
+    return b[1].total - a[1].total;
+  }).map(([variant, { total: count, byFunction }]) => ({
     variant,
     label: VARIANT_CATEGORY_LABELS[variant],
     count,
@@ -2365,64 +2531,64 @@ function HiringOverview({
   const hasTrend = !!jobLifecycle;
   const hasJobs = segments.length > 0;
   return /* @__PURE__ */ jsxs27(Card, { children: [
-    /* @__PURE__ */ jsx41(Card.Header, { children: /* @__PURE__ */ jsx41(Card.Title, { as: "h2", children: "Team & Hiring" }) }),
-    /* @__PURE__ */ jsx41(Card.Content, { children: /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-md", children: [
+    /* @__PURE__ */ jsx42(Card.Header, { children: /* @__PURE__ */ jsx42(Card.Title, { as: "h2", children: "Team & Hiring" }) }),
+    /* @__PURE__ */ jsx42(Card.Content, { children: /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-md", children: [
       /* @__PURE__ */ jsxs27("div", { className: "flex gap-xl", children: [
         /* @__PURE__ */ jsxs27("div", { children: [
           /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-sm mb-xs", children: [
-            EmployeesIcon && /* @__PURE__ */ jsx41(EmployeesIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Employees" })
+            EmployeesIcon && /* @__PURE__ */ jsx42(EmployeesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: "Employees" })
           ] }),
-          employees ? /* @__PURE__ */ jsxs27(Fragment9, { children: [
+          employees ? /* @__PURE__ */ jsxs27(Fragment8, { children: [
             /* @__PURE__ */ jsxs27(Text, { size: "xl", weight: "bold", children: [
               qualifierPrefix(employees.qualifier),
               formatKpiValue(employees.value, employees.unit)
             ] }),
-            employees.period && /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: employees.period })
-          ] }) : /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
+            employees.period && /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: employees.period })
+          ] }) : /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
         ] }),
         /* @__PURE__ */ jsxs27("div", { children: [
           /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-sm mb-xs", children: [
-            RolesIcon && /* @__PURE__ */ jsx41(RolesIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Open Roles" })
+            RolesIcon && /* @__PURE__ */ jsx42(RolesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: "Open Roles" })
           ] }),
           /* @__PURE__ */ jsxs27("div", { className: "flex items-baseline gap-sm", children: [
-            /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", children: currentCount }),
+            /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", children: currentCount }),
             hasTrend && /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-1", children: [
-              diff > 0 && TrendUpIcon ? /* @__PURE__ */ jsx41(TrendUpIcon, { className: "h-3.5 w-3.5 text-success" }) : diff < 0 && TrendDownIcon ? /* @__PURE__ */ jsx41(TrendDownIcon, { className: "h-3.5 w-3.5 text-destructive" }) : UnchangedIcon ? /* @__PURE__ */ jsx41(UnchangedIcon, { className: "h-3.5 w-3.5 text-muted-foreground" }) : null,
-              /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: diff === 0 ? "unchanged" : `${diff > 0 ? "+" : ""}${diff} vs. ${COMPARE_WEEKS}w ago` })
+              diff > 0 && TrendUpIcon ? /* @__PURE__ */ jsx42(TrendUpIcon, { className: "h-3.5 w-3.5 text-success" }) : diff < 0 && TrendDownIcon ? /* @__PURE__ */ jsx42(TrendDownIcon, { className: "h-3.5 w-3.5 text-destructive" }) : UnchangedIcon ? /* @__PURE__ */ jsx42(UnchangedIcon, { className: "h-3.5 w-3.5 text-muted-foreground" }) : null,
+              /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: diff === 0 ? "unchanged" : `${diff > 0 ? "+" : ""}${diff} vs. ${COMPARE_WEEKS}w ago` })
             ] })
           ] })
         ] })
       ] }),
       hasJobs && /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-sm", children: [
-        /* @__PURE__ */ jsx41(Text, { size: "xs", tone: "muted", weight: "medium", children: "Open roles by function" }),
-        /* @__PURE__ */ jsx41("div", { className: "flex h-3 w-full rounded-full overflow-hidden", children: segments.map((seg) => /* @__PURE__ */ jsx41(
+        /* @__PURE__ */ jsx42(Text, { size: "xs", tone: "muted", weight: "medium", children: "Open roles by function" }),
+        /* @__PURE__ */ jsx42("div", { className: "flex h-3 w-full rounded-full overflow-hidden", children: segments.map((seg) => /* @__PURE__ */ jsx42(
           Tooltip,
           {
             className: `h-full block ${VARIANT_BG_CLASSES[seg.variant]}`,
             style: { width: `${seg.percent}%` },
             multiline: true,
             content: /* @__PURE__ */ jsxs27("div", { className: "flex flex-col gap-0.5", children: [
-              /* @__PURE__ */ jsx41("span", { className: "font-semibold", children: seg.label }),
+              /* @__PURE__ */ jsx42("span", { className: "font-semibold", children: seg.label }),
               seg.functions.map((fn) => /* @__PURE__ */ jsxs27("span", { children: [
                 fn.label,
                 ": ",
                 fn.count
               ] }, fn.label))
             ] }),
-            children: /* @__PURE__ */ jsx41("div", { className: "h-full w-full cursor-default" })
+            children: /* @__PURE__ */ jsx42("div", { className: "h-full w-full cursor-default" })
           },
           seg.variant
         )) }),
-        /* @__PURE__ */ jsx41("div", { className: "flex flex-wrap gap-x-md gap-y-xs", children: segments.map((seg) => /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-xs", children: [
-          /* @__PURE__ */ jsx41(
+        /* @__PURE__ */ jsx42("div", { className: "flex flex-wrap gap-x-md gap-y-xs", children: segments.map((seg) => /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-xs", children: [
+          /* @__PURE__ */ jsx42(
             "span",
             {
               className: `inline-block h-2.5 w-2.5 rounded-full shrink-0 ${VARIANT_BG_CLASSES[seg.variant]}`
             }
           ),
-          /* @__PURE__ */ jsx41(Text, { size: "xs", tone: "muted", children: seg.label })
+          /* @__PURE__ */ jsx42(Text, { size: "xs", tone: "muted", children: seg.label })
         ] }, seg.variant)) })
       ] })
     ] }) })
@@ -2441,6 +2607,7 @@ export {
   Card,
   ClaimTimeline,
   CompetitorInfoCard,
+  CompetitorLogo,
   DateTimeInput,
   DateTimeModalInput,
   DevButton,
@@ -2488,16 +2655,22 @@ export {
   Tooltip,
   UNKNOWN_JOB_FUNCTION_CODE,
   Wordmark,
+  addDays,
+  addWeeks,
   buildCategorySegments,
+  buildWeeklyJobData,
   claimCompareKey,
   detectABTestGroups,
+  formatJobCount,
   formatKpiValue,
   getCustomers,
   getEmployees,
+  getIsoWeekMeta,
   getKpiSnapshot,
   getRevenue,
   getRevenueGrowthYoY,
   qualifierPrefix,
+  startOfIsoWeek,
   tokens,
   useToast
 };

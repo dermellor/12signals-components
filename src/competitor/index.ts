@@ -1,2 +1,10 @@
 export * from "./claim-utils";
 export { ClaimTimeline } from "./ClaimTimeline";
+export * from "./kpi-utils";
+export * from "./job-functions";
+export { KpiCard } from "./KpiCard";
+export { CompetitorLogo } from "./CompetitorLogo";
+export * from "./hiring-chart-utils";
+export { CompetitorInfoCard } from "./CompetitorInfoCard";
+export { HiringOverview, buildCategorySegments } from "./HiringOverview";
+export type { CategorySegment, ActiveJob, JobLifecycleEntry } from "./HiringOverview";

@@ -61,6 +61,8 @@ type BarChartProps = {
   yAxisLabel?: string;
   valueFormatter?: (value: number) => string;
   groups?: BarChartGroupMeta[];
+  /** Optional filter — tooltip is only shown when this returns true for the hovered label */
+  tooltipFilter?: (label: string) => boolean;
 };
 
 const VARIANT_CYCLE: BarChartGroupVariant[] = [
@@ -94,11 +96,14 @@ const ChartTooltip = ({
   label,
   groups,
   valueFormatter,
+  tooltipFilter,
 }: TooltipProps<number, string> & {
   groups: BarChartGroupMeta[];
   valueFormatter: (value: number) => string;
+  tooltipFilter?: (label: string) => boolean;
 }) => {
   if (!active || !payload?.length) return null;
+  if (tooltipFilter && !tooltipFilter(String(label))) return null;
   const detail = payload[0]?.payload?.detail as string | undefined;
   const entries = payload
     .filter((item) => typeof item.value === "number" && (item.value as number) > 0)
@@ -131,6 +136,31 @@ const ChartTooltip = ({
   );
 };
 
+const FilteredCursor = (props: {
+  tooltipFilter: (label: string) => boolean;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  payload?: Record<string, unknown>[];
+  [key: string]: unknown;
+}) => {
+  const { tooltipFilter, x, y, width, height, payload } = props;
+  // recharts passes the data point's fields in each payload entry
+  const label = (payload?.[0] as Record<string, unknown>)?.payload as Record<string, unknown> | undefined;
+  const labelStr = label?.label as string | undefined;
+  if (!labelStr || !tooltipFilter(labelStr)) return null;
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      fill="color-mix(in oklab, var(--color-border-default) 25%, transparent)"
+    />
+  );
+};
+
 export function BarChart({
   data,
   ariaLabel,
@@ -138,6 +168,7 @@ export function BarChart({
   yAxisLabel,
   valueFormatter = (value) => `${value}`,
   groups: providedGroups,
+  tooltipFilter,
 }: BarChartProps) {
   const hasGroupedData = data.length > 0 && data.every(isGroupedPoint);
 
@@ -263,8 +294,8 @@ export function BarChart({
                 width={32}
               />
               <Tooltip
-                cursor={{ fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" }}
-                content={<ChartTooltip groups={resolvedGroups} valueFormatter={valueFormatter} />}
+                cursor={tooltipFilter ? <FilteredCursor tooltipFilter={tooltipFilter} /> : { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" }}
+                content={<ChartTooltip groups={resolvedGroups} valueFormatter={valueFormatter} tooltipFilter={tooltipFilter} />}
               />
               {resolvedGroups.map((group, index) => (
                 <Bar

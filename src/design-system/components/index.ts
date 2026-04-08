@@ -27,6 +27,7 @@ export type { BarChartGroupMeta, BarChartGroupVariant } from "./BarChart";
 export * from "./PieChart";
 export * from "./TabNav";
 export * from "./ActionIconButton";
+export * from "./InlineEditButton";
 export * from "./Navigation";
 export * from "./NavigationBar";
 export * from "./NavigationBrand";

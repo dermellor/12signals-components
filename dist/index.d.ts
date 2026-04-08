@@ -56,7 +56,7 @@ declare function Modal({ open, onClose, title, children, footer }: ModalProps): 
 
 type BadgeProps<T extends keyof JSX.IntrinsicElements = "span"> = {
     as?: T;
-    variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary";
+    variant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
     tone?: "solid" | "subtle";
     size?: "sm" | "md";
 } & React$1.ComponentPropsWithoutRef<T>;
@@ -208,7 +208,7 @@ type ActivityCardProps = {
     headline?: string;
     competitorIcon?: React$1.ReactNode;
     categoryLabel?: string;
-    categoryVariant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary";
+    categoryVariant?: "solid" | "outline" | "success" | "warning" | "danger" | "accent" | "secondary" | "homepage" | "advertising";
     categoryTone?: "solid" | "subtle";
     meta?: string;
     description?: React$1.ReactNode;
@@ -280,8 +280,10 @@ type BarChartProps = {
     yAxisLabel?: string;
     valueFormatter?: (value: number) => string;
     groups?: BarChartGroupMeta[];
+    /** Optional filter — tooltip is only shown when this returns true for the hovered label */
+    tooltipFilter?: (label: string) => boolean;
 };
-declare function BarChart({ data, ariaLabel, xAxisLabel, yAxisLabel, valueFormatter, groups: providedGroups, }: BarChartProps): react_jsx_runtime.JSX.Element;
+declare function BarChart({ data, ariaLabel, xAxisLabel, yAxisLabel, valueFormatter, groups: providedGroups, tooltipFilter, }: BarChartProps): react_jsx_runtime.JSX.Element;
 
 type PieChartSliceVariant = "primary" | "accent" | "success" | "warning" | "secondary" | "neutral";
 type PieChartSlice = {
@@ -532,7 +534,7 @@ declare const claimCompareKey: (txt: string) => string;
  */
 declare function detectABTestGroups(ranges: ClaimRange[]): TimelineEntry[];
 
-type Props$3 = {
+type Props$4 = {
     claimRanges: ClaimRange[];
     loading?: boolean;
     error?: boolean;
@@ -543,7 +545,7 @@ type Props$3 = {
     /** Optional loading spinner element (e.g. lucide Loader2) */
     loadingIcon?: React__default.ReactNode;
 };
-declare function ClaimTimeline({ claimRanges, loading, error, locale, tickInterval, loadingIcon, }: Props$3): react_jsx_runtime.JSX.Element;
+declare function ClaimTimeline({ claimRanges, loading, error, locale, tickInterval, loadingIcon, }: Props$4): react_jsx_runtime.JSX.Element;
 
 type KpiEntry = {
     value: number;
@@ -590,7 +592,7 @@ declare const UNKNOWN_JOB_FUNCTION_CODE = "__unknown";
 declare const JOB_FUNCTION_LABELS: Record<string, string>;
 declare const JOB_FUNCTION_VARIANT_MAP: Record<string, JobFunctionVariant>;
 
-type Props$2 = {
+type Props$3 = {
     /** lucide-react icon component */
     icon: React__default.ComponentType<{
         className?: string;
@@ -604,7 +606,48 @@ type Props$2 = {
         className?: string;
     }>;
 };
-declare function KpiCard({ icon: Icon, label, entry, locale, externalLinkIcon: ExternalLinkIcon, }: Props$2): react_jsx_runtime.JSX.Element;
+declare function KpiCard({ icon: Icon, label, entry, locale, externalLinkIcon: ExternalLinkIcon, }: Props$3): react_jsx_runtime.JSX.Element;
+
+type Props$2 = {
+    name: string;
+    domain?: string | null;
+    brandfetchClientId?: string;
+    size?: number;
+};
+declare function CompetitorLogo({ name, domain, brandfetchClientId, size }: Props$2): react_jsx_runtime.JSX.Element;
+
+type JobFunctionMeta = {
+    id: string;
+    label: string;
+    variant: JobFunctionVariant;
+    tintIndex?: number;
+};
+type WeeklyJobPoint = {
+    label: string;
+    detail: string;
+    groups: {
+        id: string;
+        value: number;
+        detail: string;
+    }[];
+};
+type JobLifecycleInput = {
+    first_detected: string | null;
+    ended: string | null;
+    linkedin_job_function_code: string | null;
+};
+declare const startOfIsoWeek: (date: Date) => Date;
+declare const addDays: (date: Date, days: number) => Date;
+declare const addWeeks: (date: Date, weeks: number) => Date;
+declare const getIsoWeekMeta: (date: Date) => {
+    week: number;
+    year: number;
+};
+declare function formatJobCount(value: number, locale?: string): string;
+declare function buildWeeklyJobData(jobs: JobLifecycleInput[], maxWeeks?: number): {
+    weeklyJobData: WeeklyJobPoint[];
+    jobFunctionGroups: JobFunctionMeta[];
+};
 
 type Props$1 = {
     name: string;
@@ -682,4 +725,4 @@ type Props = {
 };
 declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionVariant, type JobLifecycleEntry, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, Wordmark, buildCategorySegments, claimCompareKey, detectABTestGroups, formatKpiValue, getCustomers, getEmployees, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
