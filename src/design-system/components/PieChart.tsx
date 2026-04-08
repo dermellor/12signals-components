@@ -61,7 +61,7 @@ const VARIANT_COLORS: Record<PieChartSliceVariant, string> = {
   success: "color-mix(in oklab, var(--color-success-bg) 75%, transparent)",
   warning: "color-mix(in oklab, var(--color-warning-bg) 75%, transparent)",
   secondary: "color-mix(in oklab, var(--color-secondary-bg) 75%, transparent)",
-  neutral: "color-mix(in oklab, var(--color-border-default) 65%, transparent)",
+  neutral: "color-mix(in oklab, var(--color-border-default) 90%, transparent)",
 };
 
 const getVariantColor = (variant: PieChartSliceVariant = "primary") =>

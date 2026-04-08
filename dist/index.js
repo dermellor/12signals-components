@@ -598,6 +598,7 @@ function ActivityCard({
   categoryLabel,
   categoryVariant = "outline",
   categoryTone = "solid",
+  extraBadges,
   meta,
   description,
   timestamp,
@@ -635,7 +636,8 @@ function ActivityCard({
                 children: titleNode || /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: title })
               }
             ),
-            badge
+            badge,
+            extraBadges
           ] }),
           headline && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-headline", children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }) }),
           /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-body", children: [
@@ -849,7 +851,7 @@ var VARIANT_COLORS = {
   success: "color-mix(in oklab, var(--color-success-bg) 75%, transparent)",
   warning: "color-mix(in oklab, var(--color-warning-bg) 75%, transparent)",
   secondary: "color-mix(in oklab, var(--color-secondary-bg) 75%, transparent)",
-  neutral: "color-mix(in oklab, var(--color-border-default) 65%, transparent)"
+  neutral: "color-mix(in oklab, var(--color-border-default) 90%, transparent)"
 };
 var getVariantColor = (variant = "primary") => {
   var _a;
@@ -1095,7 +1097,7 @@ var VARIANT_COLORS2 = {
   success: "color-mix(in oklab, var(--color-success-bg) 75%, transparent)",
   warning: "color-mix(in oklab, var(--color-warning-bg) 75%, transparent)",
   secondary: "color-mix(in oklab, var(--color-secondary-bg) 75%, transparent)",
-  neutral: "color-mix(in oklab, var(--color-border-default) 65%, transparent)"
+  neutral: "color-mix(in oklab, var(--color-border-default) 90%, transparent)"
 };
 var getVariantColor2 = (variant = "primary") => {
   var _a;
@@ -2287,7 +2289,7 @@ function formatJobCount(value, locale = "de-DE") {
   }
   return `${value} position${value === 1 ? "" : "s"}`;
 }
-function buildWeeklyJobData(jobs, maxWeeks = 12) {
+function buildWeeklyJobData(jobs, maxWeeks = 12, locale = "en") {
   const empty = { weeklyJobData: [], jobFunctionGroups: [] };
   const now = /* @__PURE__ */ new Date();
   const lifecycles = jobs.filter((job) => typeof job.first_detected === "string").map((job) => {
@@ -2362,7 +2364,7 @@ function buildWeeklyJobData(jobs, maxWeeks = 12) {
     const weekEndExclusive = addWeeks(weekStart, 1);
     const weekEndInclusive = addDays(weekEndExclusive, -1);
     const { week, year } = getIsoWeekMeta(weekStart);
-    const label = lastIsoYear === null || year !== lastIsoYear ? `CW ${week} (${year})` : `CW ${week}`;
+    const label = lastIsoYear === null || year !== lastIsoYear ? `${locale === "de" ? "KW" : "CW"} ${week} (${year})` : `${locale === "de" ? "KW" : "CW"} ${week}`;
     lastIsoYear = year;
     const rangeLabel = `${dayMonthFmt.format(weekStart)} \u2013 ${dayMonthFmt.format(weekEndInclusive)}`;
     const g = groups.map((gm) => {
