@@ -1211,9 +1211,47 @@ function PieChart({
 }
 
 // src/design-system/components/TabNav.tsx
+import * as React15 from "react";
 import { jsx as jsx28, jsxs as jsxs16 } from "react/jsx-runtime";
 function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
-  return /* @__PURE__ */ jsx28("nav", { className: ["ds-TabNav", className].filter(Boolean).join(" "), "aria-label": ariaLabel, style, children: /* @__PURE__ */ jsx28("ul", { className: "ds-TabNavList", role: "tablist", children: items.map((item) => {
+  const listRef = React15.useRef(null);
+  React15.useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    const update = () => {
+      const nav = el.closest(".ds-TabNav");
+      if (!nav) return;
+      const triggers = el.querySelectorAll(".ds-TabNavTrigger");
+      const tabCount = triggers.length;
+      const containerWidth = el.clientWidth;
+      triggers.forEach((t) => {
+        t.style.minWidth = "";
+        t.style.maxWidth = "";
+      });
+      if (el.scrollWidth > containerWidth && tabCount > 1) {
+        const gap = parseFloat(getComputedStyle(el).gap) || 8;
+        const visibleFull = Math.min(tabCount - 1, containerWidth < 360 ? 2 : 3);
+        const w = Math.floor((containerWidth - visibleFull * gap) / (visibleFull + 0.35));
+        triggers.forEach((t) => {
+          t.style.minWidth = `${w}px`;
+          t.style.maxWidth = `${w}px`;
+        });
+      }
+      requestAnimationFrame(() => {
+        nav.toggleAttribute("data-scroll-start", el.scrollLeft > 2);
+        nav.toggleAttribute("data-scroll-end", el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+      });
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", update);
+      ro.disconnect();
+    };
+  }, []);
+  return /* @__PURE__ */ jsx28("nav", { className: ["ds-TabNav", className].filter(Boolean).join(" "), "aria-label": ariaLabel, style, children: /* @__PURE__ */ jsx28("ul", { className: "ds-TabNavList", role: "tablist", ref: listRef, children: items.map((item) => {
     const active = item.value === value;
     return /* @__PURE__ */ jsx28("li", { className: "ds-TabNavItem", children: /* @__PURE__ */ jsxs16(
       "button",
@@ -1294,7 +1332,7 @@ function InlineEditButton({
 }
 
 // src/design-system/components/Navigation.tsx
-import * as React15 from "react";
+import * as React16 from "react";
 import { Fragment as Fragment2, jsx as jsx31, jsxs as jsxs17 } from "react/jsx-runtime";
 function Navigation({
   items,
@@ -1305,7 +1343,7 @@ function Navigation({
   className,
   style
 }) {
-  const handleSelect = React15.useCallback(
+  const handleSelect = React16.useCallback(
     (item) => {
       var _a;
       if (item.disabled) return;

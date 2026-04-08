@@ -1151,7 +1151,32 @@
   height: 1rem;
 }
 
-.ds-TabNav { border-bottom: 1px solid var(--color-border-default); }
+.ds-TabNav {
+  border-bottom: 1px solid var(--color-border-default);
+  position: relative;
+}
+.ds-TabNav::before,
+.ds-TabNav::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 1px;
+  width: 2.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+.ds-TabNav::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-neutral-bg), transparent);
+}
+.ds-TabNav::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-neutral-bg), transparent);
+}
+.ds-TabNav[data-scroll-start]::before { opacity: 1; }
+.ds-TabNav[data-scroll-end]::after { opacity: 1; }
 .ds-TabNavList {
   list-style: none;
   margin: 0;
@@ -1170,7 +1195,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
-  min-width: 140px;
+  min-width: 100px;
   text-align: left;
   cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
