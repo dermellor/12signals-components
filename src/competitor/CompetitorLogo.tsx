@@ -8,7 +8,7 @@ type Props = {
   size?: number;
 };
 
-export function CompetitorLogo({ name, domain, brandfetchClientId, size = 28 }: Props) {
+export function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }: Props) {
   const [failed, setFailed] = useState(false);
   const src = domain && brandfetchClientId
     ? `https://cdn.brandfetch.io/${domain}/fallback/404/icon.svg?c=${brandfetchClientId}`

@@ -2261,7 +2261,7 @@ function KpiCard({
 // src/competitor/CompetitorLogo.tsx
 import { useState as useState7 } from "react";
 import { jsx as jsx40 } from "react/jsx-runtime";
-function CompetitorLogo({ name, domain, brandfetchClientId, size = 28 }) {
+function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }) {
   const [failed, setFailed] = useState7(false);
   const src = domain && brandfetchClientId ? `https://cdn.brandfetch.io/${domain}/fallback/404/icon.svg?c=${brandfetchClientId}` : void 0;
   if (failed || !src) {
