@@ -14,6 +14,8 @@ type Props = {
   locale?: string;
   /** External link icon component (optional, for source links) */
   externalLinkIcon?: React.ComponentType<{ className?: string }>;
+  /** Hide the period/year below the value */
+  hidePeriod?: boolean;
 };
 
 export function KpiCard({
@@ -22,6 +24,7 @@ export function KpiCard({
   entry,
   locale = "de-DE",
   externalLinkIcon: ExternalLinkIcon,
+  hidePeriod,
 }: Props) {
   const formatted = entry
     ? `${qualifierPrefix(entry.qualifier)}${formatKpiValue(entry.value, entry.unit, locale)}`
@@ -59,7 +62,7 @@ export function KpiCard({
                 {formatted}
               </Text>
             )}
-            {entry.period && (
+            {entry.period && !hidePeriod && (
               <Text size="sm" tone="muted">{entry.period}</Text>
             )}
           </>

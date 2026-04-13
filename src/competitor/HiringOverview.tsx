@@ -122,6 +122,8 @@ type Props = {
   trendDownIcon?: React.ComponentType<{ className?: string }>;
   /** Icon for no change (e.g. lucide Minus) */
   unchangedIcon?: React.ComponentType<{ className?: string }>;
+  /** Hide the period/year below the employees value */
+  hidePeriod?: boolean;
 };
 
 export function HiringOverview({
@@ -135,6 +137,7 @@ export function HiringOverview({
   trendUpIcon: TrendUpIcon,
   trendDownIcon: TrendDownIcon,
   unchangedIcon: UnchangedIcon,
+  hidePeriod,
 }: Props) {
   const segments = segmentsProp ?? (activeJobs ? buildCategorySegments(activeJobs) : []);
   const currentCount = activeJobCount ?? activeJobs?.length ?? 0;
@@ -168,7 +171,7 @@ export function HiringOverview({
                     {qualifierPrefix(employees.qualifier)}
                     {formatKpiValue(employees.value, employees.unit)}
                   </Text>
-                  {employees.period && (
+                  {employees.period && !hidePeriod && (
                     <Text size="sm" tone="muted">{employees.period}</Text>
                   )}
                 </>

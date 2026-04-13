@@ -2230,7 +2230,8 @@ function KpiCard({
   label,
   entry,
   locale = "de-DE",
-  externalLinkIcon: ExternalLinkIcon
+  externalLinkIcon: ExternalLinkIcon,
+  hidePeriod
 }) {
   var _a;
   const formatted = entry ? `${qualifierPrefix(entry.qualifier)}${formatKpiValue(entry.value, entry.unit, locale)}` : null;
@@ -2253,7 +2254,7 @@ function KpiCard({
           ]
         }
       ) }) : /* @__PURE__ */ jsx39(Text, { size: "xl", weight: "bold", children: formatted }),
-      entry.period && /* @__PURE__ */ jsx39(Text, { size: "sm", tone: "muted", children: entry.period })
+      entry.period && !hidePeriod && /* @__PURE__ */ jsx39(Text, { size: "sm", tone: "muted", children: entry.period })
     ] }) : /* @__PURE__ */ jsx39(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
   ] }) });
 }
@@ -2559,7 +2560,8 @@ function HiringOverview({
   rolesIcon: RolesIcon,
   trendUpIcon: TrendUpIcon,
   trendDownIcon: TrendDownIcon,
-  unchangedIcon: UnchangedIcon
+  unchangedIcon: UnchangedIcon,
+  hidePeriod
 }) {
   var _a;
   const segments = segmentsProp != null ? segmentsProp : activeJobs ? buildCategorySegments(activeJobs) : [];
@@ -2584,7 +2586,7 @@ function HiringOverview({
               qualifierPrefix(employees.qualifier),
               formatKpiValue(employees.value, employees.unit)
             ] }),
-            employees.period && /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: employees.period })
+            employees.period && !hidePeriod && /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: employees.period })
           ] }) : /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
         ] }),
         /* @__PURE__ */ jsxs27("div", { children: [
