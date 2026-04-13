@@ -25,7 +25,10 @@ type CardRootProps = React$1.HTMLAttributes<HTMLDivElement> & {
     hover?: "none" | "glow";
 };
 declare function CardRoot({ children, variant, hover, className, ...rest }: CardRootProps): react_jsx_runtime.JSX.Element;
-declare function CardHeader({ children, className, ...rest }: React$1.HTMLAttributes<HTMLDivElement>): react_jsx_runtime.JSX.Element;
+type CardHeaderProps = React$1.HTMLAttributes<HTMLDivElement> & {
+    variant?: "default" | "compact";
+};
+declare function CardHeader({ children, className, variant, ...rest }: CardHeaderProps): react_jsx_runtime.JSX.Element;
 declare function CardContent({ children, className, ...rest }: React$1.HTMLAttributes<HTMLDivElement>): react_jsx_runtime.JSX.Element;
 type CardTitleProps<T extends keyof JSX.IntrinsicElements = "h3"> = {
     as?: T;

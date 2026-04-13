@@ -81,9 +81,9 @@ function CardRoot({ children, variant = "default", hover = "none", className, ..
   const cn = ["ds-Card", className].filter(Boolean).join(" ");
   return /* @__PURE__ */ jsx3(CardNestingContext.Provider, { value: true, children: /* @__PURE__ */ jsx3("div", { ref, className: cn, "data-variant": variant, "data-hover": hover, ...rest, children }) });
 }
-function CardHeader({ children, className, ...rest }) {
+function CardHeader({ children, className, variant = "default", ...rest }) {
   const cn = ["ds-CardHeader", className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ jsx3("div", { className: cn, ...rest, children });
+  return /* @__PURE__ */ jsx3("div", { className: cn, "data-variant": variant, ...rest, children });
 }
 function CardContent({ children, className, ...rest }) {
   const cn = ["ds-CardContent", className].filter(Boolean).join(" ");

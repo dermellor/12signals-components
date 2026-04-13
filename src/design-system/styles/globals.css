@@ -368,8 +368,10 @@
 .ds-Card { background: hsl(var(--card)); color: hsl(var(--card-foreground)); border: 0; box-shadow: var(--shadow-card); border-radius: var(--radius-lg); transition: box-shadow .2s ease, transform .2s ease; }
 .ds-Card[data-variant="gradient"] { background: var(--gradient-card); color: hsl(var(--card-foreground)); border: 0; box-shadow: var(--shadow-card); }
 .ds-CardHeader { padding: var(--space-xl); border-bottom: 1px solid var(--color-border-default); }
+.ds-CardHeader[data-variant="compact"] { padding: var(--space-md) var(--space-xl); }
+.ds-CardHeader[data-variant="compact"] .ds-CardTitle { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: hsl(var(--muted-foreground)); }
 .ds-CardContent { padding: var(--space-xl); }
-.ds-CardTitle { font-size: 1.125rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; }
+.ds-CardTitle { font-size: 1.125rem; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; margin: 0; }
 
 
 /* Card hover variants */

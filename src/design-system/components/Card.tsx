@@ -46,10 +46,14 @@ function CardRoot({ children, variant = "default", hover = "none", className, ..
   );
 }
 
-function CardHeader({ children, className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
+type CardHeaderProps = React.HTMLAttributes<HTMLDivElement> & {
+  variant?: "default" | "compact";
+};
+
+function CardHeader({ children, className, variant = "default", ...rest }: CardHeaderProps) {
   const cn = ["ds-CardHeader", className].filter(Boolean).join(" ");
   return (
-    <div className={cn} {...rest}>{children}</div>
+    <div className={cn} data-variant={variant} {...rest}>{children}</div>
   );
 }
 
