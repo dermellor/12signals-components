@@ -107,6 +107,7 @@ export function getCustomers(snapshot: KpiSnapshot | null): { entry: KpiEntry; k
   if (!snapshot) return null;
   const customers = snapshot.metrics["customers_total"]?.[0];
   const users = snapshot.metrics["users_total"]?.[0];
+  const enterprise = snapshot.metrics["customers_enterprise"]?.[0];
 
   if (users && customers) {
     const ratio = users.value / customers.value;
@@ -118,6 +119,7 @@ export function getCustomers(snapshot: KpiSnapshot | null): { entry: KpiEntry; k
   }
 
   if (customers) return { entry: customers, key: "customers_total" };
+  if (enterprise) return { entry: enterprise, key: "customers_enterprise" };
   return null;
 }
 

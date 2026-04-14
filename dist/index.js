@@ -2087,10 +2087,11 @@ function getEmployees(snapshot) {
   return (_b = (_a = snapshot == null ? void 0 : snapshot.metrics["employees"]) == null ? void 0 : _a[0]) != null ? _b : null;
 }
 function getCustomers(snapshot) {
-  var _a, _b;
+  var _a, _b, _c;
   if (!snapshot) return null;
   const customers = (_a = snapshot.metrics["customers_total"]) == null ? void 0 : _a[0];
   const users = (_b = snapshot.metrics["users_total"]) == null ? void 0 : _b[0];
+  const enterprise = (_c = snapshot.metrics["customers_enterprise"]) == null ? void 0 : _c[0];
   if (users && customers) {
     const ratio = users.value / customers.value;
     if (users.value >= 1e6 || ratio >= 100) {
@@ -2100,6 +2101,7 @@ function getCustomers(snapshot) {
     return { entry: users, key: "users_total" };
   }
   if (customers) return { entry: customers, key: "customers_total" };
+  if (enterprise) return { entry: enterprise, key: "customers_enterprise" };
   return null;
 }
 function getRevenueGrowthYoY(snapshot) {
