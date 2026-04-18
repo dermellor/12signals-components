@@ -6,10 +6,13 @@ import * as lucide_react from 'lucide-react';
 type ButtonProps = {
     variant?: "primary" | "ghost" | "danger" | "accent" | "success" | "link";
     size?: "sm" | "md" | "lg";
+    loading?: boolean;
     iconLeft?: React$1.ReactNode;
     iconRight?: React$1.ReactNode;
-} & React$1.ButtonHTMLAttributes<HTMLButtonElement>;
-declare function Button({ variant, size, iconLeft, iconRight, children, ...rest }: ButtonProps): react_jsx_runtime.JSX.Element;
+} & Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
+    children?: React$1.ReactNode;
+};
+declare function Button({ variant, size, loading, iconLeft, iconRight, children, disabled, ...rest }: ButtonProps): react_jsx_runtime.JSX.Element;
 
 type TextProps<T extends keyof JSX.IntrinsicElements = 'p'> = {
     as?: T;
@@ -73,7 +76,7 @@ declare const Input: React$1.ForwardRefExoticComponent<{
 declare const DateTimeInput: React$1.ForwardRefExoticComponent<{
     size?: "sm" | "md" | "lg";
     invalid?: boolean;
-} & Omit<React$1.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> & React$1.RefAttributes<HTMLInputElement>>;
+} & Omit<React$1.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> & React$1.RefAttributes<HTMLInputElement>>;
 
 type DateTimeModalInputProps = {
     label: string;

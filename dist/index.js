@@ -1,11 +1,14 @@
 // src/design-system/components/Button.tsx
+import { Loader2 } from "lucide-react";
 import { jsx, jsxs } from "react/jsx-runtime";
 function Button({
   variant = "primary",
   size = "md",
+  loading = false,
   iconLeft,
   iconRight,
   children,
+  disabled,
   ...rest
 }) {
   return /* @__PURE__ */ jsxs(
@@ -13,12 +16,15 @@ function Button({
     {
       "data-variant": variant,
       "data-size": size,
+      "data-loading": loading ? "true" : void 0,
       className: "ds-Button",
+      disabled: disabled || loading,
+      "aria-busy": loading || void 0,
       ...rest,
       children: [
-        iconLeft && /* @__PURE__ */ jsx("span", { className: "ds-ButtonIcon", "aria-hidden": true, children: iconLeft }),
+        loading ? /* @__PURE__ */ jsx(Loader2, { "aria-hidden": true, focusable: false, className: "ds-ButtonSpinner" }) : iconLeft ? /* @__PURE__ */ jsx("span", { className: "ds-ButtonIcon", "aria-hidden": true, children: iconLeft }) : null,
         /* @__PURE__ */ jsx("span", { className: "ds-ButtonLabel", children }),
-        iconRight && /* @__PURE__ */ jsx("span", { className: "ds-ButtonIcon", "aria-hidden": true, children: iconRight })
+        !loading && iconRight && /* @__PURE__ */ jsx("span", { className: "ds-ButtonIcon", "aria-hidden": true, children: iconRight })
       ]
     }
   );
@@ -1273,7 +1279,7 @@ function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
 }
 
 // src/design-system/components/ActionIconButton.tsx
-import { Eye, Trash2, Save, Pencil, Loader2, Power, Star } from "lucide-react";
+import { Eye, Trash2, Save, Pencil, Loader2 as Loader22, Power, Star } from "lucide-react";
 import { jsx as jsx29 } from "react/jsx-runtime";
 var actionMeta = {
   view: { label: "Ansehen", Icon: Eye },
@@ -1305,7 +1311,7 @@ function ActionIconButton({
       "aria-busy": loading || void 0,
       title: title != null ? title : label,
       ...rest,
-      children: loading ? /* @__PURE__ */ jsx29(Loader2, { "aria-hidden": true, focusable: false, className: "ds-ActionIconButtonSpinner" }) : /* @__PURE__ */ jsx29(Icon, { "aria-hidden": true, focusable: false })
+      children: loading ? /* @__PURE__ */ jsx29(Loader22, { "aria-hidden": true, focusable: false, className: "ds-ActionIconButtonSpinner" }) : /* @__PURE__ */ jsx29(Icon, { "aria-hidden": true, focusable: false })
     }
   );
 }

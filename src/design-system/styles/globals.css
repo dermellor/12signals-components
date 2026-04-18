@@ -112,6 +112,8 @@
 .ds-Button[data-variant="link"][data-size="sm"],
 .ds-Button[data-variant="link"][data-size="lg"] { height: auto; padding: 0; }
 .ds-Button:disabled { opacity: .6; cursor: not-allowed; }
+.ds-Button[data-loading="true"] { cursor: wait; }
+.ds-ButtonSpinner { animation: ds-spin 0.8s linear infinite; width: 1em; height: 1em; }
 .ds-Button:focus-visible { outline: 2px solid var(--color-primary-bg); outline-offset: 2px; }
 
 .ds-ActionIconButton {
