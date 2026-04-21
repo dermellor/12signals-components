@@ -219,12 +219,13 @@ type ActivityCardProps = {
     extraBadges?: React$1.ReactNode;
     meta?: string;
     description?: React$1.ReactNode;
+    media?: React$1.ReactNode;
     timestamp?: string;
     href?: string;
     ariaLabel?: string;
     hover?: "none" | "glow";
 };
-declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
+declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, media, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
 
 type RichTextProps = React$1.HTMLAttributes<HTMLDivElement> & {
     as?: keyof JSX.IntrinsicElements;

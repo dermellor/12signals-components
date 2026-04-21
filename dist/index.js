@@ -607,6 +607,7 @@ function ActivityCard({
   extraBadges,
   meta,
   description,
+  media,
   timestamp,
   href,
   ariaLabel,
@@ -645,10 +646,13 @@ function ActivityCard({
             badge,
             extraBadges
           ] }),
-          headline && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-headline", children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }) }),
-          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-body", children: [
-            description && /* @__PURE__ */ jsx21("div", { style: { overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
-            timestamp && /* @__PURE__ */ jsx21("div", { style: { marginTop: "var(--space-sm)" }, children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
+          /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-content", "data-has-media": media ? "true" : "false", children: [
+            /* @__PURE__ */ jsxs11("div", { className: "ds-ActivityCard-textcol", children: [
+              headline && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-headline", children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "sm", weight: "medium", children: headline }) }),
+              description && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-description", style: { overflowWrap: "anywhere", wordBreak: "break-word" }, children: /* @__PURE__ */ jsx21(Text, { as: "div", size: "sm", tone: "muted", children: description }) }),
+              timestamp && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-timestamp", children: /* @__PURE__ */ jsx21(Text, { as: "span", size: "xs", tone: "muted", children: timestamp }) })
+            ] }),
+            media && /* @__PURE__ */ jsx21("div", { className: "ds-ActivityCard-media", children: media })
           ] })
         ] }),
         href && /* @__PURE__ */ jsx21(

@@ -54,6 +54,58 @@
   flex-wrap: wrap;
 }
 
+/* ActivityCard content: text column + optional media column (two-column on wide viewports) */
+.ds-ActivityCard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: stretch;
+}
+.ds-ActivityCard-textcol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+.ds-ActivityCard-timestamp {
+  margin-top: var(--space-sm);
+}
+.ds-ActivityCard-description {
+  min-width: 0;
+}
+.ds-ActivityCard-media {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 320px;
+  align-self: flex-start;
+}
+.ds-ActivityCard-media img,
+.ds-ActivityCard-media svg,
+.ds-ActivityCard-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+}
+@media (min-width: 640px) {
+  .ds-ActivityCard-content[data-has-media="true"] {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-lg);
+  }
+  .ds-ActivityCard-content[data-has-media="true"] .ds-ActivityCard-textcol {
+    flex: 1 1 auto;
+  }
+  .ds-ActivityCard-content[data-has-media="true"] .ds-ActivityCard-timestamp {
+    margin-top: auto;
+  }
+  .ds-ActivityCard-content[data-has-media="true"] .ds-ActivityCard-media {
+    width: 240px;
+    max-width: 240px;
+  }
+}
+
 /* Design System Component Styles */
 .ds-Button {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);

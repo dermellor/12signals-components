@@ -15,6 +15,7 @@ type ActivityCardProps = {
   extraBadges?: React.ReactNode;
   meta?: string; // e.g., competitor or domain
   description?: React.ReactNode;
+  media?: React.ReactNode;
   timestamp?: string;
   href?: string;
   ariaLabel?: string;
@@ -33,6 +34,7 @@ export function ActivityCard({
   extraBadges,
   meta,
   description,
+  media,
   timestamp,
   href,
   ariaLabel,
@@ -80,26 +82,30 @@ export function ActivityCard({
           {extraBadges}
         </div>
 
-        {/* Headline */}
-        {headline && (
-          <div className="ds-ActivityCard-headline">
-            <Text as="span" size="sm" weight="medium">{headline}</Text>
+        {/* Body: text column (headline + description + timestamp) + optional media column */}
+        <div className="ds-ActivityCard-content" data-has-media={media ? "true" : "false"}>
+          <div className="ds-ActivityCard-textcol">
+            {headline && (
+              <div className="ds-ActivityCard-headline">
+                <Text as="span" size="sm" weight="medium">{headline}</Text>
+              </div>
+            )}
+            {description && (
+              <div className="ds-ActivityCard-description" style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
+                <Text as="div" size="sm" tone="muted">
+                  {description}
+                </Text>
+              </div>
+            )}
+            {timestamp && (
+              <div className="ds-ActivityCard-timestamp">
+                <Text as="span" size="xs" tone="muted">{timestamp}</Text>
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Body: description + timestamp */}
-        <div className="ds-ActivityCard-body">
-          {description && (
-            <div style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}>
-              <Text as="div" size="sm" tone="muted">
-                {description}
-              </Text>
-            </div>
-          )}
-
-          {timestamp && (
-            <div style={{ marginTop: "var(--space-sm)" }}>
-              <Text as="span" size="xs" tone="muted">{timestamp}</Text>
+          {media && (
+            <div className="ds-ActivityCard-media">
+              {media}
             </div>
           )}
         </div>
