@@ -109,16 +109,29 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
-}
-.ds-ActivityCard-media-crop[data-cropped="true"]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 40%;
-  background: linear-gradient(to bottom, hsl(var(--card) / 0) 0%, hsl(var(--card)) 100%);
-  pointer-events: none;
+  /* Make the truncation explicit instead of implying a continuous fade. */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 82%,
+    95% 85%,
+    89% 82%,
+    83% 85%,
+    77% 82%,
+    71% 85%,
+    65% 82%,
+    59% 85%,
+    53% 82%,
+    47% 85%,
+    41% 82%,
+    35% 85%,
+    29% 82%,
+    23% 85%,
+    17% 82%,
+    11% 85%,
+    5% 82%,
+    0 85%
+  );
 }
 @media (min-width: 640px) {
   .ds-ActivityCard-content[data-has-media="true"] {
@@ -191,8 +204,10 @@
 .ds-Button[data-variant="accent"]:not(:disabled):hover {
   background: color-mix(in oklab, var(--color-accent-bg) 88%, var(--color-neutral-bg));
 }
+.ds-Button[data-size="xs"] { height: 1.75rem; padding: 0 var(--space-xs); font-size: 0.75rem; gap: var(--space-xs); border-radius: var(--radius-sm); }
 .ds-Button[data-size="sm"] { height: 2.25rem; padding: 0 var(--space-sm); }
 .ds-Button[data-size="lg"] { height: 2.75rem; padding: 0 var(--space-xl); }
+.ds-Button[data-variant="link"][data-size="xs"],
 .ds-Button[data-variant="link"][data-size="sm"],
 .ds-Button[data-variant="link"][data-size="lg"] { height: auto; padding: 0; }
 .ds-Button:disabled { opacity: .6; cursor: not-allowed; }
@@ -791,6 +806,96 @@
 .ds-Badge[data-variant="homepage"] { background: hsl(var(--primary) / 0.08); color: hsl(var(--primary-light)); border-color: transparent; }
 .ds-Badge[data-variant="advertising"] { background: hsl(var(--warning) / 0.12); color: hsl(var(--warning)); border-color: transparent; }
 .ds-Badge[data-variant="advertising-outline"] { background: transparent; color: hsl(var(--warning)); border-color: hsl(var(--warning) / 0.35); }
+
+/* FilterBadge — interactive (toggle + remove) filter pill, green palette */
+.ds-FilterBadge {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  line-height: 1;
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.ds-FilterBadge[data-state="active"] {
+  background: hsl(var(--success));
+  border-color: hsl(var(--success));
+  color: hsl(var(--success-foreground, 0 0% 100%));
+}
+.ds-FilterBadge[data-state="inactive"] {
+  background: hsl(var(--background));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+.ds-FilterBadge[data-size="sm"] { font-size: 0.75rem; }
+
+.ds-FilterBadgeToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.45rem 0.9rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ds-FilterBadge[data-size="sm"] .ds-FilterBadgeToggle { padding: 0.3rem 0.7rem; }
+.ds-FilterBadge[data-state="inactive"] .ds-FilterBadgeToggle:hover {
+  background: hsl(var(--success) / 0.08);
+}
+.ds-FilterBadge[data-state="active"] .ds-FilterBadgeToggle:hover {
+  background: hsl(var(--success) / 0.85);
+}
+.ds-FilterBadgeToggle:focus-visible {
+  outline: 2px solid hsl(var(--success) / 0.5);
+  outline-offset: -2px;
+}
+
+.ds-FilterBadgeLabel { white-space: nowrap; }
+
+.ds-FilterBadgeAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5rem;
+  background: transparent;
+  border: none;
+  border-left: 1px solid hsl(var(--border));
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.ds-FilterBadge[data-state="active"] .ds-FilterBadgeAction {
+  border-left-color: hsl(var(--success-foreground, 0 0% 100%) / 0.3);
+}
+.ds-FilterBadgeAction:hover { opacity: 1; }
+.ds-FilterBadge[data-state="inactive"] .ds-FilterBadgeAction:hover {
+  background: hsl(var(--success) / 0.08);
+  color: hsl(var(--success));
+}
+.ds-FilterBadge[data-state="active"] .ds-FilterBadgeAction:hover {
+  background: hsl(var(--success) / 0.85);
+}
+.ds-FilterBadgeAction:focus-visible {
+  outline: 2px solid hsl(var(--success) / 0.5);
+  outline-offset: -2px;
+}
+
+/* "Add filter" variant — dashed outline pill */
+.ds-FilterBadge[data-variant="add"] {
+  background: transparent;
+  border-color: hsl(var(--success) / 0.5);
+  border-style: dashed;
+  color: hsl(var(--success));
+}
+.ds-FilterBadge[data-variant="add"] .ds-FilterBadgeToggle:hover {
+  background: hsl(var(--success) / 0.08);
+}
 
 /* Input */
 .ds-Input { width: 100%; height: 2.5rem; padding: 0 var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); background: hsl(var(--background)); color: hsl(var(--foreground)); font: inherit; font-size: 0.875rem; line-height: 1.4; }

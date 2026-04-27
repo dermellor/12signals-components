@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 
 type ButtonProps = {
   variant?: "primary" | "ghost" | "danger" | "accent" | "success" | "link";
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   loading?: boolean;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
@@ -17,6 +17,7 @@ export function Button({
   iconRight,
   children,
   disabled,
+  className,
   ...rest
 }: ButtonProps) {
   return (
@@ -24,7 +25,7 @@ export function Button({
       data-variant={variant}
       data-size={size}
       data-loading={loading ? "true" : undefined}
-      className="ds-Button"
+      className={["ds-Button", className].filter(Boolean).join(" ")}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}

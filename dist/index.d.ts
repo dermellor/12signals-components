@@ -5,14 +5,14 @@ import * as lucide_react from 'lucide-react';
 
 type ButtonProps = {
     variant?: "primary" | "ghost" | "danger" | "accent" | "success" | "link";
-    size?: "sm" | "md" | "lg";
+    size?: "xs" | "sm" | "md" | "lg";
     loading?: boolean;
     iconLeft?: React$1.ReactNode;
     iconRight?: React$1.ReactNode;
 } & Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
     children?: React$1.ReactNode;
 };
-declare function Button({ variant, size, loading, iconLeft, iconRight, children, disabled, ...rest }: ButtonProps): react_jsx_runtime.JSX.Element;
+declare function Button({ variant, size, loading, iconLeft, iconRight, children, disabled, className, ...rest }: ButtonProps): react_jsx_runtime.JSX.Element;
 
 type TextProps<T extends keyof JSX.IntrinsicElements = 'p'> = {
     as?: T;
@@ -67,6 +67,22 @@ type BadgeProps<T extends keyof JSX.IntrinsicElements = "span"> = {
     size?: "sm" | "md";
 } & React$1.ComponentPropsWithoutRef<T>;
 declare function Badge<T extends keyof JSX.IntrinsicElements = "span">({ as, variant, tone, size, children, ...rest }: BadgeProps<T>): react_jsx_runtime.JSX.Element;
+
+type FilterBadgeProps = {
+    label: React$1.ReactNode;
+    active: boolean;
+    removable?: boolean;
+    onToggle: () => void;
+    onEdit?: () => void;
+    onRemove?: () => void;
+    variant?: "default" | "add";
+    size?: "sm" | "md";
+    toggleAriaLabel?: string;
+    editAriaLabel?: string;
+    removeAriaLabel?: string;
+    children?: React$1.ReactNode;
+};
+declare function FilterBadge({ label, active, removable, onToggle, onEdit, onRemove, variant, size, toggleAriaLabel, editAriaLabel, removeAriaLabel, children, }: FilterBadgeProps): react_jsx_runtime.JSX.Element;
 
 declare const Input: React$1.ForwardRefExoticComponent<{
     size?: "sm" | "md" | "lg";
@@ -737,4 +753,4 @@ type Props = {
 };
 declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, hidePeriod, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };

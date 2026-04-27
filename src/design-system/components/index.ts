@@ -4,6 +4,7 @@ export * from "./Card";
 export * from "./TextField";
 export * from "./Modal";
 export * from "./Badge";
+export * from "./FilterBadge";
 export * from "./Input";
 export * from "./DateTimeInput";
 export * from "./DateTimeModalInput";
