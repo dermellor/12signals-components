@@ -11,6 +11,7 @@ export * from "./DateTimeModalInput";
 export * from "./Select";
 export * from "./SelectMenu";
 export * from "./Table";
+export * from "./MatrixTable";
 export * from "./Tabs";
 export * from "./Alert";
 export * from "./Dialog";

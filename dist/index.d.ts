@@ -111,6 +111,7 @@ declare function DateTimeModalInput({ label, value, onSave, displayValue, emptyL
 
 declare const Select: React$1.ForwardRefExoticComponent<{
     size?: "sm" | "md" | "lg";
+    variant?: "default" | "plain";
     children?: React$1.ReactNode;
 } & React$1.SelectHTMLAttributes<HTMLSelectElement> & React$1.RefAttributes<HTMLSelectElement>>;
 declare const SelectOption: (props: React$1.OptionHTMLAttributes<HTMLOptionElement> & {
@@ -148,6 +149,71 @@ declare const TableCell: React$1.ForwardRefExoticComponent<React$1.TdHTMLAttribu
     sticky?: StickyPosition;
 } & React$1.RefAttributes<HTMLTableCellElement>>;
 declare const TableCaption: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLTableCaptionElement> & React$1.RefAttributes<HTMLTableCaptionElement>>;
+
+type MatrixColumnRole = "dimension" | "control" | "metric" | "action";
+type MatrixAlign = "left" | "center" | "right";
+type MatrixTableShellProps = React$1.HTMLAttributes<HTMLDivElement>;
+declare const MatrixTableShell: React$1.ForwardRefExoticComponent<MatrixTableShellProps & React$1.RefAttributes<HTMLDivElement>>;
+declare const MatrixTableToolbar: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLDivElement> & React$1.RefAttributes<HTMLDivElement>>;
+type MatrixViewControlProps = React$1.HTMLAttributes<HTMLDivElement> & {
+    label: React$1.ReactNode;
+};
+declare function MatrixViewControl({ className, label, children, ...rest }: MatrixViewControlProps): react_jsx_runtime.JSX.Element;
+declare const MatrixTableContainer: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLDivElement> & React$1.RefAttributes<HTMLDivElement>>;
+declare const MatrixTable: React$1.ForwardRefExoticComponent<React$1.TableHTMLAttributes<HTMLTableElement> & React$1.RefAttributes<HTMLTableElement>>;
+declare const MatrixTableHeader: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLTableSectionElement> & React$1.RefAttributes<HTMLTableSectionElement>>;
+declare const MatrixTableBody: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLTableSectionElement> & React$1.RefAttributes<HTMLTableSectionElement>>;
+declare const MatrixTableRow: React$1.ForwardRefExoticComponent<React$1.HTMLAttributes<HTMLTableRowElement> & React$1.RefAttributes<HTMLTableRowElement>>;
+declare const MatrixTableHead: React$1.ForwardRefExoticComponent<React$1.ThHTMLAttributes<HTMLTableCellElement> & {
+    columnRole?: MatrixColumnRole;
+    depth?: number;
+    align?: MatrixAlign;
+    separator?: boolean;
+} & React$1.RefAttributes<HTMLTableCellElement>>;
+declare const MatrixTableCell: React$1.ForwardRefExoticComponent<React$1.TdHTMLAttributes<HTMLTableCellElement> & {
+    columnRole?: MatrixColumnRole;
+    depth?: number;
+    align?: MatrixAlign;
+    separator?: boolean;
+    repeated?: boolean;
+} & React$1.RefAttributes<HTMLTableCellElement>>;
+type MatrixColumnLabelProps = React$1.HTMLAttributes<HTMLDivElement> & {
+    depth?: number;
+};
+declare function MatrixColumnLabel({ className, depth, children, ...rest }: MatrixColumnLabelProps): react_jsx_runtime.JSX.Element;
+type MatrixTableActionProps<T extends React$1.ElementType = "button"> = {
+    as?: T;
+    icon: React$1.ReactNode;
+    label: React$1.ReactNode;
+    className?: string;
+} & Omit<React$1.ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+declare function MatrixTableAction<T extends React$1.ElementType = "button">({ as, icon, label, className, ...rest }: MatrixTableActionProps<T>): react_jsx_runtime.JSX.Element;
+type MatrixDrilldownOption = {
+    value: string;
+    label: React$1.ReactNode;
+    disabled?: boolean;
+};
+type MatrixDrilldownMenuProps = {
+    options: MatrixDrilldownOption[];
+    onValueChange?: (value: string) => void;
+    label: React$1.ReactNode;
+    ariaLabel: string;
+    align?: "left" | "right";
+    disabled?: boolean;
+    className?: string;
+};
+declare function MatrixDrilldownMenu({ options, onValueChange, label, ariaLabel, align, disabled, className, }: MatrixDrilldownMenuProps): react_jsx_runtime.JSX.Element;
+type MatrixDrilldownPathItem = {
+    id: string;
+    label: React$1.ReactNode;
+    value: React$1.ReactNode;
+};
+type MatrixDrilldownPathProps = React$1.HTMLAttributes<HTMLDivElement> & {
+    items: MatrixDrilldownPathItem[];
+    resetLabel: React$1.ReactNode;
+    onReset: () => void;
+};
+declare function MatrixDrilldownPath({ items, resetLabel, onReset, className, ...rest }: MatrixDrilldownPathProps): react_jsx_runtime.JSX.Element;
 
 type TabsRootProps = {
     value?: string;
@@ -753,4 +819,4 @@ type Props = {
 };
 declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, hidePeriod, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, MatrixColumnLabel, MatrixDrilldownMenu, type MatrixDrilldownOption, MatrixDrilldownPath, type MatrixDrilldownPathItem, MatrixTable, MatrixTableAction, MatrixTableBody, MatrixTableCell, MatrixTableContainer, MatrixTableHead, MatrixTableHeader, MatrixTableRow, MatrixTableShell, MatrixTableToolbar, MatrixViewControl, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
