@@ -309,6 +309,34 @@ type ActivityCardProps = {
 };
 declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, media, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
 
+type EntityListSortDirection = "asc" | "desc";
+type EntityListColumn = {
+    key: string;
+    label: React$1.ReactNode;
+    width?: string;
+    headerOffset?: string;
+    sortable?: boolean;
+    align?: "start" | "center" | "end";
+};
+type EntityListHeaderProps = {
+    columns: EntityListColumn[];
+    sortKey?: string;
+    sortDirection?: EntityListSortDirection;
+    onSortChange?: (key: string) => void;
+} & React$1.HTMLAttributes<HTMLDivElement>;
+declare function EntityListHeader({ columns, sortKey, sortDirection, onSortChange, className, style, ...rest }: EntityListHeaderProps): react_jsx_runtime.JSX.Element;
+type EntityListRowProps = {
+    columns: EntityListColumn[];
+    icon?: React$1.ReactNode;
+    title: React$1.ReactNode;
+    cells?: React$1.ReactNode[];
+    trailingIcon?: React$1.ReactNode;
+    ariaLabel?: string;
+    href?: string;
+    renderLink?: (children: React$1.ReactNode, className: string) => React$1.ReactNode;
+} & Omit<React$1.HTMLAttributes<HTMLDivElement>, "title">;
+declare function EntityListRow({ columns, icon, title, cells, trailingIcon, ariaLabel, href, renderLink, className, style, ...rest }: EntityListRowProps): react_jsx_runtime.JSX.Element;
+
 type RichTextProps = React$1.HTMLAttributes<HTMLDivElement> & {
     as?: keyof JSX.IntrinsicElements;
     children?: React$1.ReactNode;
@@ -819,4 +847,4 @@ type Props = {
 };
 declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, hidePeriod, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, MatrixColumnLabel, MatrixDrilldownMenu, type MatrixDrilldownOption, MatrixDrilldownPath, type MatrixDrilldownPathItem, MatrixTable, MatrixTableAction, MatrixTableBody, MatrixTableCell, MatrixTableContainer, MatrixTableHead, MatrixTableHeader, MatrixTableRow, MatrixTableShell, MatrixTableToolbar, MatrixViewControl, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, type EntityListColumn, EntityListHeader, type EntityListHeaderProps, EntityListRow, type EntityListRowProps, type EntityListSortDirection, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, MatrixColumnLabel, MatrixDrilldownMenu, type MatrixDrilldownOption, MatrixDrilldownPath, type MatrixDrilldownPathItem, MatrixTable, MatrixTableAction, MatrixTableBody, MatrixTableCell, MatrixTableContainer, MatrixTableHead, MatrixTableHeader, MatrixTableRow, MatrixTableShell, MatrixTableToolbar, MatrixViewControl, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };

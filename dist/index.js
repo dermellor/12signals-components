@@ -1024,30 +1024,143 @@ function ActivityCard({
   );
 }
 
+// src/design-system/components/EntityListRow.tsx
+import { Fragment as Fragment2, jsx as jsx24, jsxs as jsxs14 } from "react/jsx-runtime";
+function getGridTemplate(columns) {
+  const columnTemplate = columns.length ? columns.map((column) => {
+    var _a;
+    return (_a = column.width) != null ? _a : "minmax(7rem, 1fr)";
+  }).join(" ") : "minmax(0, 1fr)";
+  return `${columnTemplate} 2rem`;
+}
+function getGridStyle(columns, style) {
+  return {
+    "--ds-EntityList-grid-template": getGridTemplate(columns),
+    ...style
+  };
+}
+function EntityListHeader({
+  columns,
+  sortKey,
+  sortDirection = "asc",
+  onSortChange,
+  className,
+  style,
+  ...rest
+}) {
+  return /* @__PURE__ */ jsxs14(
+    "div",
+    {
+      role: "row",
+      className: ["ds-EntityListHeader", className].filter(Boolean).join(" "),
+      style: getGridStyle(columns, style),
+      ...rest,
+      children: [
+        columns.map((column) => {
+          var _a, _b;
+          const isActive = sortKey === column.key;
+          const ariaSort = isActive ? sortDirection === "asc" ? "ascending" : "descending" : "none";
+          return /* @__PURE__ */ jsx24(
+            "div",
+            {
+              role: "columnheader",
+              "aria-sort": ariaSort,
+              className: "ds-EntityListHeader-cell",
+              "data-align": (_a = column.align) != null ? _a : "start",
+              style: { "--ds-EntityListHeader-cell-offset": (_b = column.headerOffset) != null ? _b : "0px" },
+              children: column.sortable && onSortChange ? /* @__PURE__ */ jsxs14(
+                "button",
+                {
+                  type: "button",
+                  className: "ds-EntityListHeader-sortButton",
+                  "data-active": isActive ? "true" : "false",
+                  onClick: () => onSortChange(column.key),
+                  children: [
+                    /* @__PURE__ */ jsx24("span", { children: column.label }),
+                    isActive && /* @__PURE__ */ jsx24("span", { "aria-hidden": "true", className: "ds-EntityListHeader-sortIcon", children: sortDirection === "asc" ? "\u2191" : "\u2193" })
+                  ]
+                }
+              ) : /* @__PURE__ */ jsx24(Text, { as: "span", size: "sm", tone: "muted", weight: "medium", children: column.label })
+            },
+            column.key
+          );
+        }),
+        /* @__PURE__ */ jsx24("div", { "aria-hidden": "true", className: "ds-EntityListHeader-trailing" })
+      ]
+    }
+  );
+}
+function EntityListRow({
+  columns,
+  icon,
+  title,
+  cells = [],
+  trailingIcon,
+  ariaLabel,
+  href,
+  renderLink,
+  className,
+  style,
+  ...rest
+}) {
+  var _a, _b;
+  const content = /* @__PURE__ */ jsxs14(Fragment2, { children: [
+    /* @__PURE__ */ jsxs14("div", { className: "ds-EntityListRow-cell ds-EntityListRow-primary", "data-align": (_b = (_a = columns[0]) == null ? void 0 : _a.align) != null ? _b : "start", children: [
+      icon && /* @__PURE__ */ jsx24("div", { className: "ds-EntityListRow-icon", children: icon }),
+      /* @__PURE__ */ jsx24("div", { className: "ds-EntityListRow-mainContent", children: /* @__PURE__ */ jsx24(Text, { as: "span", size: "md", weight: "semibold", className: "ds-EntityListRow-title", children: title }) })
+    ] }),
+    columns.slice(1).map((column, index) => {
+      var _a2, _b2;
+      return /* @__PURE__ */ jsx24(
+        "div",
+        {
+          className: "ds-EntityListRow-cell",
+          "data-align": (_a2 = column.align) != null ? _a2 : "start",
+          "data-secondary": "true",
+          children: /* @__PURE__ */ jsx24("div", { className: "ds-EntityListRow-cellContent", children: (_b2 = cells[index]) != null ? _b2 : null })
+        },
+        column.key
+      );
+    }),
+    /* @__PURE__ */ jsx24("div", { className: "ds-EntityListRow-trailing", "aria-hidden": "true", children: trailingIcon })
+  ] });
+  const main = /* @__PURE__ */ jsx24(Fragment2, { children: href ? /* @__PURE__ */ jsx24("a", { href, className: "ds-EntityListRow-link", "aria-label": ariaLabel, children: content }) : renderLink ? renderLink(content, "ds-EntityListRow-link") : /* @__PURE__ */ jsx24("div", { className: "ds-EntityListRow-static", children: content }) });
+  return /* @__PURE__ */ jsx24(
+    "div",
+    {
+      ...rest,
+      className: ["ds-EntityListRow", className].filter(Boolean).join(" "),
+      "data-clickable": href || renderLink ? "true" : "false",
+      style: getGridStyle(columns, style),
+      children: main
+    }
+  );
+}
+
 // src/design-system/components/RichText.tsx
-import { jsx as jsx24 } from "react/jsx-runtime";
+import { jsx as jsx25 } from "react/jsx-runtime";
 function RichText({ as, children, ...rest }) {
   const Comp = as || "div";
-  return /* @__PURE__ */ jsx24(Comp, { className: "ds-RichText", ...rest, children });
+  return /* @__PURE__ */ jsx25(Comp, { className: "ds-RichText", ...rest, children });
 }
 
 // src/design-system/components/DevButton.tsx
-import { jsx as jsx25, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx26, jsxs as jsxs15 } from "react/jsx-runtime";
 function DevButton({
   children,
   type = "button",
   ...rest
 }) {
-  return /* @__PURE__ */ jsxs14(
+  return /* @__PURE__ */ jsxs15(
     "button",
     {
       type,
       className: "ds-DevButton",
       ...rest,
       children: [
-        /* @__PURE__ */ jsx25("span", { "aria-hidden": true, children: "[" }),
-        /* @__PURE__ */ jsx25("span", { className: "ds-DevButtonLabel", children }),
-        /* @__PURE__ */ jsx25("span", { "aria-hidden": true, children: "]" })
+        /* @__PURE__ */ jsx26("span", { "aria-hidden": true, children: "[" }),
+        /* @__PURE__ */ jsx26("span", { className: "ds-DevButtonLabel", children }),
+        /* @__PURE__ */ jsx26("span", { "aria-hidden": true, children: "]" })
       ]
     }
   );
@@ -1055,11 +1168,11 @@ function DevButton({
 
 // src/design-system/components/TagField.tsx
 import * as React13 from "react";
-import { jsx as jsx26, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx27, jsxs as jsxs16 } from "react/jsx-runtime";
 function Tag({ children, onRemove, removeAriaLabel }) {
-  return /* @__PURE__ */ jsxs15("span", { className: "ds-Tag", children: [
-    /* @__PURE__ */ jsx26("span", { className: "ds-TagLabel", children }),
-    onRemove && /* @__PURE__ */ jsx26(
+  return /* @__PURE__ */ jsxs16("span", { className: "ds-Tag", children: [
+    /* @__PURE__ */ jsx27("span", { className: "ds-TagLabel", children }),
+    onRemove && /* @__PURE__ */ jsx27(
       "button",
       {
         type: "button",
@@ -1073,9 +1186,9 @@ function Tag({ children, onRemove, removeAriaLabel }) {
 }
 function TagList({ tags, onRemove, emptyLabel }) {
   if (tags.length === 0 && emptyLabel) {
-    return /* @__PURE__ */ jsx26("div", { className: "ds-TagListEmpty", children: emptyLabel });
+    return /* @__PURE__ */ jsx27("div", { className: "ds-TagListEmpty", children: emptyLabel });
   }
-  return /* @__PURE__ */ jsx26("div", { className: "ds-TagList", children: tags.map((tag, index) => /* @__PURE__ */ jsx26(
+  return /* @__PURE__ */ jsx27("div", { className: "ds-TagList", children: tags.map((tag, index) => /* @__PURE__ */ jsx27(
     Tag,
     {
       onRemove: onRemove ? () => onRemove(tag, index) : void 0,
@@ -1140,23 +1253,23 @@ function TagField({
       addTag(inputValue);
     }
   };
-  return /* @__PURE__ */ jsxs15("div", { className: "ds-TagField", children: [
-    /* @__PURE__ */ jsx26("label", { className: "ds-TagFieldLabel", htmlFor: inputId, children: label }),
-    /* @__PURE__ */ jsxs15(
+  return /* @__PURE__ */ jsxs16("div", { className: "ds-TagField", children: [
+    /* @__PURE__ */ jsx27("label", { className: "ds-TagFieldLabel", htmlFor: inputId, children: label }),
+    /* @__PURE__ */ jsxs16(
       "div",
       {
         className: "ds-TagFieldControl",
         "data-disabled": disabled ? "true" : "false",
         "data-invalid": error ? "true" : "false",
         children: [
-          /* @__PURE__ */ jsx26(
+          /* @__PURE__ */ jsx27(
             TagList,
             {
               tags: values,
               onRemove: disabled ? void 0 : (_, index) => removeTag(index)
             }
           ),
-          /* @__PURE__ */ jsx26(
+          /* @__PURE__ */ jsx27(
             "input",
             {
               id: inputId,
@@ -1175,8 +1288,8 @@ function TagField({
         ]
       }
     ),
-    description && /* @__PURE__ */ jsx26("div", { id: descriptionId, className: "ds-TagFieldDescription", children: description }),
-    error && /* @__PURE__ */ jsx26("div", { id: errorId, className: "ds-TagFieldError", role: "alert", children: error })
+    description && /* @__PURE__ */ jsx27("div", { id: descriptionId, className: "ds-TagFieldDescription", children: description }),
+    error && /* @__PURE__ */ jsx27("div", { id: errorId, className: "ds-TagFieldError", role: "alert", children: error })
   ] });
 }
 
@@ -1192,15 +1305,15 @@ import {
 } from "recharts";
 
 // src/design-system/components/Heading.tsx
-import { jsx as jsx27 } from "react/jsx-runtime";
+import { jsx as jsx28 } from "react/jsx-runtime";
 function Heading({ level = 2, className, children, ...rest }) {
   const Comp = `h${level}`;
   const cn = ["ds-Heading", className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ jsx27(Comp, { className: cn, "data-level": level, ...rest, children });
+  return /* @__PURE__ */ jsx28(Comp, { className: cn, "data-level": level, ...rest, children });
 }
 
 // src/design-system/components/BarChart.tsx
-import { jsx as jsx28, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx29, jsxs as jsxs17 } from "react/jsx-runtime";
 var VARIANT_CYCLE = [
   "primary",
   "accent",
@@ -1245,13 +1358,13 @@ var ChartTooltip = ({
     };
   });
   if (entries.length === 0) return null;
-  return /* @__PURE__ */ jsxs16("div", { className: "ds-BarChartTooltip", children: [
-    /* @__PURE__ */ jsx28("div", { className: "ds-BarChartTooltipLabel", children: label }),
-    detail && /* @__PURE__ */ jsx28("div", { className: "ds-BarChartTooltipDetail", children: detail }),
-    /* @__PURE__ */ jsx28("ul", { className: "ds-BarChartTooltipList", children: entries.map((entry) => /* @__PURE__ */ jsxs16("li", { className: "ds-BarChartTooltipItem", children: [
-      /* @__PURE__ */ jsx28("span", { className: "ds-BarChartLegendSwatch", "data-variant": entry.variant, "aria-hidden": true }),
-      /* @__PURE__ */ jsx28("span", { className: "ds-BarChartTooltipName", children: entry.label }),
-      /* @__PURE__ */ jsx28("span", { className: "ds-BarChartTooltipValue", children: valueFormatter(entry.value) })
+  return /* @__PURE__ */ jsxs17("div", { className: "ds-BarChartTooltip", children: [
+    /* @__PURE__ */ jsx29("div", { className: "ds-BarChartTooltipLabel", children: label }),
+    detail && /* @__PURE__ */ jsx29("div", { className: "ds-BarChartTooltipDetail", children: detail }),
+    /* @__PURE__ */ jsx29("ul", { className: "ds-BarChartTooltipList", children: entries.map((entry) => /* @__PURE__ */ jsxs17("li", { className: "ds-BarChartTooltipItem", children: [
+      /* @__PURE__ */ jsx29("span", { className: "ds-BarChartLegendSwatch", "data-variant": entry.variant, "aria-hidden": true }),
+      /* @__PURE__ */ jsx29("span", { className: "ds-BarChartTooltipName", children: entry.label }),
+      /* @__PURE__ */ jsx29("span", { className: "ds-BarChartTooltipValue", children: valueFormatter(entry.value) })
     ] }, `${entry.id}-${entry.label}`)) })
   ] });
 };
@@ -1261,7 +1374,7 @@ var FilteredCursor = (props) => {
   const label = (_a = payload == null ? void 0 : payload[0]) == null ? void 0 : _a.payload;
   const labelStr = label == null ? void 0 : label.label;
   if (!labelStr || !tooltipFilter(labelStr)) return null;
-  return /* @__PURE__ */ jsx28(
+  return /* @__PURE__ */ jsx29(
     "rect",
     {
       x,
@@ -1375,11 +1488,11 @@ function BarChart({
     fill: "hsl(var(--muted-foreground))",
     fontSize: 12
   };
-  return /* @__PURE__ */ jsxs16("figure", { className: "ds-BarChart", role: "group", "aria-label": ariaLabel, children: [
-    /* @__PURE__ */ jsxs16("div", { className: "ds-BarChartGrid", children: [
-      yAxisLabel && /* @__PURE__ */ jsx28(Heading, { level: 3, "aria-hidden": true, children: yAxisLabel }),
-      /* @__PURE__ */ jsx28("div", { className: "ds-BarChartChart", children: /* @__PURE__ */ jsx28(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs16(RCBarChart, { data: chartData, margin: { top: 24, right: 16, left: 0, bottom: 0 }, children: [
-        /* @__PURE__ */ jsx28(
+  return /* @__PURE__ */ jsxs17("figure", { className: "ds-BarChart", role: "group", "aria-label": ariaLabel, children: [
+    /* @__PURE__ */ jsxs17("div", { className: "ds-BarChartGrid", children: [
+      yAxisLabel && /* @__PURE__ */ jsx29(Heading, { level: 3, "aria-hidden": true, children: yAxisLabel }),
+      /* @__PURE__ */ jsx29("div", { className: "ds-BarChartChart", children: /* @__PURE__ */ jsx29(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs17(RCBarChart, { data: chartData, margin: { top: 24, right: 16, left: 0, bottom: 0 }, children: [
+        /* @__PURE__ */ jsx29(
           XAxis,
           {
             dataKey: "label",
@@ -1389,7 +1502,7 @@ function BarChart({
             interval: 0
           }
         ),
-        /* @__PURE__ */ jsx28(
+        /* @__PURE__ */ jsx29(
           YAxis,
           {
             tick: axisTickStyle,
@@ -1399,16 +1512,16 @@ function BarChart({
             width: 32
           }
         ),
-        /* @__PURE__ */ jsx28(
+        /* @__PURE__ */ jsx29(
           Tooltip2,
           {
-            cursor: tooltipFilter ? /* @__PURE__ */ jsx28(FilteredCursor, { tooltipFilter }) : { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" },
-            content: /* @__PURE__ */ jsx28(ChartTooltip, { groups: resolvedGroups, valueFormatter, tooltipFilter })
+            cursor: tooltipFilter ? /* @__PURE__ */ jsx29(FilteredCursor, { tooltipFilter }) : { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" },
+            content: /* @__PURE__ */ jsx29(ChartTooltip, { groups: resolvedGroups, valueFormatter, tooltipFilter })
           }
         ),
         resolvedGroups.map((group, index) => {
           var _a;
-          return /* @__PURE__ */ jsx28(
+          return /* @__PURE__ */ jsx29(
             Bar,
             {
               dataKey: group.id,
@@ -1422,15 +1535,15 @@ function BarChart({
           );
         })
       ] }) }) }),
-      xAxisLabel && /* @__PURE__ */ jsx28("div", { className: "ds-BarChartAxisCaption", "aria-hidden": true, children: xAxisLabel })
+      xAxisLabel && /* @__PURE__ */ jsx29("div", { className: "ds-BarChartAxisCaption", "aria-hidden": true, children: xAxisLabel })
     ] }),
-    /* @__PURE__ */ jsx28("dl", { className: "ds-BarChartTable", children: normalizedData.map(
+    /* @__PURE__ */ jsx29("dl", { className: "ds-BarChartTable", children: normalizedData.map(
       (point, pointIndex) => point.bars.map((bar, barIndex) => {
         var _a;
         const groupMeta = resolvedGroups.find((group) => group.id === bar.id);
-        return /* @__PURE__ */ jsxs16("div", { className: "ds-BarChartTableRow", children: [
-          /* @__PURE__ */ jsx28("dt", { children: `${point.label} \u2013 ${(_a = groupMeta == null ? void 0 : groupMeta.label) != null ? _a : bar.id}` }),
-          /* @__PURE__ */ jsx28("dd", { children: valueFormatter(bar.value) })
+        return /* @__PURE__ */ jsxs17("div", { className: "ds-BarChartTableRow", children: [
+          /* @__PURE__ */ jsx29("dt", { children: `${point.label} \u2013 ${(_a = groupMeta == null ? void 0 : groupMeta.label) != null ? _a : bar.id}` }),
+          /* @__PURE__ */ jsx29("dd", { children: valueFormatter(bar.value) })
         ] }, `table-${point.label}-${bar.id}-${pointIndex}-${barIndex}`);
       })
     ) })
@@ -1446,7 +1559,7 @@ import {
   Cell,
   Tooltip as Tooltip3
 } from "recharts";
-import { jsx as jsx29, jsxs as jsxs17 } from "react/jsx-runtime";
+import { jsx as jsx30, jsxs as jsxs18 } from "react/jsx-runtime";
 var VARIANT_CYCLE2 = [
   "primary",
   "accent",
@@ -1485,13 +1598,13 @@ var ChartTooltip2 = ({
     };
   }).filter((entry) => entry.value > 0);
   if (entries.length === 0) return null;
-  return /* @__PURE__ */ jsxs17("div", { className: "ds-PieChartTooltip", children: [
-    /* @__PURE__ */ jsx29("div", { className: "ds-PieChartTooltipLabel", children: (_a = entries[0]) == null ? void 0 : _a.label }),
-    ((_b = entries[0]) == null ? void 0 : _b.detail) && /* @__PURE__ */ jsx29("div", { className: "ds-PieChartTooltipDetail", children: entries[0].detail }),
-    /* @__PURE__ */ jsx29("ul", { className: "ds-PieChartTooltipList", children: entries.map((entry) => /* @__PURE__ */ jsxs17("li", { className: "ds-PieChartTooltipItem", children: [
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartLegendSwatch", "data-variant": entry.variant, "aria-hidden": true }),
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartTooltipName", children: entry.label }),
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartTooltipValue", children: valueFormatter(entry.value) })
+  return /* @__PURE__ */ jsxs18("div", { className: "ds-PieChartTooltip", children: [
+    /* @__PURE__ */ jsx30("div", { className: "ds-PieChartTooltipLabel", children: (_a = entries[0]) == null ? void 0 : _a.label }),
+    ((_b = entries[0]) == null ? void 0 : _b.detail) && /* @__PURE__ */ jsx30("div", { className: "ds-PieChartTooltipDetail", children: entries[0].detail }),
+    /* @__PURE__ */ jsx30("ul", { className: "ds-PieChartTooltipList", children: entries.map((entry) => /* @__PURE__ */ jsxs18("li", { className: "ds-PieChartTooltipItem", children: [
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartLegendSwatch", "data-variant": entry.variant, "aria-hidden": true }),
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartTooltipName", children: entry.label }),
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartTooltipValue", children: valueFormatter(entry.value) })
     ] }, `${entry.id}-${entry.label}`)) })
   ] });
 };
@@ -1520,10 +1633,10 @@ function PieChart({
   if (slices.length === 0) {
     return null;
   }
-  return /* @__PURE__ */ jsxs17("figure", { className: "ds-PieChart", role: "group", "aria-label": ariaLabel, children: [
-    /* @__PURE__ */ jsxs17("div", { className: variant === "plain" ? "ds-PieChartChart ds-PieChartChart--plain" : "ds-PieChartChart", children: [
-      /* @__PURE__ */ jsx29(ResponsiveContainer2, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs17(RCPieChart, { children: [
-        /* @__PURE__ */ jsx29(
+  return /* @__PURE__ */ jsxs18("figure", { className: "ds-PieChart", role: "group", "aria-label": ariaLabel, children: [
+    /* @__PURE__ */ jsxs18("div", { className: variant === "plain" ? "ds-PieChartChart ds-PieChartChart--plain" : "ds-PieChartChart", children: [
+      /* @__PURE__ */ jsx30(ResponsiveContainer2, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs18(RCPieChart, { children: [
+        /* @__PURE__ */ jsx30(
           Pie,
           {
             data: slices,
@@ -1535,40 +1648,40 @@ function PieChart({
             strokeWidth: 1,
             paddingAngle: 1,
             isAnimationActive: false,
-            children: slices.map((slice) => /* @__PURE__ */ jsx29(Cell, { fill: getVariantColor2(slice.variant) }, slice.id))
+            children: slices.map((slice) => /* @__PURE__ */ jsx30(Cell, { fill: getVariantColor2(slice.variant) }, slice.id))
           }
         ),
-        /* @__PURE__ */ jsx29(
+        /* @__PURE__ */ jsx30(
           Tooltip3,
           {
             cursor: { fill: "transparent" },
             wrapperStyle: { outline: "none" },
-            content: /* @__PURE__ */ jsx29(ChartTooltip2, { valueFormatter })
+            content: /* @__PURE__ */ jsx30(ChartTooltip2, { valueFormatter })
           }
         )
       ] }) }),
-      centerLabel && /* @__PURE__ */ jsxs17("div", { className: "ds-PieChartCenter", children: [
-        /* @__PURE__ */ jsx29("div", { className: "ds-PieChartCenterValue", children: centerLabel.value }),
-        centerLabel.description && /* @__PURE__ */ jsx29("div", { className: "ds-PieChartCenterDescription", children: centerLabel.description })
+      centerLabel && /* @__PURE__ */ jsxs18("div", { className: "ds-PieChartCenter", children: [
+        /* @__PURE__ */ jsx30("div", { className: "ds-PieChartCenterValue", children: centerLabel.value }),
+        centerLabel.description && /* @__PURE__ */ jsx30("div", { className: "ds-PieChartCenterDescription", children: centerLabel.description })
       ] }),
-      !centerLabel && /* @__PURE__ */ jsxs17("div", { className: "ds-PieChartCenter", children: [
-        /* @__PURE__ */ jsx29("div", { className: "ds-PieChartCenterValue", children: valueFormatter(total) }),
-        /* @__PURE__ */ jsx29("div", { className: "ds-PieChartCenterDescription", children: "Total" })
+      !centerLabel && /* @__PURE__ */ jsxs18("div", { className: "ds-PieChartCenter", children: [
+        /* @__PURE__ */ jsx30("div", { className: "ds-PieChartCenterValue", children: valueFormatter(total) }),
+        /* @__PURE__ */ jsx30("div", { className: "ds-PieChartCenterDescription", children: "Total" })
       ] })
     ] }),
-    showLegend && /* @__PURE__ */ jsx29("ul", { className: "ds-PieChartLegend", role: "list", children: slices.map((slice) => /* @__PURE__ */ jsxs17("li", { className: "ds-PieChartLegendItem", children: [
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartLegendSwatch", "data-variant": slice.variant, "aria-hidden": true }),
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartLegendLabel", children: slice.label }),
-      /* @__PURE__ */ jsx29("span", { className: "ds-PieChartLegendValue", children: valueFormatter(slice.value) })
+    showLegend && /* @__PURE__ */ jsx30("ul", { className: "ds-PieChartLegend", role: "list", children: slices.map((slice) => /* @__PURE__ */ jsxs18("li", { className: "ds-PieChartLegendItem", children: [
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartLegendSwatch", "data-variant": slice.variant, "aria-hidden": true }),
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartLegendLabel", children: slice.label }),
+      /* @__PURE__ */ jsx30("span", { className: "ds-PieChartLegendValue", children: valueFormatter(slice.value) })
     ] }, `legend-${slice.id}`)) }),
-    /* @__PURE__ */ jsxs17("dl", { className: "ds-PieChartTable", children: [
-      slices.map((slice) => /* @__PURE__ */ jsxs17("div", { className: "ds-PieChartTableRow", children: [
-        /* @__PURE__ */ jsx29("dt", { children: slice.label }),
-        /* @__PURE__ */ jsx29("dd", { children: valueFormatter(slice.value) })
+    /* @__PURE__ */ jsxs18("dl", { className: "ds-PieChartTable", children: [
+      slices.map((slice) => /* @__PURE__ */ jsxs18("div", { className: "ds-PieChartTableRow", children: [
+        /* @__PURE__ */ jsx30("dt", { children: slice.label }),
+        /* @__PURE__ */ jsx30("dd", { children: valueFormatter(slice.value) })
       ] }, `table-${slice.id}`)),
-      /* @__PURE__ */ jsxs17("div", { className: "ds-PieChartTableRow", children: [
-        /* @__PURE__ */ jsx29("dt", { children: "Total" }),
-        /* @__PURE__ */ jsx29("dd", { children: valueFormatter(total) })
+      /* @__PURE__ */ jsxs18("div", { className: "ds-PieChartTableRow", children: [
+        /* @__PURE__ */ jsx30("dt", { children: "Total" }),
+        /* @__PURE__ */ jsx30("dd", { children: valueFormatter(total) })
       ] })
     ] })
   ] });
@@ -1576,7 +1689,7 @@ function PieChart({
 
 // src/design-system/components/TabNav.tsx
 import * as React16 from "react";
-import { jsx as jsx30, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx31, jsxs as jsxs19 } from "react/jsx-runtime";
 function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
   const listRef = React16.useRef(null);
   React16.useEffect(() => {
@@ -1615,9 +1728,9 @@ function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
       ro.disconnect();
     };
   }, []);
-  return /* @__PURE__ */ jsx30("nav", { className: ["ds-TabNav", className].filter(Boolean).join(" "), "aria-label": ariaLabel, style, children: /* @__PURE__ */ jsx30("ul", { className: "ds-TabNavList", role: "tablist", ref: listRef, children: items.map((item) => {
+  return /* @__PURE__ */ jsx31("nav", { className: ["ds-TabNav", className].filter(Boolean).join(" "), "aria-label": ariaLabel, style, children: /* @__PURE__ */ jsx31("ul", { className: "ds-TabNavList", role: "tablist", ref: listRef, children: items.map((item) => {
     const active = item.value === value;
-    return /* @__PURE__ */ jsx30("li", { className: "ds-TabNavItem", children: /* @__PURE__ */ jsxs18(
+    return /* @__PURE__ */ jsx31("li", { className: "ds-TabNavItem", children: /* @__PURE__ */ jsxs19(
       "button",
       {
         type: "button",
@@ -1627,9 +1740,9 @@ function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
         "data-state": active ? "active" : "inactive",
         onClick: () => onValueChange == null ? void 0 : onValueChange(item.value),
         children: [
-          /* @__PURE__ */ jsx30("span", { className: "ds-TabNavLabel", children: item.label }),
-          item.description && /* @__PURE__ */ jsx30("span", { className: "ds-TabNavDescription", children: item.description }),
-          item.badge && /* @__PURE__ */ jsx30("span", { className: "ds-TabNavBadge", children: item.badge })
+          /* @__PURE__ */ jsx31("span", { className: "ds-TabNavLabel", children: item.label }),
+          item.description && /* @__PURE__ */ jsx31("span", { className: "ds-TabNavDescription", children: item.description }),
+          item.badge && /* @__PURE__ */ jsx31("span", { className: "ds-TabNavBadge", children: item.badge })
         ]
       }
     ) }, item.value);
@@ -1638,7 +1751,7 @@ function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
 
 // src/design-system/components/ActionIconButton.tsx
 import { Eye, Trash2, Save, Pencil, Loader2 as Loader22, Power, Star } from "lucide-react";
-import { jsx as jsx31 } from "react/jsx-runtime";
+import { jsx as jsx32 } from "react/jsx-runtime";
 var actionMeta = {
   view: { label: "Ansehen", Icon: Eye },
   delete: { label: "L\xF6schen", Icon: Trash2 },
@@ -1657,7 +1770,7 @@ function ActionIconButton({
 }) {
   const { Icon, label } = actionMeta[action];
   const resolvedLabel = ariaLabel != null ? ariaLabel : label;
-  return /* @__PURE__ */ jsx31(
+  return /* @__PURE__ */ jsx32(
     "button",
     {
       type: "button",
@@ -1669,20 +1782,20 @@ function ActionIconButton({
       "aria-busy": loading || void 0,
       title: title != null ? title : label,
       ...rest,
-      children: loading ? /* @__PURE__ */ jsx31(Loader22, { "aria-hidden": true, focusable: false, className: "ds-ActionIconButtonSpinner" }) : /* @__PURE__ */ jsx31(Icon, { "aria-hidden": true, focusable: false })
+      children: loading ? /* @__PURE__ */ jsx32(Loader22, { "aria-hidden": true, focusable: false, className: "ds-ActionIconButtonSpinner" }) : /* @__PURE__ */ jsx32(Icon, { "aria-hidden": true, focusable: false })
     }
   );
 }
 
 // src/design-system/components/InlineEditButton.tsx
 import { Pencil as Pencil2 } from "lucide-react";
-import { jsx as jsx32 } from "react/jsx-runtime";
+import { jsx as jsx33 } from "react/jsx-runtime";
 function InlineEditButton({
   "aria-label": ariaLabel,
   title,
   ...rest
 }) {
-  return /* @__PURE__ */ jsx32(
+  return /* @__PURE__ */ jsx33(
     "button",
     {
       type: "button",
@@ -1690,14 +1803,14 @@ function InlineEditButton({
       "aria-label": ariaLabel != null ? ariaLabel : "Bearbeiten",
       title: title != null ? title : "Bearbeiten",
       ...rest,
-      children: /* @__PURE__ */ jsx32(Pencil2, { "aria-hidden": true, focusable: false })
+      children: /* @__PURE__ */ jsx33(Pencil2, { "aria-hidden": true, focusable: false })
     }
   );
 }
 
 // src/design-system/components/Navigation.tsx
 import * as React17 from "react";
-import { Fragment as Fragment2, jsx as jsx33, jsxs as jsxs19 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx34, jsxs as jsxs20 } from "react/jsx-runtime";
 function Navigation({
   items,
   value,
@@ -1716,24 +1829,24 @@ function Navigation({
     },
     [onValueChange]
   );
-  return /* @__PURE__ */ jsx33(
+  return /* @__PURE__ */ jsx34(
     "nav",
     {
       className: ["ds-Navigation", className].filter(Boolean).join(" "),
       "aria-label": ariaLabel,
       "data-orientation": orientation,
       style,
-      children: /* @__PURE__ */ jsx33("ul", { className: "ds-NavigationList", children: items.map((item) => {
+      children: /* @__PURE__ */ jsx34("ul", { className: "ds-NavigationList", children: items.map((item) => {
         const active = item.value === value;
-        const content = /* @__PURE__ */ jsxs19(Fragment2, { children: [
-          item.icon && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
-          /* @__PURE__ */ jsxs19("span", { className: "ds-NavigationText", children: [
-            /* @__PURE__ */ jsx33("span", { className: "ds-NavigationLabel", children: item.label }),
-            item.description && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationDescription", children: item.description })
+        const content = /* @__PURE__ */ jsxs20(Fragment3, { children: [
+          item.icon && /* @__PURE__ */ jsx34("span", { className: "ds-NavigationIcon", "aria-hidden": true, children: item.icon }),
+          /* @__PURE__ */ jsxs20("span", { className: "ds-NavigationText", children: [
+            /* @__PURE__ */ jsx34("span", { className: "ds-NavigationLabel", children: item.label }),
+            item.description && /* @__PURE__ */ jsx34("span", { className: "ds-NavigationDescription", children: item.description })
           ] }),
-          item.badge && /* @__PURE__ */ jsx33("span", { className: "ds-NavigationBadge", children: item.badge })
+          item.badge && /* @__PURE__ */ jsx34("span", { className: "ds-NavigationBadge", children: item.badge })
         ] });
-        return /* @__PURE__ */ jsx33("li", { className: "ds-NavigationItem", children: item.href ? /* @__PURE__ */ jsx33(
+        return /* @__PURE__ */ jsx34("li", { className: "ds-NavigationItem", children: item.href ? /* @__PURE__ */ jsx34(
           "a",
           {
             href: item.href,
@@ -1750,7 +1863,7 @@ function Navigation({
             },
             children: content
           }
-        ) : /* @__PURE__ */ jsx33(
+        ) : /* @__PURE__ */ jsx34(
           "button",
           {
             type: "button",
@@ -1768,7 +1881,7 @@ function Navigation({
 }
 
 // src/design-system/components/NavigationBar.tsx
-import { Fragment as Fragment3, jsx as jsx34, jsxs as jsxs20 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx35, jsxs as jsxs21 } from "react/jsx-runtime";
 function NavigationBar({
   title,
   subtitle,
@@ -1782,191 +1895,102 @@ function NavigationBar({
 }) {
   const showLeadingLeft = leading && leadingPosition === "left";
   const showLeadingRight = leading && leadingPosition === "right";
-  return /* @__PURE__ */ jsxs20("header", { className: ["ds-NavigationBar", className].filter(Boolean).join(" "), ...rest, children: [
-    showLeadingLeft && /* @__PURE__ */ jsx34("div", { className: "ds-NavigationBarLeading", children: leading }),
-    /* @__PURE__ */ jsx34("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs20(Fragment3, { children: [
-      /* @__PURE__ */ jsxs20("div", { className: "ds-NavigationBarBrandContent", children: [
+  return /* @__PURE__ */ jsxs21("header", { className: ["ds-NavigationBar", className].filter(Boolean).join(" "), ...rest, children: [
+    showLeadingLeft && /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBarLeading", children: leading }),
+    /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBarBrand", children: brand ? /* @__PURE__ */ jsxs21(Fragment4, { children: [
+      /* @__PURE__ */ jsxs21("div", { className: "ds-NavigationBarBrandContent", children: [
         brand,
-        brandAccessory && /* @__PURE__ */ jsx34("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
+        brandAccessory && /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBarBrandAccessory", children: brandAccessory })
       ] }),
-      subtitle && /* @__PURE__ */ jsx34(Text, { size: "xs", tone: "muted", children: subtitle })
-    ] }) : /* @__PURE__ */ jsxs20(Fragment3, { children: [
-      title != null && /* @__PURE__ */ jsx34(Text, { as: "div", weight: "semibold", children: title }),
-      subtitle && /* @__PURE__ */ jsx34(Text, { size: "xs", tone: "muted", children: subtitle })
+      subtitle && /* @__PURE__ */ jsx35(Text, { size: "xs", tone: "muted", children: subtitle })
+    ] }) : /* @__PURE__ */ jsxs21(Fragment4, { children: [
+      title != null && /* @__PURE__ */ jsx35(Text, { as: "div", weight: "semibold", children: title }),
+      subtitle && /* @__PURE__ */ jsx35(Text, { size: "xs", tone: "muted", children: subtitle })
     ] }) }),
-    actions && /* @__PURE__ */ jsx34("div", { className: "ds-NavigationBarActions", children: actions }),
-    showLeadingRight && /* @__PURE__ */ jsx34("div", { className: "ds-NavigationBarLeading", children: leading })
+    actions && /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBarActions", children: actions }),
+    showLeadingRight && /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBarLeading", children: leading })
   ] });
 }
 
 // src/design-system/components/NavigationBrand.tsx
-import { Fragment as Fragment4, jsx as jsx35, jsxs as jsxs21 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx36, jsxs as jsxs22 } from "react/jsx-runtime";
 function NavigationBrand({ href, logo, label, className, ...rest }) {
-  const content = /* @__PURE__ */ jsxs21(Fragment4, { children: [
-    logo && /* @__PURE__ */ jsx35("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
-    label && /* @__PURE__ */ jsx35("span", { className: "ds-NavigationBrandLabel", children: label })
+  const content = /* @__PURE__ */ jsxs22(Fragment5, { children: [
+    logo && /* @__PURE__ */ jsx36("span", { className: "ds-NavigationBrandLogo", "aria-hidden": true, children: logo }),
+    label && /* @__PURE__ */ jsx36("span", { className: "ds-NavigationBrandLabel", children: label })
   ] });
-  return /* @__PURE__ */ jsx35("div", { className: ["ds-NavigationBrand", className].filter(Boolean).join(" "), ...rest, children: href ? /* @__PURE__ */ jsx35("a", { className: "ds-NavigationBrandLink", href, children: content }) : /* @__PURE__ */ jsx35("div", { className: "ds-NavigationBrandLink", children: content }) });
+  return /* @__PURE__ */ jsx36("div", { className: ["ds-NavigationBrand", className].filter(Boolean).join(" "), ...rest, children: href ? /* @__PURE__ */ jsx36("a", { className: "ds-NavigationBrandLink", href, children: content }) : /* @__PURE__ */ jsx36("div", { className: "ds-NavigationBrandLink", children: content }) });
 }
 
 // src/design-system/components/NavigationToggle.tsx
-import { jsx as jsx36, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx37, jsxs as jsxs23 } from "react/jsx-runtime";
 function NavigationToggle({ ariaLabel = "Toggle navigation", icon, ...rest }) {
-  return /* @__PURE__ */ jsx36("button", { type: "button", className: "ds-NavigationToggle", "aria-label": ariaLabel, ...rest, children: /* @__PURE__ */ jsx36("span", { className: "ds-NavigationToggleIcon", "aria-hidden": true, children: icon != null ? icon : /* @__PURE__ */ jsxs22("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", children: [
-    /* @__PURE__ */ jsx36("path", { d: "M4 7h16" }),
-    /* @__PURE__ */ jsx36("path", { d: "M4 12h16" }),
-    /* @__PURE__ */ jsx36("path", { d: "M4 17h16" })
+  return /* @__PURE__ */ jsx37("button", { type: "button", className: "ds-NavigationToggle", "aria-label": ariaLabel, ...rest, children: /* @__PURE__ */ jsx37("span", { className: "ds-NavigationToggleIcon", "aria-hidden": true, children: icon != null ? icon : /* @__PURE__ */ jsxs23("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", children: [
+    /* @__PURE__ */ jsx37("path", { d: "M4 7h16" }),
+    /* @__PURE__ */ jsx37("path", { d: "M4 12h16" }),
+    /* @__PURE__ */ jsx37("path", { d: "M4 17h16" })
   ] }) }) });
 }
 
 // src/design-system/components/Logo.tsx
 import { useId as useId4 } from "react";
-import { jsx as jsx37, jsxs as jsxs23 } from "react/jsx-runtime";
+import { jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
 function LogoSvg({ uid, variant, sizeStyle, className, ...rest }) {
   const cls = ["ds-Logo", className].filter(Boolean).join(" ");
   const shared = { xmlns: "http://www.w3.org/2000/svg", className: cls, "data-variant": variant, role: "img", "aria-label": "12signals", style: sizeStyle, ...rest };
   switch (variant) {
     case "inverted":
-      return /* @__PURE__ */ jsxs23("svg", { viewBox: "-9 -9 117 117", ...shared, children: [
-        /* @__PURE__ */ jsxs23("defs", { children: [
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-bg`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "#E838A2" })
+      return /* @__PURE__ */ jsxs24("svg", { viewBox: "-9 -9 117 117", ...shared, children: [
+        /* @__PURE__ */ jsxs24("defs", { children: [
+          /* @__PURE__ */ jsxs24("linearGradient", { id: `${uid}-bg`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
+            /* @__PURE__ */ jsx38("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx38("stop", { offset: "100%", stopColor: "#E838A2" })
           ] }),
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-inv-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.8" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "50%", stopColor: "white", stopOpacity: "0.55" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
+          /* @__PURE__ */ jsxs24("linearGradient", { id: `${uid}-inv-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
+            /* @__PURE__ */ jsx38("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.8" }),
+            /* @__PURE__ */ jsx38("stop", { offset: "50%", stopColor: "white", stopOpacity: "0.55" }),
+            /* @__PURE__ */ jsx38("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
           ] }),
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-inv-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.75" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.4" })
+          /* @__PURE__ */ jsxs24("linearGradient", { id: `${uid}-inv-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
+            /* @__PURE__ */ jsx38("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.75" }),
+            /* @__PURE__ */ jsx38("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.4" })
           ] }),
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-inv-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.85" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
+          /* @__PURE__ */ jsxs24("linearGradient", { id: `${uid}-inv-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
+            /* @__PURE__ */ jsx38("stop", { offset: "0%", stopColor: "white", stopOpacity: "0.85" }),
+            /* @__PURE__ */ jsx38("stop", { offset: "100%", stopColor: "white", stopOpacity: "0.3" })
           ] })
         ] }),
-        /* @__PURE__ */ jsx37("rect", { x: "-9", y: "-9", width: "117", height: "117", rx: "26", ry: "26", fill: `url(#${uid}-bg)` }),
-        /* @__PURE__ */ jsx37("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-inv-arc)`, strokeWidth: "5.5", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx37("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-inv-ring)` }),
-        /* @__PURE__ */ jsxs23("mask", { id: `${uid}-inv-needle`, children: [
-          /* @__PURE__ */ jsx37("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "white", strokeWidth: "5.5", strokeLinecap: "round" }),
-          /* @__PURE__ */ jsx37("circle", { cx: "50", cy: "50", r: "7", fill: "white" })
+        /* @__PURE__ */ jsx38("rect", { x: "-9", y: "-9", width: "117", height: "117", rx: "26", ry: "26", fill: `url(#${uid}-bg)` }),
+        /* @__PURE__ */ jsx38("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-inv-arc)`, strokeWidth: "5.5", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx38("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-inv-ring)` }),
+        /* @__PURE__ */ jsxs24("mask", { id: `${uid}-inv-needle`, children: [
+          /* @__PURE__ */ jsx38("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "white", strokeWidth: "5.5", strokeLinecap: "round" }),
+          /* @__PURE__ */ jsx38("circle", { cx: "50", cy: "50", r: "7", fill: "white" })
         ] }),
-        /* @__PURE__ */ jsx37("rect", { x: "0", y: "0", width: "100", height: "100", fill: `url(#${uid}-inv-main)`, mask: `url(#${uid}-inv-needle)` }),
-        /* @__PURE__ */ jsx37("circle", { cx: "67.0", cy: "20.5", r: "2.8", fill: "white", opacity: "0.8" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "77.8", cy: "30.5", r: "2.8", fill: "white", opacity: "0.7" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "83.5", cy: "44.1", r: "2.8", fill: "white", opacity: "0.65" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "82.8", cy: "58.8", r: "2.8", fill: "white", opacity: "0.5" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "76.0", cy: "71.8", r: "2.8", fill: "white", opacity: "0.4" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "64.3", cy: "80.8", r: "2.8", fill: "white", opacity: "0.35" })
+        /* @__PURE__ */ jsx38("rect", { x: "0", y: "0", width: "100", height: "100", fill: `url(#${uid}-inv-main)`, mask: `url(#${uid}-inv-needle)` }),
+        /* @__PURE__ */ jsx38("circle", { cx: "67.0", cy: "20.5", r: "2.8", fill: "white", opacity: "0.8" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "77.8", cy: "30.5", r: "2.8", fill: "white", opacity: "0.7" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "83.5", cy: "44.1", r: "2.8", fill: "white", opacity: "0.65" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "82.8", cy: "58.8", r: "2.8", fill: "white", opacity: "0.5" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "76.0", cy: "71.8", r: "2.8", fill: "white", opacity: "0.4" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "64.3", cy: "80.8", r: "2.8", fill: "white", opacity: "0.35" })
       ] });
     case "monochrome":
-      return /* @__PURE__ */ jsxs23("svg", { viewBox: "8 10 82 80", ...shared, children: [
-        /* @__PURE__ */ jsx37("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx37("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: "#1A1C1E" }),
-        /* @__PURE__ */ jsx37("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "round" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "50", cy: "50", r: "7", fill: "#1A1C1E" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#333333" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#555555" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#777777" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#999999" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#BBBBBB" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#DDDDDD" })
+      return /* @__PURE__ */ jsxs24("svg", { viewBox: "8 10 82 80", ...shared, children: [
+        /* @__PURE__ */ jsx38("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx38("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: "#1A1C1E" }),
+        /* @__PURE__ */ jsx38("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: "#1A1C1E", strokeWidth: "6", strokeLinecap: "round" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "50", cy: "50", r: "7", fill: "#1A1C1E" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#333333" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#555555" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#777777" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#999999" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#BBBBBB" }),
+        /* @__PURE__ */ jsx38("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#DDDDDD" })
       ] });
     // "default" = V2 Gradient Flow
     default:
-      return /* @__PURE__ */ jsxs23("svg", { viewBox: "8 10 82 80", ...shared, children: [
-        /* @__PURE__ */ jsxs23("defs", { children: [
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "#E838A2" })
-          ] }),
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "#441B67" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "50%", stopColor: "#7D3BA3" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "#E838A2" })
-          ] }),
-          /* @__PURE__ */ jsxs23("linearGradient", { id: `${uid}-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
-            /* @__PURE__ */ jsx37("stop", { offset: "0%", stopColor: "#5C2580" }),
-            /* @__PURE__ */ jsx37("stop", { offset: "100%", stopColor: "#C835A5" })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsx37("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
-        /* @__PURE__ */ jsx37("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
-        /* @__PURE__ */ jsx37("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
-        /* @__PURE__ */ jsx37("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
-        /* @__PURE__ */ jsx37("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" })
-      ] });
-  }
-}
-function Logo({ variant = "default", size = 36, sprite, className, style, ...rest }) {
-  const reactId = useId4();
-  const uid = reactId.replace(/:/g, "");
-  const sizeStyle = { width: size, height: size, ...style };
-  const cls = ["ds-Logo", className].filter(Boolean).join(" ");
-  if (sprite) {
-    return /* @__PURE__ */ jsx37(
-      "svg",
-      {
-        xmlns: "http://www.w3.org/2000/svg",
-        className: cls,
-        "data-variant": variant,
-        role: "img",
-        "aria-label": "12signals",
-        style: sizeStyle,
-        ...rest,
-        children: /* @__PURE__ */ jsx37("use", { href: `${sprite}#logo-${variant}`, width: "100%", height: "100%" })
-      }
-    );
-  }
-  return /* @__PURE__ */ jsx37(LogoSvg, { uid, variant, sizeStyle, className, ...rest });
-}
-var LOGO_VARIANTS = [
-  { value: "default", label: "Gradient Flow" },
-  { value: "inverted", label: "Inverted" },
-  { value: "monochrome", label: "Monochrome" }
-];
-
-// src/design-system/components/Wordmark.tsx
-import { useId as useId5 } from "react";
-import { jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
-function Wordmark({ height = 36, className, sprite, style, ...rest }) {
-  const reactId = useId5();
-  const uid = reactId.replace(/:/g, "");
-  const cls = ["ds-Wordmark", className].filter(Boolean).join(" ");
-  if (sprite) {
-    return /* @__PURE__ */ jsx38(
-      "svg",
-      {
-        viewBox: "0 0 396 100",
-        xmlns: "http://www.w3.org/2000/svg",
-        className: cls,
-        role: "img",
-        "aria-label": "12signals",
-        style: { height, width: "auto", ...style },
-        ...rest,
-        children: /* @__PURE__ */ jsx38("use", { href: `${sprite}#wordmark`, width: "396", height: "100" })
-      }
-    );
-  }
-  return /* @__PURE__ */ jsxs24(
-    "svg",
-    {
-      viewBox: "0 0 396 100",
-      xmlns: "http://www.w3.org/2000/svg",
-      className: cls,
-      role: "img",
-      "aria-label": "12signals",
-      style: { height, width: "auto", ...style },
-      ...rest,
-      children: [
+      return /* @__PURE__ */ jsxs24("svg", { viewBox: "8 10 82 80", ...shared, children: [
         /* @__PURE__ */ jsxs24("defs", { children: [
           /* @__PURE__ */ jsxs24("linearGradient", { id: `${uid}-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
             /* @__PURE__ */ jsx38("stop", { offset: "0%", stopColor: "#441B67" }),
@@ -1991,17 +2015,106 @@ function Wordmark({ height = 36, className, sprite, style, ...rest }) {
         /* @__PURE__ */ jsx38("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
         /* @__PURE__ */ jsx38("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
         /* @__PURE__ */ jsx38("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
-        /* @__PURE__ */ jsx38("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" }),
-        /* @__PURE__ */ jsxs24("g", { style: { fill: "hsl(var(--primary))" }, children: [
-          /* @__PURE__ */ jsx38("path", { d: "M192 0H288V700H213L33 525V405L192 559Z", transform: "translate(105.00,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M50 0H523V90H162L349 263C430 338 513 412 513 523C513 643 412 710 292 710C158 710 58 625 57 491H157C157 568 210 625 287 625H297C363 625 415 584 415 518C415 432 338 380 276 321L50 106Z", transform: "translate(130.90,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(170.38,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M75 0H170V500H75ZM70 590H175V700H70Z", transform: "translate(203.84,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M268 -220C423 -220 513 -125 513 0V500H418V430C398 470 343 510 268 510C150 510 46 430 46 255C46 80 153 0 268 0C343 0 393 40 418 80V10C418 -95 358 -140 273 -140H263C195 -140 141 -115 131 -65H36C46 -155 128 -220 268 -220ZM141 255C141 380 206 430 277 430H285C354 430 418 365 418 255C418 145 349 80 280 80H272C201 80 141 130 141 255Z", transform: "translate(220.29,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M75 0H170V280C170 375 235 430 306 430H314C385 430 415 385 415 315V0H510V335C510 440 445 510 330 510C250 510 200 475 170 430V500H75Z", transform: "translate(260.75,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M210 -10C290 -10 350 35 370 80C370 75 370 25 375 0H465C460 35 460 80 460 110V320C460 422 390 510 257 510C144 510 61 447 55 355H150C156 405 201 430 253 430H261C325 430 365 390 365 320V304L227 293C146 286 45 252 45 138C45 53 115 -10 210 -10ZM140 142C140 188 182 216 240 221L365 231V180C365 120 290 70 229 70H221C174 70 140 101 140 142Z", transform: "translate(300.65,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M75 0H170V700H75Z", transform: "translate(337.05,74.50) scale(0.070000,-0.070000)" }),
-          /* @__PURE__ */ jsx38("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(353.50,74.50) scale(0.070000,-0.070000)" })
+        /* @__PURE__ */ jsx38("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" })
+      ] });
+  }
+}
+function Logo({ variant = "default", size = 36, sprite, className, style, ...rest }) {
+  const reactId = useId4();
+  const uid = reactId.replace(/:/g, "");
+  const sizeStyle = { width: size, height: size, ...style };
+  const cls = ["ds-Logo", className].filter(Boolean).join(" ");
+  if (sprite) {
+    return /* @__PURE__ */ jsx38(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        className: cls,
+        "data-variant": variant,
+        role: "img",
+        "aria-label": "12signals",
+        style: sizeStyle,
+        ...rest,
+        children: /* @__PURE__ */ jsx38("use", { href: `${sprite}#logo-${variant}`, width: "100%", height: "100%" })
+      }
+    );
+  }
+  return /* @__PURE__ */ jsx38(LogoSvg, { uid, variant, sizeStyle, className, ...rest });
+}
+var LOGO_VARIANTS = [
+  { value: "default", label: "Gradient Flow" },
+  { value: "inverted", label: "Inverted" },
+  { value: "monochrome", label: "Monochrome" }
+];
+
+// src/design-system/components/Wordmark.tsx
+import { useId as useId5 } from "react";
+import { jsx as jsx39, jsxs as jsxs25 } from "react/jsx-runtime";
+function Wordmark({ height = 36, className, sprite, style, ...rest }) {
+  const reactId = useId5();
+  const uid = reactId.replace(/:/g, "");
+  const cls = ["ds-Wordmark", className].filter(Boolean).join(" ");
+  if (sprite) {
+    return /* @__PURE__ */ jsx39(
+      "svg",
+      {
+        viewBox: "0 0 396 100",
+        xmlns: "http://www.w3.org/2000/svg",
+        className: cls,
+        role: "img",
+        "aria-label": "12signals",
+        style: { height, width: "auto", ...style },
+        ...rest,
+        children: /* @__PURE__ */ jsx39("use", { href: `${sprite}#wordmark`, width: "396", height: "100" })
+      }
+    );
+  }
+  return /* @__PURE__ */ jsxs25(
+    "svg",
+    {
+      viewBox: "0 0 396 100",
+      xmlns: "http://www.w3.org/2000/svg",
+      className: cls,
+      role: "img",
+      "aria-label": "12signals",
+      style: { height, width: "auto", ...style },
+      ...rest,
+      children: [
+        /* @__PURE__ */ jsxs25("defs", { children: [
+          /* @__PURE__ */ jsxs25("linearGradient", { id: `${uid}-main`, gradientUnits: "userSpaceOnUse", x1: "42.6", y1: "53.1", x2: "82.8", y2: "36.4", children: [
+            /* @__PURE__ */ jsx39("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx39("stop", { offset: "100%", stopColor: "#E838A2" })
+          ] }),
+          /* @__PURE__ */ jsxs25("linearGradient", { id: `${uid}-arc`, x1: "30%", y1: "100%", x2: "70%", y2: "0%", children: [
+            /* @__PURE__ */ jsx39("stop", { offset: "0%", stopColor: "#441B67" }),
+            /* @__PURE__ */ jsx39("stop", { offset: "50%", stopColor: "#7D3BA3" }),
+            /* @__PURE__ */ jsx39("stop", { offset: "100%", stopColor: "#E838A2" })
+          ] }),
+          /* @__PURE__ */ jsxs25("linearGradient", { id: `${uid}-ring`, x1: "0%", y1: "0%", x2: "100%", y2: "100%", children: [
+            /* @__PURE__ */ jsx39("stop", { offset: "0%", stopColor: "#5C2580" }),
+            /* @__PURE__ */ jsx39("stop", { offset: "100%", stopColor: "#C835A5" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsx39("path", { d: "M 56.5 16.6 A 34 34 0 1 0 54.1 83.8", fill: "none", stroke: `url(#${uid}-arc)`, strokeWidth: "6", strokeLinecap: "butt" }),
+        /* @__PURE__ */ jsx39("path", { d: "M 66.6 35.5 A 22 22 0 1 0 71.9 48.5 L 66.0 51.0 A 16 16 0 1 1 60.6 38.0 Z", fill: `url(#${uid}-ring)` }),
+        /* @__PURE__ */ jsx39("line", { x1: "50", y1: "50", x2: "82.8", y2: "36.4", stroke: `url(#${uid}-main)`, strokeWidth: "6", strokeLinecap: "round" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "50", cy: "50", r: "7", fill: `url(#${uid}-main)` }),
+        /* @__PURE__ */ jsx39("circle", { cx: "67.0", cy: "20.5", r: "3", fill: "#441B67" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "77.8", cy: "30.5", r: "3", fill: "#5C2580" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "83.5", cy: "44.1", r: "3", fill: "#7D3BA3" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "82.8", cy: "58.8", r: "3", fill: "#A832A8" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "76.0", cy: "71.8", r: "3", fill: "#C835A5" }),
+        /* @__PURE__ */ jsx39("circle", { cx: "64.3", cy: "80.8", r: "3", fill: "#E838A2" }),
+        /* @__PURE__ */ jsxs25("g", { style: { fill: "hsl(var(--primary))" }, children: [
+          /* @__PURE__ */ jsx39("path", { d: "M192 0H288V700H213L33 525V405L192 559Z", transform: "translate(105.00,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M50 0H523V90H162L349 263C430 338 513 412 513 523C513 643 412 710 292 710C158 710 58 625 57 491H157C157 568 210 625 287 625H297C363 625 415 584 415 518C415 432 338 380 276 321L50 106Z", transform: "translate(130.90,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(170.38,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M75 0H170V500H75ZM70 590H175V700H70Z", transform: "translate(203.84,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M268 -220C423 -220 513 -125 513 0V500H418V430C398 470 343 510 268 510C150 510 46 430 46 255C46 80 153 0 268 0C343 0 393 40 418 80V10C418 -95 358 -140 273 -140H263C195 -140 141 -115 131 -65H36C46 -155 128 -220 268 -220ZM141 255C141 380 206 430 277 430H285C354 430 418 365 418 255C418 145 349 80 280 80H272C201 80 141 130 141 255Z", transform: "translate(220.29,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M75 0H170V280C170 375 235 430 306 430H314C385 430 415 385 415 315V0H510V335C510 440 445 510 330 510C250 510 200 475 170 430V500H75Z", transform: "translate(260.75,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M210 -10C290 -10 350 35 370 80C370 75 370 25 375 0H465C460 35 460 80 460 110V320C460 422 390 510 257 510C144 510 61 447 55 355H150C156 405 201 430 253 430H261C325 430 365 390 365 320V304L227 293C146 286 45 252 45 138C45 53 115 -10 210 -10ZM140 142C140 188 182 216 240 221L365 231V180C365 120 290 70 229 70H221C174 70 140 101 140 142Z", transform: "translate(300.65,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M75 0H170V700H75Z", transform: "translate(337.05,74.50) scale(0.070000,-0.070000)" }),
+          /* @__PURE__ */ jsx39("path", { d: "M242 -10C358 -10 439 50 439 140C439 230 377 271 301 286L222 302C172 312 152 331 152 366C152 401 187 430 243 430H251C316 430 344 390 349 345H444C444 440 377 510 246 510C146 510 57 456 57 356C57 271 122 229 203 213L276 199C326 189 344 167 344 135C344 95 303 70 251 70H243C184 70 137 95 132 155H37C37 60 109 -10 242 -10Z", transform: "translate(353.50,74.50) scale(0.070000,-0.070000)" })
         ] })
       ]
     }
@@ -2009,19 +2122,19 @@ function Wordmark({ height = 36, className, sprite, style, ...rest }) {
 }
 
 // src/design-system/components/Breadcrumb.tsx
-import { jsx as jsx39, jsxs as jsxs25 } from "react/jsx-runtime";
+import { jsx as jsx40, jsxs as jsxs26 } from "react/jsx-runtime";
 function Breadcrumb({ items, renderLink, className, style }) {
-  return /* @__PURE__ */ jsx39(
+  return /* @__PURE__ */ jsx40(
     "nav",
     {
       "aria-label": "Breadcrumb",
       className: ["ds-Breadcrumb", className].filter(Boolean).join(" "),
       style,
-      children: /* @__PURE__ */ jsx39("ol", { className: "ds-BreadcrumbList", children: items.map((item, i) => {
+      children: /* @__PURE__ */ jsx40("ol", { className: "ds-BreadcrumbList", children: items.map((item, i) => {
         const isLast = i === items.length - 1;
-        return /* @__PURE__ */ jsxs25("li", { className: "ds-BreadcrumbItem", children: [
-          item.href && !isLast ? renderLink ? /* @__PURE__ */ jsx39("span", { className: "ds-BreadcrumbLink", children: renderLink(item.href, item.label) }) : /* @__PURE__ */ jsx39("a", { className: "ds-BreadcrumbLink", href: item.href, children: item.label }) : /* @__PURE__ */ jsx39("span", { className: "ds-BreadcrumbCurrent", "aria-current": isLast ? "page" : void 0, children: item.label }),
-          !isLast && /* @__PURE__ */ jsx39("span", { className: "ds-BreadcrumbSeparator", "aria-hidden": "true", children: "/" })
+        return /* @__PURE__ */ jsxs26("li", { className: "ds-BreadcrumbItem", children: [
+          item.href && !isLast ? renderLink ? /* @__PURE__ */ jsx40("span", { className: "ds-BreadcrumbLink", children: renderLink(item.href, item.label) }) : /* @__PURE__ */ jsx40("a", { className: "ds-BreadcrumbLink", href: item.href, children: item.label }) : /* @__PURE__ */ jsx40("span", { className: "ds-BreadcrumbCurrent", "aria-current": isLast ? "page" : void 0, children: item.label }),
+          !isLast && /* @__PURE__ */ jsx40("span", { className: "ds-BreadcrumbSeparator", "aria-hidden": "true", children: "/" })
         ] }, i);
       }) })
     }
@@ -2111,7 +2224,7 @@ function detectABTestGroups(ranges) {
 }
 
 // src/competitor/ClaimTimeline.tsx
-import { Fragment as Fragment5, jsx as jsx40, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx41, jsxs as jsxs27 } from "react/jsx-runtime";
 function ClaimTimeline({
   claimRanges,
   loading = false,
@@ -2121,16 +2234,16 @@ function ClaimTimeline({
   loadingIcon
 }) {
   if (loading) {
-    return /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-2 text-muted-foreground", children: [
+    return /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-2 text-muted-foreground", children: [
       loadingIcon,
       " Lade Positionierung\u2026"
     ] });
   }
   if (error) {
-    return /* @__PURE__ */ jsx40(Text, { size: "sm", className: "text-destructive", children: "Konnte Positionierung nicht laden." });
+    return /* @__PURE__ */ jsx41(Text, { size: "sm", className: "text-destructive", children: "Konnte Positionierung nicht laden." });
   }
   if (claimRanges.length === 0) {
-    return /* @__PURE__ */ jsx40(Text, { size: "sm", tone: "muted", children: "Keine Claims gefunden." });
+    return /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: "Keine Claims gefunden." });
   }
   const ranges = [...claimRanges].sort(
     (a, b) => new Date(a.from).getTime() - new Date(b.from).getTime()
@@ -2187,20 +2300,20 @@ function ClaimTimeline({
   };
   const timelineEntries = detectABTestGroups(ranges);
   const entryMinHeight = (entry) => entry.kind === "abtest" ? Math.max(48, 28 + entry.variants.length * 24) : 48;
-  const renderMobile = () => /* @__PURE__ */ jsx40("div", { className: "ds-claim-timeline-mobile flex flex-col gap-3", children: timelineEntries.map((entry, idx) => {
+  const renderMobile = () => /* @__PURE__ */ jsx41("div", { className: "ds-claim-timeline-mobile flex flex-col gap-3", children: timelineEntries.map((entry, idx) => {
     if (entry.kind === "normal") {
       const r = entry.range;
       const left2 = percent(r.from);
       const rightPt2 = r.to ? percent(r.to) : 100;
       const width2 = Math.max(2, rightPt2 - left2);
-      return /* @__PURE__ */ jsxs26("div", { className: "border-b border-border/40 pb-3 last:border-b-0 last:pb-0", children: [
-        /* @__PURE__ */ jsx40("div", { className: "text-sm font-medium mb-1", children: r.claim }),
-        /* @__PURE__ */ jsxs26("div", { className: "text-xs text-muted-foreground mb-2", children: [
+      return /* @__PURE__ */ jsxs27("div", { className: "border-b border-border/40 pb-3 last:border-b-0 last:pb-0", children: [
+        /* @__PURE__ */ jsx41("div", { className: "text-sm font-medium mb-1", children: r.claim }),
+        /* @__PURE__ */ jsxs27("div", { className: "text-xs text-muted-foreground mb-2", children: [
           fmtShort(new Date(r.from)),
           " \u2013 ",
           r.to ? fmtShort(new Date(r.to)) : "today"
         ] }),
-        /* @__PURE__ */ jsx40("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx40(
+        /* @__PURE__ */ jsx41("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx41(
           "div",
           {
             className: "absolute top-0 bottom-0 rounded border",
@@ -2212,29 +2325,29 @@ function ClaimTimeline({
     const left = percent(entry.from);
     const rightPt = entry.to ? percent(entry.to) : 100;
     const width = Math.max(2, rightPt - left);
-    return /* @__PURE__ */ jsxs26(
+    return /* @__PURE__ */ jsxs27(
       "div",
       {
         className: "border-b border-border/40 pb-3 last:border-b-0 last:pb-0 border-l-2 pl-2",
         style: { borderLeftColor: "hsl(var(--accent) / 0.5)" },
         children: [
-          /* @__PURE__ */ jsx40(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
-          entry.variants.map((v, vi) => /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-1.5 mt-1", children: [
-            /* @__PURE__ */ jsx40(
+          /* @__PURE__ */ jsx41(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
+          entry.variants.map((v, vi) => /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-1.5 mt-1", children: [
+            /* @__PURE__ */ jsx41(
               "span",
               {
                 className: "inline-block w-2.5 h-2.5 rounded-full flex-shrink-0",
                 style: { background: AB_TEST_COLORS[vi % AB_TEST_COLORS.length].border }
               }
             ),
-            /* @__PURE__ */ jsx40("span", { className: "text-xs text-muted-foreground", children: v.displayClaim })
+            /* @__PURE__ */ jsx41("span", { className: "text-xs text-muted-foreground", children: v.displayClaim })
           ] }, v.key)),
-          /* @__PURE__ */ jsxs26("div", { className: "text-xs text-muted-foreground mt-1 mb-2", children: [
+          /* @__PURE__ */ jsxs27("div", { className: "text-xs text-muted-foreground mt-1 mb-2", children: [
             fmtShort(new Date(entry.from)),
             " \u2013 ",
             entry.to ? fmtShort(new Date(entry.to)) : "today"
           ] }),
-          /* @__PURE__ */ jsx40("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx40(
+          /* @__PURE__ */ jsx41("div", { className: "relative h-5 rounded overflow-hidden", style: { background: "hsl(var(--border) / 0.3)" }, children: /* @__PURE__ */ jsx41(
             "div",
             {
               className: "absolute top-0 bottom-0 rounded border",
@@ -2252,9 +2365,9 @@ function ClaimTimeline({
     );
   }) });
   const lineColor = "hsl(var(--foreground) / 0.2)";
-  const renderDesktop = () => /* @__PURE__ */ jsx40("div", { className: "ds-claim-timeline-desktop", style: { "--tl-line": lineColor }, children: /* @__PURE__ */ jsxs26("div", { className: "grid grid-cols-[1fr_4fr] gap-x-4 items-center", children: [
-    /* @__PURE__ */ jsx40("div", {}),
-    /* @__PURE__ */ jsx40("div", { className: "relative h-6 text-xs text-muted-foreground", children: ticks.map((t, i) => /* @__PURE__ */ jsx40(
+  const renderDesktop = () => /* @__PURE__ */ jsx41("div", { className: "ds-claim-timeline-desktop", style: { "--tl-line": lineColor }, children: /* @__PURE__ */ jsxs27("div", { className: "grid grid-cols-[1fr_4fr] gap-x-4 items-center", children: [
+    /* @__PURE__ */ jsx41("div", {}),
+    /* @__PURE__ */ jsx41("div", { className: "relative h-6 text-xs text-muted-foreground", children: ticks.map((t, i) => /* @__PURE__ */ jsx41(
       "span",
       {
         className: "absolute -translate-x-1/2 top-0 whitespace-nowrap",
@@ -2263,18 +2376,18 @@ function ClaimTimeline({
       },
       i
     )) }),
-    /* @__PURE__ */ jsx40("div", { children: timelineEntries.map((entry, idx) => {
+    /* @__PURE__ */ jsx41("div", { children: timelineEntries.map((entry, idx) => {
       const isLast = idx === timelineEntries.length - 1;
       const rowBorder = isLast ? void 0 : "1px solid var(--tl-line)";
-      return entry.kind === "normal" ? /* @__PURE__ */ jsx40(
+      return entry.kind === "normal" ? /* @__PURE__ */ jsx41(
         "div",
         {
           className: "flex items-center h-12 pr-2",
           style: { borderBottom: rowBorder },
-          children: /* @__PURE__ */ jsx40("div", { className: "text-sm font-medium truncate", children: entry.range.claim })
+          children: /* @__PURE__ */ jsx41("div", { className: "text-sm font-medium truncate", children: entry.range.claim })
         },
         `left-${idx}`
-      ) : /* @__PURE__ */ jsxs26(
+      ) : /* @__PURE__ */ jsxs27(
         "div",
         {
           className: "flex flex-col justify-center gap-1 py-2 pr-2 border-l-2",
@@ -2285,9 +2398,9 @@ function ClaimTimeline({
             minHeight: entryMinHeight(entry)
           },
           children: [
-            /* @__PURE__ */ jsx40(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
-            entry.variants.map((v, vi) => /* @__PURE__ */ jsxs26("div", { className: "flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsx40(
+            /* @__PURE__ */ jsx41(Badge, { variant: "accent", tone: "subtle", size: "sm", children: "A/B Test" }),
+            entry.variants.map((v, vi) => /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-1.5", children: [
+              /* @__PURE__ */ jsx41(
                 "span",
                 {
                   className: "inline-block w-2.5 h-2.5 rounded-full flex-shrink-0",
@@ -2297,15 +2410,15 @@ function ClaimTimeline({
                   }
                 }
               ),
-              /* @__PURE__ */ jsx40("span", { className: "text-xs truncate text-muted-foreground", children: v.displayClaim })
+              /* @__PURE__ */ jsx41("span", { className: "text-xs truncate text-muted-foreground", children: v.displayClaim })
             ] }, v.key))
           ]
         },
         `left-${idx}`
       );
     }) }),
-    /* @__PURE__ */ jsxs26("div", { className: "relative", children: [
-      /* @__PURE__ */ jsx40("div", { className: "absolute inset-0 pointer-events-none", children: ticks.map((t, i) => /* @__PURE__ */ jsx40(
+    /* @__PURE__ */ jsxs27("div", { className: "relative", children: [
+      /* @__PURE__ */ jsx41("div", { className: "absolute inset-0 pointer-events-none", children: ticks.map((t, i) => /* @__PURE__ */ jsx41(
         "div",
         {
           className: "absolute top-0 bottom-0",
@@ -2317,7 +2430,7 @@ function ClaimTimeline({
         },
         i
       )) }),
-      /* @__PURE__ */ jsx40("div", { children: timelineEntries.map((entry, idx) => {
+      /* @__PURE__ */ jsx41("div", { children: timelineEntries.map((entry, idx) => {
         const isLast = idx === timelineEntries.length - 1;
         const rowBorder = isLast ? void 0 : "1px solid var(--tl-line)";
         return entry.kind === "normal" ? (() => {
@@ -2325,12 +2438,12 @@ function ClaimTimeline({
           const left = percent(r.from);
           const rightPoint = r.to ? percent(r.to) : 100;
           const width = Math.max(1, rightPoint - left);
-          return /* @__PURE__ */ jsx40(
+          return /* @__PURE__ */ jsx41(
             "div",
             {
               className: "flex items-center h-12",
               style: { borderBottom: rowBorder },
-              children: /* @__PURE__ */ jsx40("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx40(
+              children: /* @__PURE__ */ jsx41("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx41(
                 "div",
                 {
                   className: "absolute top-1 bottom-1 rounded border",
@@ -2350,12 +2463,12 @@ function ClaimTimeline({
           const rightPoint = entry.to ? percent(entry.to) : 100;
           const width = Math.max(1, rightPoint - left);
           const variantLabels = entry.variants.map((v) => v.displayClaim).join(" / ");
-          return /* @__PURE__ */ jsx40(
+          return /* @__PURE__ */ jsx41(
             "div",
             {
               className: "flex items-center",
               style: { borderBottom: rowBorder, minHeight: entryMinHeight(entry) },
-              children: /* @__PURE__ */ jsx40("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx40(
+              children: /* @__PURE__ */ jsx41("div", { className: "relative w-full h-8", children: /* @__PURE__ */ jsx41(
                 "div",
                 {
                   className: "absolute top-1 bottom-1 rounded border",
@@ -2375,7 +2488,7 @@ function ClaimTimeline({
       }) })
     ] })
   ] }) });
-  return /* @__PURE__ */ jsxs26(Fragment5, { children: [
+  return /* @__PURE__ */ jsxs27(Fragment6, { children: [
     renderMobile(),
     renderDesktop()
   ] });
@@ -2590,7 +2703,7 @@ var JOB_FUNCTION_VARIANT_MAP = {
 };
 
 // src/competitor/KpiCard.tsx
-import { Fragment as Fragment6, jsx as jsx41, jsxs as jsxs27 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx42, jsxs as jsxs28 } from "react/jsx-runtime";
 function KpiCard({
   icon: Icon,
   label,
@@ -2601,13 +2714,13 @@ function KpiCard({
 }) {
   var _a;
   const formatted = entry ? `${qualifierPrefix(entry.qualifier)}${formatKpiValue(entry.value, entry.unit, locale)}` : null;
-  return /* @__PURE__ */ jsx41(Card, { children: /* @__PURE__ */ jsxs27(Card.Content, { children: [
-    /* @__PURE__ */ jsxs27("div", { className: "flex items-center gap-sm mb-sm", children: [
-      /* @__PURE__ */ jsx41(Icon, { className: "h-4 w-4 text-muted-foreground" }),
-      /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: label })
+  return /* @__PURE__ */ jsx42(Card, { children: /* @__PURE__ */ jsxs28(Card.Content, { children: [
+    /* @__PURE__ */ jsxs28("div", { className: "flex items-center gap-sm mb-sm", children: [
+      /* @__PURE__ */ jsx42(Icon, { className: "h-4 w-4 text-muted-foreground" }),
+      /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: label })
     ] }),
-    entry && formatted ? /* @__PURE__ */ jsxs27(Fragment6, { children: [
-      entry.source_url ? /* @__PURE__ */ jsx41(Tooltip, { content: (_a = entry.source_title) != null ? _a : entry.source_url, children: /* @__PURE__ */ jsxs27(
+    entry && formatted ? /* @__PURE__ */ jsxs28(Fragment7, { children: [
+      entry.source_url ? /* @__PURE__ */ jsx42(Tooltip, { content: (_a = entry.source_title) != null ? _a : entry.source_url, children: /* @__PURE__ */ jsxs28(
         "a",
         {
           href: entry.source_url,
@@ -2615,24 +2728,24 @@ function KpiCard({
           rel: "noopener noreferrer",
           className: "inline-flex items-center gap-1 hover:underline",
           children: [
-            /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", children: formatted }),
-            ExternalLinkIcon && /* @__PURE__ */ jsx41(ExternalLinkIcon, { className: "h-3.5 w-3.5 text-muted-foreground" })
+            /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", children: formatted }),
+            ExternalLinkIcon && /* @__PURE__ */ jsx42(ExternalLinkIcon, { className: "h-3.5 w-3.5 text-muted-foreground" })
           ]
         }
-      ) }) : /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", children: formatted }),
-      entry.period && !hidePeriod && /* @__PURE__ */ jsx41(Text, { size: "sm", tone: "muted", children: entry.period })
-    ] }) : /* @__PURE__ */ jsx41(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
+      ) }) : /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", children: formatted }),
+      entry.period && !hidePeriod && /* @__PURE__ */ jsx42(Text, { size: "sm", tone: "muted", children: entry.period })
+    ] }) : /* @__PURE__ */ jsx42(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
   ] }) });
 }
 
 // src/competitor/CompetitorLogo.tsx
 import { useState as useState9 } from "react";
-import { jsx as jsx42 } from "react/jsx-runtime";
+import { jsx as jsx43 } from "react/jsx-runtime";
 function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }) {
   const [failed, setFailed] = useState9(false);
   const src = domain && brandfetchClientId ? `https://cdn.brandfetch.io/${domain}/fallback/404/icon.svg?c=${brandfetchClientId}` : void 0;
   if (failed || !src) {
-    return /* @__PURE__ */ jsx42(
+    return /* @__PURE__ */ jsx43(
       "div",
       {
         style: {
@@ -2645,11 +2758,11 @@ function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }) {
           justifyContent: "center",
           flexShrink: 0
         },
-        children: /* @__PURE__ */ jsx42(Text, { as: "span", size: "sm", weight: "medium", children: (name || "?").charAt(0).toUpperCase() })
+        children: /* @__PURE__ */ jsx43(Text, { as: "span", size: "sm", weight: "medium", children: (name || "?").charAt(0).toUpperCase() })
       }
     );
   }
-  return /* @__PURE__ */ jsx42(
+  return /* @__PURE__ */ jsx43(
     "img",
     {
       src,
@@ -2786,7 +2899,7 @@ function buildWeeklyJobData(jobs, maxWeeks = 12, locale = "en") {
 }
 
 // src/competitor/CompetitorInfoCard.tsx
-import { Fragment as Fragment7, jsx as jsx43, jsxs as jsxs28 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx44, jsxs as jsxs29 } from "react/jsx-runtime";
 function ensureAbsolute(url) {
   return /^https?:\/\//i.test(url) ? url : `https://${url}`;
 }
@@ -2804,11 +2917,11 @@ function CompetitorInfoCard({
   linkedinIcon: LinkedinIcon,
   sidebar
 }) {
-  return /* @__PURE__ */ jsx43(Card, { children: /* @__PURE__ */ jsx43(Card.Content, { children: /* @__PURE__ */ jsxs28("div", { className: "flex flex-col lg:flex-row lg:gap-lg", children: [
-    /* @__PURE__ */ jsxs28("div", { className: "flex-1 min-w-0", children: [
-      /* @__PURE__ */ jsx43(Heading, { level: 2, children: name }),
-      /* @__PURE__ */ jsxs28("div", { className: "flex items-center gap-md text-sm", children: [
-        website ? /* @__PURE__ */ jsxs28(
+  return /* @__PURE__ */ jsx44(Card, { children: /* @__PURE__ */ jsx44(Card.Content, { children: /* @__PURE__ */ jsxs29("div", { className: "flex flex-col lg:flex-row lg:gap-lg", children: [
+    /* @__PURE__ */ jsxs29("div", { className: "flex-1 min-w-0", children: [
+      /* @__PURE__ */ jsx44(Heading, { level: 2, children: name }),
+      /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-md text-sm", children: [
+        website ? /* @__PURE__ */ jsxs29(
           "a",
           {
             href: ensureAbsolute(website),
@@ -2817,13 +2930,13 @@ function CompetitorInfoCard({
             className: "text-primary flex items-center gap-1",
             children: [
               cleanDomain(website),
-              ExternalLinkIcon && /* @__PURE__ */ jsx43(ExternalLinkIcon, { className: "h-3 w-3" })
+              ExternalLinkIcon && /* @__PURE__ */ jsx44(ExternalLinkIcon, { className: "h-3 w-3" })
             ]
           }
-        ) : /* @__PURE__ */ jsx43("span", { className: "text-muted-foreground", children: "No website listed" }),
-        linkedinUrl && /* @__PURE__ */ jsxs28(Fragment7, { children: [
-          /* @__PURE__ */ jsx43("span", { className: "text-muted-foreground", children: "\xB7" }),
-          /* @__PURE__ */ jsxs28(
+        ) : /* @__PURE__ */ jsx44("span", { className: "text-muted-foreground", children: "No website listed" }),
+        linkedinUrl && /* @__PURE__ */ jsxs29(Fragment8, { children: [
+          /* @__PURE__ */ jsx44("span", { className: "text-muted-foreground", children: "\xB7" }),
+          /* @__PURE__ */ jsxs29(
             "a",
             {
               href: linkedinUrl,
@@ -2832,24 +2945,24 @@ function CompetitorInfoCard({
               className: "text-primary flex items-center gap-1",
               children: [
                 "LinkedIn",
-                ExternalLinkIcon && /* @__PURE__ */ jsx43(ExternalLinkIcon, { className: "h-3 w-3" })
+                ExternalLinkIcon && /* @__PURE__ */ jsx44(ExternalLinkIcon, { className: "h-3 w-3" })
               ]
             }
           )
         ] })
       ] }),
-      description && /* @__PURE__ */ jsx43(Text, { size: "sm", tone: "muted", className: "mt-sm", children: description })
+      description && /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", className: "mt-sm", children: description })
     ] }),
-    (currentClaim || sidebar) && /* @__PURE__ */ jsxs28(Fragment7, { children: [
-      /* @__PURE__ */ jsx43("div", { className: "my-md lg:hidden", style: { height: 1, background: "var(--border)" } }),
-      /* @__PURE__ */ jsx43("div", { className: "hidden lg:block w-px bg-border shrink-0" }),
-      /* @__PURE__ */ jsxs28("div", { className: "lg:w-64 shrink-0 flex flex-col gap-md", children: [
-        currentClaim && /* @__PURE__ */ jsxs28("div", { children: [
-          /* @__PURE__ */ jsxs28("div", { className: "flex items-center gap-sm mb-xs", children: [
-            QuoteIcon && /* @__PURE__ */ jsx43(QuoteIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx43(Text, { size: "sm", tone: "muted", children: "Positioning" })
+    (currentClaim || sidebar) && /* @__PURE__ */ jsxs29(Fragment8, { children: [
+      /* @__PURE__ */ jsx44("div", { className: "my-md lg:hidden", style: { height: 1, background: "var(--border)" } }),
+      /* @__PURE__ */ jsx44("div", { className: "hidden lg:block w-px bg-border shrink-0" }),
+      /* @__PURE__ */ jsxs29("div", { className: "lg:w-64 shrink-0 flex flex-col gap-md", children: [
+        currentClaim && /* @__PURE__ */ jsxs29("div", { children: [
+          /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-sm mb-xs", children: [
+            QuoteIcon && /* @__PURE__ */ jsx44(QuoteIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", children: "Positioning" })
           ] }),
-          /* @__PURE__ */ jsxs28(Text, { size: "sm", weight: "medium", className: "line-clamp-2", children: [
+          /* @__PURE__ */ jsxs29(Text, { size: "sm", weight: "medium", className: "line-clamp-2", children: [
             "\u201C",
             currentClaim,
             "\u201D"
@@ -2862,7 +2975,7 @@ function CompetitorInfoCard({
 }
 
 // src/competitor/HiringOverview.tsx
-import { Fragment as Fragment8, jsx as jsx44, jsxs as jsxs29 } from "react/jsx-runtime";
+import { Fragment as Fragment9, jsx as jsx45, jsxs as jsxs30 } from "react/jsx-runtime";
 var VARIANT_CATEGORY_LABELS = {
   primary: "Management & Strategy",
   accent: "Marketing & Sales",
@@ -2938,65 +3051,65 @@ function HiringOverview({
   const diff = jobLifecycle ? currentCount - previousCount : 0;
   const hasTrend = !!jobLifecycle;
   const hasJobs = segments.length > 0;
-  return /* @__PURE__ */ jsxs29(Card, { children: [
-    /* @__PURE__ */ jsx44(Card.Header, { children: /* @__PURE__ */ jsx44(Card.Title, { as: "h2", children: "Team & Hiring" }) }),
-    /* @__PURE__ */ jsx44(Card.Content, { children: /* @__PURE__ */ jsxs29("div", { className: "flex flex-col gap-md", children: [
-      /* @__PURE__ */ jsxs29("div", { className: "flex gap-xl", children: [
-        /* @__PURE__ */ jsxs29("div", { children: [
-          /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-sm mb-xs", children: [
-            EmployeesIcon && /* @__PURE__ */ jsx44(EmployeesIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", children: "Employees" })
+  return /* @__PURE__ */ jsxs30(Card, { children: [
+    /* @__PURE__ */ jsx45(Card.Header, { children: /* @__PURE__ */ jsx45(Card.Title, { as: "h2", children: "Team & Hiring" }) }),
+    /* @__PURE__ */ jsx45(Card.Content, { children: /* @__PURE__ */ jsxs30("div", { className: "flex flex-col gap-md", children: [
+      /* @__PURE__ */ jsxs30("div", { className: "flex gap-xl", children: [
+        /* @__PURE__ */ jsxs30("div", { children: [
+          /* @__PURE__ */ jsxs30("div", { className: "flex items-center gap-sm mb-xs", children: [
+            EmployeesIcon && /* @__PURE__ */ jsx45(EmployeesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx45(Text, { size: "sm", tone: "muted", children: "Employees" })
           ] }),
-          employees ? /* @__PURE__ */ jsxs29(Fragment8, { children: [
-            /* @__PURE__ */ jsxs29(Text, { size: "xl", weight: "bold", children: [
+          employees ? /* @__PURE__ */ jsxs30(Fragment9, { children: [
+            /* @__PURE__ */ jsxs30(Text, { size: "xl", weight: "bold", children: [
               qualifierPrefix(employees.qualifier),
               formatKpiValue(employees.value, employees.unit)
             ] }),
-            employees.period && !hidePeriod && /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", children: employees.period })
-          ] }) : /* @__PURE__ */ jsx44(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
+            employees.period && !hidePeriod && /* @__PURE__ */ jsx45(Text, { size: "sm", tone: "muted", children: employees.period })
+          ] }) : /* @__PURE__ */ jsx45(Text, { size: "xl", weight: "bold", tone: "muted", children: "?" })
         ] }),
-        /* @__PURE__ */ jsxs29("div", { children: [
-          /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-sm mb-xs", children: [
-            RolesIcon && /* @__PURE__ */ jsx44(RolesIcon, { className: "h-4 w-4 text-muted-foreground" }),
-            /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", children: "Open Roles" })
+        /* @__PURE__ */ jsxs30("div", { children: [
+          /* @__PURE__ */ jsxs30("div", { className: "flex items-center gap-sm mb-xs", children: [
+            RolesIcon && /* @__PURE__ */ jsx45(RolesIcon, { className: "h-4 w-4 text-muted-foreground" }),
+            /* @__PURE__ */ jsx45(Text, { size: "sm", tone: "muted", children: "Open Roles" })
           ] }),
-          /* @__PURE__ */ jsxs29("div", { className: "flex items-baseline gap-sm", children: [
-            /* @__PURE__ */ jsx44(Text, { size: "xl", weight: "bold", children: currentCount }),
-            hasTrend && /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-1", children: [
-              diff > 0 && TrendUpIcon ? /* @__PURE__ */ jsx44(TrendUpIcon, { className: "h-3.5 w-3.5 text-success" }) : diff < 0 && TrendDownIcon ? /* @__PURE__ */ jsx44(TrendDownIcon, { className: "h-3.5 w-3.5 text-destructive" }) : UnchangedIcon ? /* @__PURE__ */ jsx44(UnchangedIcon, { className: "h-3.5 w-3.5 text-muted-foreground" }) : null,
-              /* @__PURE__ */ jsx44(Text, { size: "sm", tone: "muted", children: diff === 0 ? "unchanged" : `${diff > 0 ? "+" : ""}${diff} vs. ${COMPARE_WEEKS}w ago` })
+          /* @__PURE__ */ jsxs30("div", { className: "flex items-baseline gap-sm", children: [
+            /* @__PURE__ */ jsx45(Text, { size: "xl", weight: "bold", children: currentCount }),
+            hasTrend && /* @__PURE__ */ jsxs30("div", { className: "flex items-center gap-1", children: [
+              diff > 0 && TrendUpIcon ? /* @__PURE__ */ jsx45(TrendUpIcon, { className: "h-3.5 w-3.5 text-success" }) : diff < 0 && TrendDownIcon ? /* @__PURE__ */ jsx45(TrendDownIcon, { className: "h-3.5 w-3.5 text-destructive" }) : UnchangedIcon ? /* @__PURE__ */ jsx45(UnchangedIcon, { className: "h-3.5 w-3.5 text-muted-foreground" }) : null,
+              /* @__PURE__ */ jsx45(Text, { size: "sm", tone: "muted", children: diff === 0 ? "unchanged" : `${diff > 0 ? "+" : ""}${diff} vs. ${COMPARE_WEEKS}w ago` })
             ] })
           ] })
         ] })
       ] }),
-      hasJobs && /* @__PURE__ */ jsxs29("div", { className: "flex flex-col gap-sm", children: [
-        /* @__PURE__ */ jsx44(Text, { size: "xs", tone: "muted", weight: "medium", children: "Open roles by function" }),
-        /* @__PURE__ */ jsx44("div", { className: "flex h-3 w-full rounded-full overflow-hidden", children: segments.map((seg) => /* @__PURE__ */ jsx44(
+      hasJobs && /* @__PURE__ */ jsxs30("div", { className: "flex flex-col gap-sm", children: [
+        /* @__PURE__ */ jsx45(Text, { size: "xs", tone: "muted", weight: "medium", children: "Open roles by function" }),
+        /* @__PURE__ */ jsx45("div", { className: "flex h-3 w-full rounded-full overflow-hidden", children: segments.map((seg) => /* @__PURE__ */ jsx45(
           Tooltip,
           {
             className: `h-full block ${VARIANT_BG_CLASSES[seg.variant]}`,
             style: { width: `${seg.percent}%` },
             multiline: true,
-            content: /* @__PURE__ */ jsxs29("div", { className: "flex flex-col gap-0.5", children: [
-              /* @__PURE__ */ jsx44("span", { className: "font-semibold", children: seg.label }),
-              seg.functions.map((fn) => /* @__PURE__ */ jsxs29("span", { children: [
+            content: /* @__PURE__ */ jsxs30("div", { className: "flex flex-col gap-0.5", children: [
+              /* @__PURE__ */ jsx45("span", { className: "font-semibold", children: seg.label }),
+              seg.functions.map((fn) => /* @__PURE__ */ jsxs30("span", { children: [
                 fn.label,
                 ": ",
                 fn.count
               ] }, fn.label))
             ] }),
-            children: /* @__PURE__ */ jsx44("div", { className: "h-full w-full cursor-default" })
+            children: /* @__PURE__ */ jsx45("div", { className: "h-full w-full cursor-default" })
           },
           seg.variant
         )) }),
-        /* @__PURE__ */ jsx44("div", { className: "flex flex-wrap gap-x-md gap-y-xs", children: segments.map((seg) => /* @__PURE__ */ jsxs29("div", { className: "flex items-center gap-xs", children: [
-          /* @__PURE__ */ jsx44(
+        /* @__PURE__ */ jsx45("div", { className: "flex flex-wrap gap-x-md gap-y-xs", children: segments.map((seg) => /* @__PURE__ */ jsxs30("div", { className: "flex items-center gap-xs", children: [
+          /* @__PURE__ */ jsx45(
             "span",
             {
               className: `inline-block h-2.5 w-2.5 rounded-full shrink-0 ${VARIANT_BG_CLASSES[seg.variant]}`
             }
           ),
-          /* @__PURE__ */ jsx44(Text, { size: "xs", tone: "muted", children: seg.label })
+          /* @__PURE__ */ jsx45(Text, { size: "xs", tone: "muted", children: seg.label })
         ] }, seg.variant)) })
       ] })
     ] }) })
@@ -3020,6 +3133,8 @@ export {
   DateTimeModalInput,
   DevButton,
   Dialog,
+  EntityListHeader,
+  EntityListRow,
   FilterBadge,
   Heading,
   HiringOverview,

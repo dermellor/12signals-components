@@ -21,6 +21,7 @@ export * from "./Separator";
 export * from "./Skeleton";
 export * from "./PageHeader";
 export * from "./ActivityCard";
+export * from "./EntityListRow";
 export * from "./RichText";
 export * from "./DevButton";
 export * from "./TagField";

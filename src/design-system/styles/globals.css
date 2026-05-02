@@ -151,6 +151,172 @@
   }
 }
 
+.ds-EntityListHeader {
+  display: grid;
+  grid-template-columns: var(--ds-EntityList-grid-template);
+  align-items: center;
+  column-gap: var(--space-md);
+  min-height: 2.75rem;
+  padding: 0 var(--space-lg);
+  color: hsl(var(--muted-foreground));
+}
+.ds-EntityListHeader-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 2rem;
+  padding-left: var(--ds-EntityListHeader-cell-offset, 0px);
+}
+.ds-EntityListHeader-cell:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--space-md) / -2);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border-default);
+}
+.ds-EntityListHeader-cell[data-align="center"] {
+  justify-content: center;
+  text-align: center;
+}
+.ds-EntityListHeader-cell[data-align="end"] {
+  justify-content: flex-end;
+  text-align: right;
+}
+.ds-EntityListHeader-sortButton {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--space-xs);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: inherit;
+  cursor: pointer;
+}
+.ds-EntityListHeader-sortButton[data-active="true"] {
+  color: hsl(var(--foreground));
+}
+.ds-EntityListHeader-sortButton:focus-visible {
+  outline: 2px solid var(--color-primary-bg);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.ds-EntityListHeader-sortIcon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+.ds-EntityListHeader-trailing {
+  width: 2rem;
+}
+.ds-EntityListRow {
+  display: block;
+}
+.ds-EntityListRow-link,
+.ds-EntityListRow-static {
+  display: grid;
+  grid-template-columns: var(--ds-EntityList-grid-template);
+  align-items: center;
+  column-gap: var(--space-md);
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  min-height: 4.75rem;
+  width: 100%;
+  text-decoration: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.ds-EntityListRow[data-clickable="true"] .ds-EntityListRow-link:hover {
+  border-color: color-mix(in oklab, hsl(var(--border)) 78%, hsl(var(--foreground)));
+  box-shadow: var(--shadow-sm);
+}
+.ds-EntityListRow-link:focus-visible {
+  outline: 2px solid var(--color-primary-bg);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+.ds-EntityListRow-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.ds-EntityListRow-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  color: hsl(var(--foreground));
+}
+.ds-EntityListRow-cell[data-align="center"] {
+  justify-content: center;
+  text-align: center;
+}
+.ds-EntityListRow-cell[data-align="end"] {
+  justify-content: flex-end;
+  text-align: right;
+}
+.ds-EntityListRow-primary {
+  gap: var(--space-md);
+}
+.ds-EntityListRow-mainContent {
+  display: grid;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+.ds-EntityListRow-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-EntityListRow-cellContent {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: hsl(var(--foreground));
+}
+.ds-EntityListRow-trailing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  color: hsl(var(--muted-foreground));
+}
+@media (max-width: 767px) {
+  .ds-EntityListHeader {
+    display: none;
+  }
+  .ds-EntityListRow-link,
+  .ds-EntityListRow-static {
+    grid-template-columns: minmax(0, 1fr) 2rem;
+    align-items: start;
+    row-gap: var(--space-sm);
+  }
+  .ds-EntityListRow-primary {
+    grid-column: 1 / 2;
+  }
+  .ds-EntityListRow-trailing {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    align-self: center;
+  }
+  .ds-EntityListRow-cell[data-secondary="true"] {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
 /* Design System Component Styles */
 .ds-Button {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-sm);
