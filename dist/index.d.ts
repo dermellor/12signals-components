@@ -733,8 +733,9 @@ type Props$2 = {
     domain?: string | null;
     brandfetchClientId?: string;
     size?: number;
+    deferUnavailableCacheRead?: boolean;
 };
-declare function CompetitorLogo({ name, domain, brandfetchClientId, size }: Props$2): react_jsx_runtime.JSX.Element;
+declare function CompetitorLogo({ name, domain, brandfetchClientId, size, deferUnavailableCacheRead }: Props$2): react_jsx_runtime.JSX.Element;
 
 type JobFunctionMeta = {
     id: string;

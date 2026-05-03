@@ -2739,11 +2739,49 @@ function KpiCard({
 }
 
 // src/competitor/CompetitorLogo.tsx
-import { useState as useState9 } from "react";
+import { useEffect as useEffect7, useState as useState9 } from "react";
 import { jsx as jsx43 } from "react/jsx-runtime";
-function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }) {
-  const [failed, setFailed] = useState9(false);
+var UNAVAILABLE_LOGOS_KEY = "12signals:brandfetch-unavailable-logos:v1";
+var unavailableLogoUrls = null;
+function getUnavailableLogoUrls() {
+  if (unavailableLogoUrls) return unavailableLogoUrls;
+  unavailableLogoUrls = /* @__PURE__ */ new Set();
+  if (typeof window === "undefined") return unavailableLogoUrls;
+  try {
+    const stored = window.localStorage.getItem(UNAVAILABLE_LOGOS_KEY);
+    const values = stored ? JSON.parse(stored) : [];
+    if (Array.isArray(values)) {
+      for (const value of values) {
+        if (typeof value === "string" && value) unavailableLogoUrls.add(value);
+      }
+    }
+  } catch {
+    unavailableLogoUrls.clear();
+  }
+  return unavailableLogoUrls;
+}
+function isUnavailableLogo(src) {
+  if (!src) return false;
+  return getUnavailableLogoUrls().has(src);
+}
+function rememberUnavailableLogo(src) {
+  if (!src || typeof window === "undefined") return;
+  const unavailable = getUnavailableLogoUrls();
+  if (unavailable.has(src)) return;
+  unavailable.add(src);
+  try {
+    window.localStorage.setItem(UNAVAILABLE_LOGOS_KEY, JSON.stringify([...unavailable]));
+  } catch {
+  }
+}
+function CompetitorLogo({ name, domain, brandfetchClientId, size = 18, deferUnavailableCacheRead = false }) {
+  const [failedSrc, setFailedSrc] = useState9(null);
+  const [canReadUnavailableCache, setCanReadUnavailableCache] = useState9(!deferUnavailableCacheRead);
   const src = domain && brandfetchClientId ? `https://cdn.brandfetch.io/${domain}/fallback/404/icon.svg?c=${brandfetchClientId}` : void 0;
+  const failed = failedSrc === src || canReadUnavailableCache && isUnavailableLogo(src);
+  useEffect7(() => {
+    if (deferUnavailableCacheRead) setCanReadUnavailableCache(true);
+  }, [deferUnavailableCacheRead]);
   if (failed || !src) {
     return /* @__PURE__ */ jsx43(
       "div",
@@ -2770,7 +2808,10 @@ function CompetitorLogo({ name, domain, brandfetchClientId, size = 18 }) {
       width: size,
       height: size,
       style: { borderRadius: "var(--radius-sm)", objectFit: "contain", flexShrink: 0 },
-      onError: () => setFailed(true)
+      onError: () => {
+        rememberUnavailableLogo(src);
+        setFailedSrc(src != null ? src : null);
+      }
     }
   );
 }
