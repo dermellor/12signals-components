@@ -84,6 +84,204 @@ type FilterBadgeProps = {
 };
 declare function FilterBadge({ label, active, removable, onToggle, onEdit, onRemove, variant, size, toggleAriaLabel, editAriaLabel, removeAriaLabel, children, }: FilterBadgeProps): react_jsx_runtime.JSX.Element;
 
+type FilterLogic = "AND" | "OR";
+type FilterOperator = "after" | "before" | "between" | "equals" | "startsWith" | "contains" | "in";
+type FilterFieldType = string;
+type FieldInputKind = "date" | "number" | "multiEnum" | "enum" | "boolean" | "text";
+interface FilterCriterion {
+    kind: "criterion";
+    id: string;
+    type: FilterFieldType;
+    operator: FilterOperator;
+    dateFrom?: string;
+    dateTo?: string;
+    numberFrom?: number;
+    numberTo?: number;
+    stringValue?: string;
+    stringValues?: string[];
+    booleanValue?: boolean;
+}
+interface FilterGroup {
+    kind: "group";
+    id: string;
+    logic: FilterLogic;
+    children: FilterNode[];
+}
+type FilterNode = FilterCriterion | FilterGroup;
+interface FilterState {
+    logic: FilterLogic;
+    children: FilterNode[];
+}
+interface FieldEnumOption {
+    value: string;
+    label: string;
+    hint?: string;
+}
+interface FieldConfig {
+    type: FilterFieldType;
+    label: string;
+    inputKind: FieldInputKind;
+    enumOptions?: FieldEnumOption[];
+}
+/**
+ * One pill in the FilterBar = one NamedFilter. Each carries its own
+ * (potentially deeply nested) FilterState. Multiple NamedFilters at the
+ * page level are AND-combined.
+ */
+interface NamedFilter {
+    id: string;
+    /** User-given name. Empty → render auto-summary instead. */
+    name: string;
+    state: FilterState;
+    enabled: boolean;
+}
+declare function isCriterion(n: FilterNode): n is FilterCriterion;
+declare function isGroup(n: FilterNode): n is FilterGroup;
+
+declare function makeNamedFilter(initial?: Partial<NamedFilter>): NamedFilter;
+declare function makeId(): string;
+declare function defaultOperatorFor(kind: FieldInputKind): FilterOperator;
+declare function makeCriterion(type: FilterFieldType, kind: FieldInputKind, patch?: Partial<FilterCriterion>): FilterCriterion;
+declare function makeGroup(logic?: FilterLogic, prefilled?: FilterCriterion[]): FilterGroup;
+declare function getDefaultFilterState(): FilterState;
+declare function isCriterionActive(c: FilterCriterion): boolean;
+declare function countActiveCriteria(nodes: FilterNode[]): number;
+declare function matchCriterionValue(value: unknown, kind: FieldInputKind, c: FilterCriterion): boolean;
+/**
+ * Walk a node tree, matching each leaf criterion via the consumer-supplied
+ * matchLeaf adapter. Group logic is handled here.
+ */
+declare function matchNode<T>(ad: T, node: FilterNode, matchLeaf: (ad: T, c: FilterCriterion) => boolean): boolean;
+declare function matchState<T>(ad: T, state: FilterState, matchLeaf: (ad: T, c: FilterCriterion) => boolean): boolean;
+/**
+ * Auto-derived label for a NamedFilter pill. Used when the user has not
+ * named the filter explicitly. Tries to be useful for the common cases
+ * (1 criterion → field+value, multiple → field list, complex → count).
+ */
+interface SummarizeOptions {
+    emptyLabel?: string;
+    conditionsLabel?: (count: number) => string;
+    valueLabels?: Record<FilterFieldType, Record<string, string>>;
+}
+declare function summarizeFilter(state: FilterState, fieldConfigs: FieldConfig[], options?: SummarizeOptions): string;
+declare function updateAtPath(state: FilterState, path: string[], updater: (children: FilterNode[]) => FilterNode[]): FilterState;
+declare function toggleLogicAtPath(state: FilterState, path: string[]): FilterState;
+declare function getInputKind(configs: FieldConfig[], type: FilterFieldType): FieldInputKind;
+
+interface ParseFiltersOptions {
+    /**
+     * Map legacy field-type keys to current ones, e.g. { adGroup: "creativeGroup" }.
+     * Applied during decode so old URLs keep deserializing after a rename.
+     */
+    renameTypes?: Record<string, string>;
+}
+declare function serializeFilters(filters: NamedFilter[]): string;
+declare function parseFilters(encoded: string | null | undefined, options?: ParseFiltersOptions): NamedFilter[];
+
+/**
+ * All user-facing strings used by the filter components. Each consumer
+ * passes a `labels` prop to FilterBar; missing keys fall back to the
+ * English defaults below. To localize, wrap your `t(...)` calls into a
+ * matching object.
+ */
+interface FilterBarLabels {
+    enable: string;
+    disable: string;
+    addFilter: string;
+    edit: string;
+    remove: string;
+    emptyLabel: string;
+    editorTitle: string;
+    editorName: string;
+    editorDone: string;
+    editorDelete: string;
+    editorEmpty: string;
+    editorConditions: (count: number) => string;
+    add: string;
+    addCondition: string;
+    addGroup: string;
+    removeGroup: string;
+    toggleLogic: string;
+    groupLabel: (logic: FilterLogic) => string;
+    logic: (logic: FilterLogic) => string;
+    dimensionAriaLabel: string;
+    operatorAriaLabel: string;
+    dateFromAriaLabel: string;
+    dateToAriaLabel: string;
+    searchPlaceholder: string;
+    pickValue: string;
+    pickValues: string;
+    yes: string;
+    no: string;
+    and: string;
+    noResults: string;
+    nSelected: (count: number) => string;
+    opAtLeast: string;
+    opAtMost: string;
+    opBetween: string;
+    opContains: string;
+    opStartsWith: string;
+    opEquals: string;
+    opAfter: string;
+    opBefore: string;
+}
+declare const defaultFilterBarLabels: FilterBarLabels;
+declare function resolveFilterBarLabels(partial?: Partial<FilterBarLabels>): FilterBarLabels;
+
+type Props$8 = {
+    criterion: FilterCriterion;
+    fieldConfigs: FieldConfig[];
+    labels: FilterBarLabels;
+    onUpdate: (patch: Partial<FilterCriterion>) => void;
+    onRemove: () => void;
+};
+declare function CriterionRow({ criterion, fieldConfigs, labels, onUpdate, onRemove }: Props$8): react_jsx_runtime.JSX.Element;
+
+type Props$7 = {
+    nodes: FilterNode[];
+    logic: FilterLogic;
+    fieldConfigs: FieldConfig[];
+    defaultType: FilterFieldType;
+    labels: FilterBarLabels;
+    onSetState: React$1.Dispatch<React$1.SetStateAction<FilterState>>;
+    parentPath: string[];
+};
+declare function FilterNodeList({ nodes, logic, fieldConfigs, defaultType, labels, onSetState, parentPath, }: Props$7): react_jsx_runtime.JSX.Element;
+
+type Props$6 = {
+    open: boolean;
+    filter: NamedFilter | null;
+    fieldConfigs: FieldConfig[];
+    defaultType?: FilterFieldType;
+    labels: FilterBarLabels;
+    /** Called with patched filter on every edit. Live-saves to URL. */
+    onChange: (next: NamedFilter) => void;
+    /** Called when user closes the modal. */
+    onClose: () => void;
+    /** Called when user removes the filter from the editor. */
+    onRemove?: () => void;
+};
+declare function FilterEditor({ open, filter, fieldConfigs, defaultType, labels, onChange, onClose, onRemove, }: Props$6): react_jsx_runtime.JSX.Element | null;
+
+type SystemBadge = {
+    id: string;
+    label: string;
+    active: boolean;
+    onToggle: () => void;
+};
+type Props$5 = {
+    filters: NamedFilter[];
+    onChange: (next: NamedFilter[]) => void;
+    fieldConfigs: FieldConfig[];
+    defaultType?: FilterFieldType;
+    systemBadges?: SystemBadge[];
+    /** Override any subset of the default English labels. */
+    labels?: Partial<FilterBarLabels>;
+    /** Section aria-label. Defaults to "Filters". */
+    sectionAriaLabel?: string;
+};
+declare function FilterBar({ filters, onChange, fieldConfigs, defaultType, systemBadges, labels: labelsProp, sectionAriaLabel, }: Props$5): react_jsx_runtime.JSX.Element;
+
 declare const Input: React$1.ForwardRefExoticComponent<{
     size?: "sm" | "md" | "lg";
     invalid?: boolean;
@@ -848,4 +1046,4 @@ type Props = {
 };
 declare function HiringOverview({ segments: segmentsProp, activeJobs, activeJobCount, jobLifecycle, employees, employeesIcon: EmployeesIcon, rolesIcon: RolesIcon, trendUpIcon: TrendUpIcon, trendDownIcon: TrendDownIcon, unchangedIcon: UnchangedIcon, hidePeriod, }: Props): react_jsx_runtime.JSX.Element;
 
-export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, DateTimeInput, DateTimeModalInput, DevButton, Dialog, type EntityListColumn, EntityListHeader, type EntityListHeaderProps, EntityListRow, type EntityListRowProps, type EntityListSortDirection, FilterBadge, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, MatrixColumnLabel, MatrixDrilldownMenu, type MatrixDrilldownOption, MatrixDrilldownPath, type MatrixDrilldownPathItem, MatrixTable, MatrixTableAction, MatrixTableBody, MatrixTableCell, MatrixTableContainer, MatrixTableHead, MatrixTableHeader, MatrixTableRow, MatrixTableShell, MatrixTableToolbar, MatrixViewControl, Modal, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getEmployees, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix, startOfIsoWeek, tokens, useToast };
+export { type ABTestGroup, AB_TEST_COLORS, type ActionIcon, ActionIconButton, type ActiveJob, ActivityCard, Alert, Badge, BarChart, type BarChartDataPoint, type BarChartGroupMeta, type BarChartGroupVariant, Breadcrumb, type BreadcrumbItem, Button, CATEGORY_LABELS, Card, type CategorySegment, type ClaimRange, ClaimTimeline, CompetitorInfoCard, CompetitorLogo, CriterionRow, DateTimeInput, DateTimeModalInput, DevButton, Dialog, type EntityListColumn, EntityListHeader, type EntityListHeaderProps, EntityListRow, type EntityListRowProps, type EntityListSortDirection, type FieldConfig, type FieldEnumOption, type FieldInputKind, FilterBadge, FilterBar, type FilterBarLabels, type FilterCriterion, FilterEditor, type FilterFieldType, type FilterGroup, type FilterLogic, type FilterNode, FilterNodeList, type FilterOperator, type FilterState, Heading, HiringOverview, InlineEditButton, Input, JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, type JobFunctionMeta, type JobFunctionVariant, type JobLifecycleEntry, type JobLifecycleInput, KPI_CATEGORIES, KpiCard, type KpiCategoryDef, type KpiEntry, type KpiSnapshot, LOGO_VARIANTS, Logo, MatrixColumnLabel, MatrixDrilldownMenu, type MatrixDrilldownOption, MatrixDrilldownPath, type MatrixDrilldownPathItem, MatrixTable, MatrixTableAction, MatrixTableBody, MatrixTableCell, MatrixTableContainer, MatrixTableHead, MatrixTableHeader, MatrixTableRow, MatrixTableShell, MatrixTableToolbar, MatrixViewControl, Modal, type NamedFilter, Navigation, NavigationBar, NavigationBrand, type NavigationItem, NavigationToggle, type NormalClaimEntry, PageHeader, type ParseFiltersOptions, PieChart, type PieChartCenterLabel, type PieChartSlice, type PieChartSliceVariant, RichText, Select, SelectMenu, type SelectMenuOption, SelectOption, Separator, Skeleton, type SummarizeOptions, type SystemBadge, TabNav, type TabNavItem, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, type TableStickyPosition, Tabs, Tag, TagField, TagList, Text, TextField, type TimelineEntry, ToastProvider, Tooltip, UNKNOWN_JOB_FUNCTION_CODE, type WeeklyJobPoint, Wordmark, addDays, addWeeks, buildCategorySegments, buildWeeklyJobData, claimCompareKey, countActiveCriteria, defaultFilterBarLabels, defaultOperatorFor, detectABTestGroups, formatJobCount, formatKpiValue, getCustomers, getDefaultFilterState, getEmployees, getInputKind, getIsoWeekMeta, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, isCriterion, isCriterionActive, isGroup, makeCriterion, makeGroup, makeId, makeNamedFilter, matchCriterionValue, matchNode, matchState, parseFilters, qualifierPrefix, resolveFilterBarLabels, serializeFilters, startOfIsoWeek, summarizeFilter, toggleLogicAtPath, tokens, updateAtPath, useToast };
