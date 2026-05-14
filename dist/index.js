@@ -1988,7 +1988,7 @@ function PageHeader({ title, subtitle, actions, ...rest }) {
 // src/design-system/components/ActivityCard.tsx
 import { jsx as jsx27, jsxs as jsxs17 } from "react/jsx-runtime";
 var ACCENT_BADGES = {
-  breaking: { label: "Breaking", variant: "danger", tone: "solid" }
+  breaking: { label: "Breaking", variant: "accent", tone: "solid" }
 };
 function ActivityCard({
   icon,

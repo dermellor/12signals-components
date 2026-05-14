@@ -635,8 +635,14 @@
 .ds-Card { background: hsl(var(--card)); color: hsl(var(--card-foreground)); border: 0; box-shadow: var(--shadow-card); border-radius: var(--radius-lg); transition: box-shadow .2s ease, transform .2s ease; }
 .ds-Card[data-variant="gradient"] { background: var(--gradient-card); color: hsl(var(--card-foreground)); border: 0; box-shadow: var(--shadow-card); }
 .ds-Card.ds-ActivityCard[data-accent="breaking"] {
-  border: 2px solid var(--color-danger-bg);
-  box-shadow: 0 0 0 1px var(--color-danger-bg), var(--shadow-card);
+  border: 2px solid var(--color-accent-bg);
+  box-shadow: 0 0 0 1px var(--color-accent-bg), var(--shadow-card);
+}
+/* Solid pink badge inside the breaking card, so "Breaking" reads stronger
+   than the subtle pink "News" badge it replaces. */
+.ds-Card.ds-ActivityCard[data-accent="breaking"] .ds-Badge[data-variant="accent"] {
+  background: var(--color-accent-bg);
+  color: var(--color-accent-fg);
 }
 .ds-CardHeader { padding: var(--space-xl); border-bottom: 1px solid var(--color-border-default); }
 .ds-CardHeader[data-variant="compact"] { padding: var(--space-md) var(--space-xl); }

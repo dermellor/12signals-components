@@ -27,7 +27,7 @@ type ActivityCardProps = {
 };
 
 const ACCENT_BADGES: Record<NonNullable<ActivityCardProps["accent"]>, { label: string; variant: NonNullable<ActivityCardProps["categoryVariant"]>; tone: NonNullable<ActivityCardProps["categoryTone"]> }> = {
-  breaking: { label: "Breaking", variant: "danger", tone: "solid" },
+  breaking: { label: "Breaking", variant: "accent", tone: "solid" },
 };
 
 export function ActivityCard({
