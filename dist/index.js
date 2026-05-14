@@ -1987,6 +1987,9 @@ function PageHeader({ title, subtitle, actions, ...rest }) {
 
 // src/design-system/components/ActivityCard.tsx
 import { jsx as jsx27, jsxs as jsxs17 } from "react/jsx-runtime";
+var ACCENT_BADGES = {
+  breaking: { label: "Breaking", variant: "danger", tone: "solid" }
+};
 function ActivityCard({
   icon,
   title,
@@ -2003,9 +2006,15 @@ function ActivityCard({
   timestamp,
   href,
   ariaLabel,
-  hover = "glow"
+  hover = "glow",
+  accent
 }) {
-  const badge = categoryLabel ? /* @__PURE__ */ jsx27(Badge, { variant: categoryVariant, tone: categoryTone, "aria-label": `Kategorie: ${categoryLabel}`, children: categoryLabel }) : null;
+  var _a, _b, _c;
+  const accentBadge = accent ? ACCENT_BADGES[accent] : null;
+  const effectiveLabel = (_a = accentBadge == null ? void 0 : accentBadge.label) != null ? _a : categoryLabel;
+  const effectiveVariant = (_b = accentBadge == null ? void 0 : accentBadge.variant) != null ? _b : categoryVariant;
+  const effectiveTone = (_c = accentBadge == null ? void 0 : accentBadge.tone) != null ? _c : categoryTone;
+  const badge = effectiveLabel ? /* @__PURE__ */ jsx27(Badge, { variant: effectiveVariant, tone: effectiveTone, "aria-label": `Kategorie: ${effectiveLabel}`, children: effectiveLabel }) : null;
   const hasTitleContent = Boolean(titleNode || title);
   return /* @__PURE__ */ jsxs17(
     Card,
@@ -2014,6 +2023,7 @@ function ActivityCard({
       hover,
       style: { position: "relative", padding: "var(--space-lg)" },
       "data-clickable": href ? "true" : "false",
+      "data-accent": accent || void 0,
       role: "article",
       "aria-label": ariaLabel || headline || title,
       className: "ds-ActivityCard",

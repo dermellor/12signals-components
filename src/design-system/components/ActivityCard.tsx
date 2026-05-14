@@ -20,6 +20,14 @@ type ActivityCardProps = {
   href?: string;
   ariaLabel?: string;
   hover?: "none" | "glow";
+  // When set, the category badge is forced to the accent's label/variant and
+  // the card gains a matching frame. Currently only "breaking" — used for news
+  // items whose source article carries a structural-event score floor (>=9).
+  accent?: "breaking";
+};
+
+const ACCENT_BADGES: Record<NonNullable<ActivityCardProps["accent"]>, { label: string; variant: NonNullable<ActivityCardProps["categoryVariant"]>; tone: NonNullable<ActivityCardProps["categoryTone"]> }> = {
+  breaking: { label: "Breaking", variant: "danger", tone: "solid" },
 };
 
 export function ActivityCard({
@@ -39,9 +47,14 @@ export function ActivityCard({
   href,
   ariaLabel,
   hover = "glow",
+  accent,
 }: ActivityCardProps) {
-  const badge = categoryLabel ? (
-    <Badge variant={categoryVariant} tone={categoryTone} aria-label={`Kategorie: ${categoryLabel}`}>{categoryLabel}</Badge>
+  const accentBadge = accent ? ACCENT_BADGES[accent] : null;
+  const effectiveLabel = accentBadge?.label ?? categoryLabel;
+  const effectiveVariant = accentBadge?.variant ?? categoryVariant;
+  const effectiveTone = accentBadge?.tone ?? categoryTone;
+  const badge = effectiveLabel ? (
+    <Badge variant={effectiveVariant} tone={effectiveTone} aria-label={`Kategorie: ${effectiveLabel}`}>{effectiveLabel}</Badge>
   ) : null;
 
   const hasTitleContent = Boolean(titleNode || title);
@@ -52,6 +65,7 @@ export function ActivityCard({
       hover={hover}
       style={{ position: "relative", padding: "var(--space-lg)" }}
       data-clickable={href ? "true" : "false"}
+      data-accent={accent || undefined}
       role="article"
       aria-label={ariaLabel || headline || title}
       className="ds-ActivityCard"

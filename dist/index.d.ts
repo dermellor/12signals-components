@@ -504,8 +504,9 @@ type ActivityCardProps = {
     href?: string;
     ariaLabel?: string;
     hover?: "none" | "glow";
+    accent?: "breaking";
 };
-declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, media, timestamp, href, ariaLabel, hover, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
+declare function ActivityCard({ icon, title, titleNode, headline, competitorIcon, categoryLabel, categoryVariant, categoryTone, extraBadges, meta, description, media, timestamp, href, ariaLabel, hover, accent, }: ActivityCardProps): react_jsx_runtime.JSX.Element;
 
 type EntityListSortDirection = "asc" | "desc";
 type EntityListColumn = {
