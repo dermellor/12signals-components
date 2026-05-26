@@ -2557,7 +2557,7 @@ function BarChart({
             tickLine: { stroke: "var(--color-border-default)" },
             axisLine: { stroke: "var(--color-border-default)" },
             allowDecimals: false,
-            width: 32
+            width: 44
           }
         ),
         /* @__PURE__ */ jsx33(

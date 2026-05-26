@@ -291,7 +291,7 @@ export function BarChart({
                 tickLine={{ stroke: "var(--color-border-default)" }}
                 axisLine={{ stroke: "var(--color-border-default)" }}
                 allowDecimals={false}
-                width={32}
+                width={44}
               />
               <Tooltip
                 cursor={tooltipFilter ? <FilteredCursor tooltipFilter={tooltipFilter} /> : { fill: "color-mix(in oklab, var(--color-border-default) 25%, transparent)" }}
