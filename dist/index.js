@@ -1,7 +1,8 @@
 // src/design-system/components/Button.tsx
+import * as React from "react";
 import { Loader2 } from "lucide-react";
 import { jsx, jsxs } from "react/jsx-runtime";
-function Button({
+var Button = React.forwardRef(function Button2({
   variant = "primary",
   size = "md",
   loading = false,
@@ -11,10 +12,11 @@ function Button({
   disabled,
   className,
   ...rest
-}) {
+}, ref) {
   return /* @__PURE__ */ jsxs(
     "button",
     {
+      ref,
       "data-variant": variant,
       "data-size": size,
       "data-loading": loading ? "true" : void 0,
@@ -29,7 +31,7 @@ function Button({
       ]
     }
   );
-}
+});
 
 // src/design-system/components/Text.tsx
 import { jsx as jsx2 } from "react/jsx-runtime";
@@ -58,18 +60,18 @@ function Text({
 }
 
 // src/design-system/components/Card.tsx
-import * as React from "react";
+import * as React2 from "react";
 import { jsx as jsx3 } from "react/jsx-runtime";
-var CardNestingContext = React.createContext(false);
+var CardNestingContext = React2.createContext(false);
 function CardRoot({ children, variant = "default", hover = "none", className, ...rest }) {
-  const isNested = React.useContext(CardNestingContext);
-  const ref = React.useRef(null);
+  const isNested = React2.useContext(CardNestingContext);
+  const ref = React2.useRef(null);
   if (isNested) {
     throw new Error(
       "[ds-Card] Nested Card detected. Cards must not be placed inside other Cards \u2014 use a plain container (div, section) or a different visual treatment instead."
     );
   }
-  React.useEffect(() => {
+  React2.useEffect(() => {
     const el = ref.current;
     if (!el || hover !== "glow") return;
     if (!window.matchMedia("(hover: none)").matches) return;
@@ -109,10 +111,10 @@ function CardTitle({
 var Card = Object.assign(CardRoot, { Header: CardHeader, Content: CardContent, Title: CardTitle });
 
 // src/design-system/components/TextField.tsx
-import * as React2 from "react";
+import * as React3 from "react";
 import { jsx as jsx4, jsxs as jsxs2 } from "react/jsx-runtime";
 function TextField({ label, description, error, inputProps, ...rest }) {
-  const id = React2.useId();
+  const id = React3.useId();
   const describedBy = [];
   if (description) describedBy.push(`${id}-desc`);
   if (error) describedBy.push(`${id}-err`);
@@ -646,7 +648,7 @@ function resolveFilterBarLabels(partial) {
 }
 
 // src/design-system/components/filters/CriterionRow.tsx
-import * as React3 from "react";
+import * as React4 from "react";
 import { X } from "lucide-react";
 import { Fragment, jsx as jsx8, jsxs as jsxs5 } from "react/jsx-runtime";
 var SELECT_CLASS = "border border-border rounded-md px-2 py-1 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-success/40 focus:border-success";
@@ -823,10 +825,10 @@ function MultiEnumPicker({
   labels
 }) {
   var _a, _b;
-  const [open, setOpen] = React3.useState(false);
-  const [query, setQuery] = React3.useState("");
-  const wrapRef = React3.useRef(null);
-  React3.useEffect(() => {
+  const [open, setOpen] = React4.useState(false);
+  const [query, setQuery] = React4.useState("");
+  const wrapRef = React4.useRef(null);
+  React4.useEffect(() => {
     if (!open) return;
     const onPointer = (e) => {
       var _a2;
@@ -844,7 +846,7 @@ function MultiEnumPicker({
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
-  const filtered = React3.useMemo(() => {
+  const filtered = React4.useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return options;
     return options.filter((o) => o.label.toLowerCase().includes(q));
@@ -909,7 +911,7 @@ function MultiEnumPicker({
 }
 
 // src/design-system/components/filters/FilterNodeList.tsx
-import * as React4 from "react";
+import * as React5 from "react";
 import { ChevronDown, FolderPlus, Layers, Plus, X as X2 } from "lucide-react";
 import { jsx as jsx9, jsxs as jsxs6 } from "react/jsx-runtime";
 function FilterNodeList({
@@ -921,13 +923,13 @@ function FilterNodeList({
   onSetState,
   parentPath
 }) {
-  const updateChildren = React4.useCallback(
+  const updateChildren = React5.useCallback(
     (updater) => {
       onSetState((prev) => updateAtPath(prev, parentPath, updater));
     },
     [onSetState, parentPath]
   );
-  const toggleSelfLogic = React4.useCallback(() => {
+  const toggleSelfLogic = React5.useCallback(() => {
     onSetState((prev) => toggleLogicAtPath(prev, parentPath));
   }, [onSetState, parentPath]);
   const updateCriterion = (id, patch) => {
@@ -1043,9 +1045,9 @@ function AddNodeMenu({
   onAddGroup,
   labels
 }) {
-  const wrapRef = React4.useRef(null);
-  const [open, setOpen] = React4.useState(false);
-  React4.useEffect(() => {
+  const wrapRef = React5.useRef(null);
+  const [open, setOpen] = React5.useState(false);
+  React5.useEffect(() => {
     if (!open) return;
     const onPointer = (e) => {
       var _a;
@@ -1118,9 +1120,9 @@ function AddNodeMenu({
 }
 
 // src/design-system/components/Input.tsx
-import * as React5 from "react";
+import * as React6 from "react";
 import { jsx as jsx10 } from "react/jsx-runtime";
-var Input = React5.forwardRef(
+var Input = React6.forwardRef(
   ({ size = "md", invalid, className, ...rest }, ref) => {
     const composedClassName = ["ds-Input", className].filter(Boolean).join(" ");
     return /* @__PURE__ */ jsx10(
@@ -1206,7 +1208,7 @@ function FilterEditor({
 }
 
 // src/design-system/components/filters/FilterBar.tsx
-import * as React6 from "react";
+import * as React7 from "react";
 import { Fragment as Fragment2, jsx as jsx12, jsxs as jsxs8 } from "react/jsx-runtime";
 function FilterBar({
   filters,
@@ -1219,7 +1221,7 @@ function FilterBar({
 }) {
   var _a;
   const labels = resolveFilterBarLabels(labelsProp);
-  const [editingId, setEditingId] = React6.useState(null);
+  const [editingId, setEditingId] = React7.useState(null);
   const editing = (_a = filters.find((f) => f.id === editingId)) != null ? _a : null;
   const updateFilter = (next) => {
     onChange(filters.map((f) => f.id === next.id ? next : f));
@@ -1296,9 +1298,9 @@ function FilterBar({
 }
 
 // src/design-system/components/DateTimeInput.tsx
-import * as React7 from "react";
+import * as React8 from "react";
 import { jsx as jsx13 } from "react/jsx-runtime";
-var DateTimeInput = React7.forwardRef(
+var DateTimeInput = React8.forwardRef(
   ({ size = "md", invalid, className, ...rest }, ref) => {
     const composedClassName = ["ds-Input", className].filter(Boolean).join(" ");
     return /* @__PURE__ */ jsx13(
@@ -1317,7 +1319,7 @@ var DateTimeInput = React7.forwardRef(
 DateTimeInput.displayName = "DateTimeInput";
 
 // src/design-system/components/DateTimeModalInput.tsx
-import * as React8 from "react";
+import * as React9 from "react";
 
 // src/design-system/components/Dialog.tsx
 import { jsx as jsx14 } from "react/jsx-runtime";
@@ -1341,12 +1343,12 @@ function DateTimeModalInput({
   triggerProps
 }) {
   const isDisabled = disabled || saving;
-  const [open, setOpen] = React8.useState(false);
-  const [draft, setDraft] = React8.useState(value);
-  const draftRef = React8.useRef(value);
-  const inputRef = React8.useRef(null);
-  const inputId = React8.useId();
-  React8.useEffect(() => {
+  const [open, setOpen] = React9.useState(false);
+  const [draft, setDraft] = React9.useState(value);
+  const draftRef = React9.useRef(value);
+  const inputRef = React9.useRef(null);
+  const inputId = React9.useId();
+  React9.useEffect(() => {
     if (open) {
       setDraft(value);
       draftRef.current = value;
@@ -1417,13 +1419,13 @@ function DateTimeModalInput({
 }
 
 // src/design-system/components/Select.tsx
-import * as React9 from "react";
+import * as React10 from "react";
 import { jsx as jsx16, jsxs as jsxs10 } from "react/jsx-runtime";
 function textFromNode(node) {
   if (node == null || typeof node === "boolean") return "";
   if (typeof node === "string" || typeof node === "number") return String(node);
   if (Array.isArray(node)) return node.map(textFromNode).join("");
-  if (React9.isValidElement(node)) {
+  if (React10.isValidElement(node)) {
     return textFromNode(node.props.children);
   }
   return "";
@@ -1434,8 +1436,8 @@ function selectValueToString(value) {
 }
 function selectedOptionLabel(children, value) {
   var _a;
-  const options = React9.Children.toArray(children).filter(
-    (child) => React9.isValidElement(child)
+  const options = React10.Children.toArray(children).filter(
+    (child) => React10.isValidElement(child)
   );
   const selectedValue = selectValueToString(value);
   const selected = selectedValue == null ? (_a = options.find((option) => option.props.selected)) != null ? _a : options[0] : options.find((option) => {
@@ -1445,7 +1447,7 @@ function selectedOptionLabel(children, value) {
   });
   return selected ? textFromNode(selected.props.children).trim() : "";
 }
-var Select = React9.forwardRef(
+var Select = React10.forwardRef(
   ({
     size = "md",
     variant = "default",
@@ -1458,7 +1460,7 @@ var Select = React9.forwardRef(
     ...rest
   }, ref) => {
     var _a;
-    const [uncontrolledValue, setUncontrolledValue] = React9.useState(defaultValue);
+    const [uncontrolledValue, setUncontrolledValue] = React10.useState(defaultValue);
     const classNames = (_a = className == null ? void 0 : className.split(" ").filter(Boolean)) != null ? _a : [];
     const isIconSelect = classNames.includes("ds-Select--icon");
     const withChevron = isIconSelect || variant === "plain";
@@ -1496,7 +1498,7 @@ Select.displayName = "Select";
 var SelectOption = (props) => /* @__PURE__ */ jsx16("option", { ...props });
 
 // src/design-system/components/SelectMenu.tsx
-import * as React10 from "react";
+import * as React11 from "react";
 import { jsx as jsx17, jsxs as jsxs11 } from "react/jsx-runtime";
 function SelectMenu({
   options,
@@ -1507,9 +1509,9 @@ function SelectMenu({
   label,
   className
 }) {
-  const [open, setOpen] = React10.useState(false);
-  const rootRef = React10.useRef(null);
-  React10.useEffect(() => {
+  const [open, setOpen] = React11.useState(false);
+  const rootRef = React11.useRef(null);
+  React11.useEffect(() => {
     const onPointerDown = (event) => {
       if (!rootRef.current || !event.target) return;
       if (!rootRef.current.contains(event.target)) {
@@ -1570,7 +1572,7 @@ function SelectMenu({
 }
 
 // src/design-system/components/Table.tsx
-import * as React11 from "react";
+import * as React12 from "react";
 import { jsx as jsx18 } from "react/jsx-runtime";
 function cx(base, className) {
   return className ? `${base} ${className}` : base;
@@ -1580,60 +1582,60 @@ function withSticky(base, sticky) {
   const suffix = sticky === "start" ? "Start" : "End";
   return `${base} ds-TableSticky ds-TableSticky${suffix}`;
 }
-var TableContainer = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableContainer = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("div", { ref, className: cx("ds-TableContainer", className), ...rest });
 });
 TableContainer.displayName = "TableContainer";
-var Table = React11.forwardRef(({ className, ...rest }, ref) => {
+var Table = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("table", { ref, className: cx("ds-Table", className), ...rest });
 });
 Table.displayName = "Table";
-var TableHeader = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableHeader = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("thead", { ref, className: cx("ds-TableHeader", className), ...rest });
 });
 TableHeader.displayName = "TableHeader";
-var TableBody = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableBody = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("tbody", { ref, className: cx("ds-TableBody", className), ...rest });
 });
 TableBody.displayName = "TableBody";
-var TableFooter = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableFooter = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("tfoot", { ref, className: cx("ds-TableFooter", className), ...rest });
 });
 TableFooter.displayName = "TableFooter";
-var TableRow = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableRow = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("tr", { ref, className: cx("ds-TableRow", className), ...rest });
 });
 TableRow.displayName = "TableRow";
-var TableHead = React11.forwardRef(
+var TableHead = React12.forwardRef(
   ({ className, sticky, ...rest }, ref) => {
     return /* @__PURE__ */ jsx18("th", { ref, className: cx(withSticky("ds-TableHead", sticky), className), ...rest });
   }
 );
 TableHead.displayName = "TableHead";
-var TableCell = React11.forwardRef(
+var TableCell = React12.forwardRef(
   ({ className, sticky, ...rest }, ref) => {
     return /* @__PURE__ */ jsx18("td", { ref, className: cx(withSticky("ds-TableCell", sticky), className), ...rest });
   }
 );
 TableCell.displayName = "TableCell";
-var TableCaption = React11.forwardRef(({ className, ...rest }, ref) => {
+var TableCaption = React12.forwardRef(({ className, ...rest }, ref) => {
   return /* @__PURE__ */ jsx18("caption", { ref, className: cx("ds-TableCaption", className), ...rest });
 });
 TableCaption.displayName = "TableCaption";
 
 // src/design-system/components/MatrixTable.tsx
-import * as React12 from "react";
+import * as React13 from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown as ChevronDown2, ListTree } from "lucide-react";
 import { jsx as jsx19, jsxs as jsxs12 } from "react/jsx-runtime";
 function cx2(base, className) {
   return className ? `${base} ${className}` : base;
 }
-var MatrixTableShell = React12.forwardRef(
+var MatrixTableShell = React13.forwardRef(
   ({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("div", { ref, className: cx2("ds-MatrixTableShell", className), ...rest })
 );
 MatrixTableShell.displayName = "MatrixTableShell";
-var MatrixTableToolbar = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("div", { ref, className: cx2("ds-MatrixTableToolbar", className), ...rest }));
+var MatrixTableToolbar = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("div", { ref, className: cx2("ds-MatrixTableToolbar", className), ...rest }));
 MatrixTableToolbar.displayName = "MatrixTableToolbar";
 function MatrixViewControl({
   className,
@@ -1646,17 +1648,17 @@ function MatrixViewControl({
     /* @__PURE__ */ jsx19("div", { className: "ds-MatrixViewControlInput", children })
   ] });
 }
-var MatrixTableContainer = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("div", { ref, className: cx2("ds-MatrixTableContainer", className), ...rest }));
+var MatrixTableContainer = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("div", { ref, className: cx2("ds-MatrixTableContainer", className), ...rest }));
 MatrixTableContainer.displayName = "MatrixTableContainer";
-var MatrixTable = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("table", { ref, className: cx2("ds-MatrixTable", className), ...rest }));
+var MatrixTable = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("table", { ref, className: cx2("ds-MatrixTable", className), ...rest }));
 MatrixTable.displayName = "MatrixTable";
-var MatrixTableHeader = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("thead", { ref, className: cx2("ds-MatrixTableHeader", className), ...rest }));
+var MatrixTableHeader = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("thead", { ref, className: cx2("ds-MatrixTableHeader", className), ...rest }));
 MatrixTableHeader.displayName = "MatrixTableHeader";
-var MatrixTableBody = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("tbody", { ref, className: cx2("ds-MatrixTableBody", className), ...rest }));
+var MatrixTableBody = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("tbody", { ref, className: cx2("ds-MatrixTableBody", className), ...rest }));
 MatrixTableBody.displayName = "MatrixTableBody";
-var MatrixTableRow = React12.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("tr", { ref, className: cx2("ds-MatrixTableRow", className), ...rest }));
+var MatrixTableRow = React13.forwardRef(({ className, ...rest }, ref) => /* @__PURE__ */ jsx19("tr", { ref, className: cx2("ds-MatrixTableRow", className), ...rest }));
 MatrixTableRow.displayName = "MatrixTableRow";
-var MatrixTableHead = React12.forwardRef(
+var MatrixTableHead = React13.forwardRef(
   ({ className, columnRole = "dimension", depth, align = "left", separator, ...rest }, ref) => /* @__PURE__ */ jsx19(
     "th",
     {
@@ -1671,7 +1673,7 @@ var MatrixTableHead = React12.forwardRef(
   )
 );
 MatrixTableHead.displayName = "MatrixTableHead";
-var MatrixTableCell = React12.forwardRef(
+var MatrixTableCell = React13.forwardRef(
   ({
     className,
     columnRole = "dimension",
@@ -1733,12 +1735,12 @@ function MatrixDrilldownMenu({
   disabled,
   className
 }) {
-  const [open, setOpen] = React12.useState(false);
-  const rootRef = React12.useRef(null);
-  const contentRef = React12.useRef(null);
-  const [pos, setPos] = React12.useState(null);
+  const [open, setOpen] = React13.useState(false);
+  const rootRef = React13.useRef(null);
+  const contentRef = React13.useRef(null);
+  const [pos, setPos] = React13.useState(null);
   const isDisabled = disabled || options.length === 0;
-  React12.useEffect(() => {
+  React13.useEffect(() => {
     if (!open || !rootRef.current) {
       setPos(null);
       return;
@@ -1848,11 +1850,11 @@ function MatrixDrilldownPath({
 }
 
 // src/design-system/components/Tabs.tsx
-import * as React13 from "react";
+import * as React14 from "react";
 import { jsx as jsx20 } from "react/jsx-runtime";
-var TabsCtx = React13.createContext(null);
+var TabsCtx = React14.createContext(null);
 function TabsRoot({ value, defaultValue, onValueChange, children, ...rest }) {
-  const [internal, setInternal] = React13.useState(defaultValue || "");
+  const [internal, setInternal] = React14.useState(defaultValue || "");
   const isControlled = value !== void 0;
   const current = isControlled ? value : internal;
   const set = (v) => {
@@ -1865,7 +1867,7 @@ function TabsList({ children, ...rest }) {
   return /* @__PURE__ */ jsx20("div", { className: "ds-TabsList", role: "tablist", ...rest, children });
 }
 function TabsTrigger({ value, children, ...rest }) {
-  const ctx = React13.useContext(TabsCtx);
+  const ctx = React14.useContext(TabsCtx);
   const selected = ctx.value === value;
   return /* @__PURE__ */ jsx20(
     "button",
@@ -1882,7 +1884,7 @@ function TabsTrigger({ value, children, ...rest }) {
   );
 }
 function TabsContent({ value, children, ...rest }) {
-  const ctx = React13.useContext(TabsCtx);
+  const ctx = React14.useContext(TabsCtx);
   if (ctx.value !== value) return null;
   return /* @__PURE__ */ jsx20("div", { className: "ds-TabsContent", role: "tabpanel", ...rest, children });
 }
@@ -1898,14 +1900,14 @@ function Alert({ variant = "info", title, children, ...rest }) {
 }
 
 // src/design-system/components/Tooltip.tsx
-import * as React14 from "react";
+import * as React15 from "react";
 import { createPortal as createPortal2 } from "react-dom";
 import { jsx as jsx22, jsxs as jsxs14 } from "react/jsx-runtime";
 function Tooltip({ content, children, className, style, multiline }) {
-  const [open, setOpen] = React14.useState(false);
-  const ref = React14.useRef(null);
-  const [pos, setPos] = React14.useState(null);
-  React14.useEffect(() => {
+  const [open, setOpen] = React15.useState(false);
+  const ref = React15.useRef(null);
+  const [pos, setPos] = React15.useState(null);
+  React15.useEffect(() => {
     if (!open || !ref.current) {
       setPos(null);
       return;
@@ -1936,12 +1938,12 @@ function Tooltip({ content, children, className, style, multiline }) {
 }
 
 // src/design-system/components/Toast.tsx
-import * as React15 from "react";
+import * as React16 from "react";
 import { jsx as jsx23, jsxs as jsxs15 } from "react/jsx-runtime";
-var ToastCtx = React15.createContext(null);
+var ToastCtx = React16.createContext(null);
 function ToastProvider({ children }) {
-  const [items, setItems] = React15.useState([]);
-  const idRef = React15.useRef(1);
+  const [items, setItems] = React16.useState([]);
+  const idRef = React16.useRef(1);
   const show = (t) => {
     const id = idRef.current++;
     setItems((prev) => [...prev, { id, ...t }]);
@@ -1956,7 +1958,7 @@ function ToastProvider({ children }) {
   ] });
 }
 function useToast() {
-  const ctx = React15.useContext(ToastCtx);
+  const ctx = React16.useContext(ToastCtx);
   if (!ctx) throw new Error("useToast must be used within ToastProvider");
   return ctx;
 }
@@ -2215,7 +2217,7 @@ function DevButton({
 }
 
 // src/design-system/components/TagField.tsx
-import * as React16 from "react";
+import * as React17 from "react";
 import { jsx as jsx31, jsxs as jsxs20 } from "react/jsx-runtime";
 function Tag({ children, onRemove, removeAriaLabel }) {
   return /* @__PURE__ */ jsxs20("span", { className: "ds-Tag", children: [
@@ -2256,12 +2258,12 @@ function TagField({
   addOnBlur = true,
   ariaLabel
 }) {
-  const inputId = React16.useId();
+  const inputId = React17.useId();
   const descriptionId = description ? `${inputId}-desc` : void 0;
   const errorId = error ? `${inputId}-err` : void 0;
   const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || void 0;
-  const [inputValue, setInputValue] = React16.useState("");
-  const addTag = React16.useCallback(
+  const [inputValue, setInputValue] = React17.useState("");
+  const addTag = React17.useCallback(
     (raw) => {
       if (disabled) return;
       const next = raw.trim();
@@ -2275,7 +2277,7 @@ function TagField({
     },
     [disabled, onChange, values]
   );
-  const removeTag = React16.useCallback(
+  const removeTag = React17.useCallback(
     (index) => {
       if (disabled) return;
       const next = values.filter((_, idx) => idx !== index);
@@ -2342,7 +2344,7 @@ function TagField({
 }
 
 // src/design-system/components/BarChart.tsx
-import * as React17 from "react";
+import * as React18 from "react";
 import {
   ResponsiveContainer,
   BarChart as RCBarChart,
@@ -2443,7 +2445,7 @@ function BarChart({
   tooltipFilter
 }) {
   const hasGroupedData = data.length > 0 && data.every(isGroupedPoint);
-  const derivedGroupOrder = React17.useMemo(() => {
+  const derivedGroupOrder = React18.useMemo(() => {
     if (!hasGroupedData) return [];
     const seen = /* @__PURE__ */ new Set();
     const order = [];
@@ -2458,7 +2460,7 @@ function BarChart({
     }
     return order;
   }, [data, hasGroupedData, providedGroups]);
-  const resolvedGroups = React17.useMemo(() => {
+  const resolvedGroups = React18.useMemo(() => {
     var _a;
     if (hasGroupedData && derivedGroupOrder.length === 0) return [];
     const metaById = new Map(providedGroups == null ? void 0 : providedGroups.map((group) => [group.id, group]));
@@ -2483,7 +2485,7 @@ function BarChart({
     };
     return [fallback];
   }, [derivedGroupOrder, hasGroupedData, providedGroups]);
-  const normalizedData = React17.useMemo(() => {
+  const normalizedData = React18.useMemo(() => {
     if (data.length === 0) return [];
     if (!hasGroupedData) {
       return data.map((point) => {
@@ -2519,7 +2521,7 @@ function BarChart({
       })
     }));
   }, [data, resolvedGroups, hasGroupedData]);
-  const chartData = React17.useMemo(
+  const chartData = React18.useMemo(
     () => normalizedData.map((point) => {
       const entry = {
         label: point.label,
@@ -2599,7 +2601,7 @@ function BarChart({
 }
 
 // src/design-system/components/PieChart.tsx
-import * as React18 from "react";
+import * as React19 from "react";
 import {
   ResponsiveContainer as ResponsiveContainer2,
   PieChart as RCPieChart,
@@ -2673,8 +2675,8 @@ function PieChart({
   showLegend = true,
   variant = "default"
 }) {
-  const slices = React18.useMemo(() => normalizeSlices(data), [data]);
-  const total = React18.useMemo(
+  const slices = React19.useMemo(() => normalizeSlices(data), [data]);
+  const total = React19.useMemo(
     () => slices.reduce((sum, slice) => sum + Math.max(0, slice.value), 0),
     [slices]
   );
@@ -2736,11 +2738,11 @@ function PieChart({
 }
 
 // src/design-system/components/TabNav.tsx
-import * as React19 from "react";
+import * as React20 from "react";
 import { jsx as jsx35, jsxs as jsxs23 } from "react/jsx-runtime";
 function TabNav({ items, value, onValueChange, ariaLabel, className, style }) {
-  const listRef = React19.useRef(null);
-  React19.useEffect(() => {
+  const listRef = React20.useRef(null);
+  React20.useEffect(() => {
     const el = listRef.current;
     if (!el) return;
     const update = () => {
@@ -2857,7 +2859,7 @@ function InlineEditButton({
 }
 
 // src/design-system/components/Navigation.tsx
-import * as React20 from "react";
+import * as React21 from "react";
 import { Fragment as Fragment5, jsx as jsx38, jsxs as jsxs24 } from "react/jsx-runtime";
 function Navigation({
   items,
@@ -2868,7 +2870,7 @@ function Navigation({
   className,
   style
 }) {
-  const handleSelect = React20.useCallback(
+  const handleSelect = React21.useCallback(
     (item) => {
       var _a;
       if (item.disabled) return;
@@ -3547,11 +3549,20 @@ function formatKpiValue(value, unit, locale = "de-DE") {
   const fmt = (opts) => new Intl.NumberFormat(locale, opts).format(value);
   const m = locale.startsWith("de") ? "Mio." : "M";
   const b = locale.startsWith("de") ? "Mrd." : "B";
+  const compactCurrency = (symbol, symbolPrefix) => {
+    const fmtN = (n, frac) => new Intl.NumberFormat(locale, { maximumFractionDigits: frac }).format(n);
+    const wrap = (n, suffix) => symbolPrefix ? `${symbol} ${n} ${suffix}` : `${n} ${suffix} ${symbol}`;
+    if (value >= 1e9) return wrap(fmtN(value / 1e9, 1), b);
+    if (value >= 1e6) return wrap(fmtN(value / 1e6, 1), m);
+    if (symbolPrefix) return `${symbol} ${fmtN(value, 0)}`;
+    return `${fmtN(value, 0)} ${symbol}`;
+  };
+  const deLocale = locale.startsWith("de");
   switch (unit) {
     case "USD":
-      return fmt({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
+      return compactCurrency("$", !deLocale);
     case "EUR":
-      return fmt({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+      return compactCurrency("\u20AC", !deLocale);
     case "USD_millions":
       return `$${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "EUR_millions":
@@ -3561,7 +3572,7 @@ function formatKpiValue(value, unit, locale = "de-DE") {
     case "EUR_billions":
       return `\u20AC${fmt({ maximumFractionDigits: 1 })} ${b}`;
     case "CHF":
-      return `CHF ${fmt({ maximumFractionDigits: 0 })}`;
+      return compactCurrency("CHF", true);
     case "CHF_millions":
       return `CHF ${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "CHF_billions":

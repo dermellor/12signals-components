@@ -29,11 +29,24 @@ export function formatKpiValue(
   const m = locale.startsWith("de") ? "Mio." : "M";
   const b = locale.startsWith("de") ? "Mrd." : "B";
 
+  const compactCurrency = (symbol: string, symbolPrefix: boolean) => {
+    const fmtN = (n: number, frac: number) =>
+      new Intl.NumberFormat(locale, { maximumFractionDigits: frac }).format(n);
+    const wrap = (n: string, suffix: string) =>
+      symbolPrefix ? `${symbol} ${n} ${suffix}` : `${n} ${suffix} ${symbol}`;
+    if (value >= 1_000_000_000) return wrap(fmtN(value / 1_000_000_000, 1), b);
+    if (value >= 1_000_000) return wrap(fmtN(value / 1_000_000, 1), m);
+    if (symbolPrefix) return `${symbol} ${fmtN(value, 0)}`;
+    return `${fmtN(value, 0)} ${symbol}`;
+  };
+
+  const deLocale = locale.startsWith("de");
+
   switch (unit) {
     case "USD":
-      return fmt({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
+      return compactCurrency("$", !deLocale);
     case "EUR":
-      return fmt({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+      return compactCurrency("€", !deLocale);
     case "USD_millions":
       return `$${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "EUR_millions":
@@ -43,7 +56,7 @@ export function formatKpiValue(
     case "EUR_billions":
       return `€${fmt({ maximumFractionDigits: 1 })} ${b}`;
     case "CHF":
-      return `CHF ${fmt({ maximumFractionDigits: 0 })}`;
+      return compactCurrency("CHF", true);
     case "CHF_millions":
       return `CHF ${fmt({ maximumFractionDigits: 1 })} ${m}`;
     case "CHF_billions":

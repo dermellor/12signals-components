@@ -1,9 +1,9 @@
-import * as react_jsx_runtime from 'react/jsx-runtime';
 import * as React$1 from 'react';
 import React__default from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import * as lucide_react from 'lucide-react';
 
-type ButtonProps = {
+declare const Button: React$1.ForwardRefExoticComponent<{
     variant?: "primary" | "ghost" | "danger" | "accent" | "success" | "link";
     size?: "xs" | "sm" | "md" | "lg";
     loading?: boolean;
@@ -11,8 +11,7 @@ type ButtonProps = {
     iconRight?: React$1.ReactNode;
 } & Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
     children?: React$1.ReactNode;
-};
-declare function Button({ variant, size, loading, iconLeft, iconRight, children, disabled, className, ...rest }: ButtonProps): react_jsx_runtime.JSX.Element;
+} & React$1.RefAttributes<HTMLButtonElement>>;
 
 type TextProps<T extends keyof JSX.IntrinsicElements = 'p'> = {
     as?: T;
