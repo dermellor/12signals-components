@@ -9,7 +9,7 @@ type ButtonProps = {
   iconRight?: React.ReactNode;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> & { children?: React.ReactNode };
 
-export function Button({
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   variant = "primary",
   size = "md",
   loading = false,
@@ -19,9 +19,10 @@ export function Button({
   disabled,
   className,
   ...rest
-}: ButtonProps) {
+}, ref) {
   return (
     <button
+      ref={ref}
       data-variant={variant}
       data-size={size}
       data-loading={loading ? "true" : undefined}
@@ -39,4 +40,4 @@ export function Button({
       {!loading && iconRight && <span className="ds-ButtonIcon" aria-hidden>{iconRight}</span>}
     </button>
   );
-}
+});
