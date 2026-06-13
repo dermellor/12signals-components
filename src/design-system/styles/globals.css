@@ -396,6 +396,24 @@
   width: var(--space-lg);
   height: var(--space-lg);
 }
+.ds-ActionIconButton[data-size="sm"] {
+  width: calc(var(--space-md) + var(--space-sm));
+  height: calc(var(--space-md) + var(--space-sm));
+}
+.ds-ActionIconButton[data-size="sm"] svg {
+  width: var(--space-md);
+  height: var(--space-md);
+}
+.ds-ActionIconButton[data-tone="subtle"][data-tone="subtle"] {
+  background: transparent;
+  color: var(--color-neutral-fg);
+  border-color: transparent;
+}
+.ds-ActionIconButton[data-tone="subtle"][data-tone="subtle"]:not(:disabled):hover {
+  background: color-mix(in oklab, var(--color-neutral-bg) 75%, transparent);
+  color: var(--color-neutral-fg);
+  border-color: transparent;
+}
 .ds-ActionIconButton:not(:disabled):hover {
   background: color-mix(in oklab, var(--color-neutral-bg) 80%, var(--color-primary-bg));
   border-color: color-mix(in oklab, var(--color-border-default) 80%, var(--color-primary-bg));

@@ -14,28 +14,36 @@ export type ActionIcon = keyof typeof actionMeta;
 
 type ActionIconButtonProps = {
   action: ActionIcon;
+  size?: "default" | "sm";
+  tone?: "default" | "subtle";
   loading?: boolean;
   selected?: boolean;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">;
 
 export function ActionIconButton({
   action,
+  size = "default",
+  tone = "default",
   loading = false,
   selected = false,
   "aria-label": ariaLabel,
   title,
+  className,
   ...rest
 }: ActionIconButtonProps) {
   const { Icon, label } = actionMeta[action];
   const resolvedLabel = ariaLabel ?? label;
+  const cn = ["ds-ActionIconButton", className].filter(Boolean).join(" ");
 
   return (
     <button
       type="button"
       data-action={action}
+      data-size={size}
+      data-tone={tone}
       data-selected={selected ? "true" : undefined}
       data-loading={loading ? "true" : undefined}
-      className="ds-ActionIconButton"
+      className={cn}
       aria-label={resolvedLabel}
       aria-busy={loading || undefined}
       title={title ?? label}
