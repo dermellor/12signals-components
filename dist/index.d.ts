@@ -668,10 +668,12 @@ declare const actionMeta: {
 type ActionIcon = keyof typeof actionMeta;
 type ActionIconButtonProps = {
     action: ActionIcon;
+    size?: "default" | "sm";
+    tone?: "default" | "subtle";
     loading?: boolean;
     selected?: boolean;
 } & Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children">;
-declare function ActionIconButton({ action, loading, selected, "aria-label": ariaLabel, title, ...rest }: ActionIconButtonProps): react_jsx_runtime.JSX.Element;
+declare function ActionIconButton({ action, size, tone, loading, selected, "aria-label": ariaLabel, title, className, ...rest }: ActionIconButtonProps): react_jsx_runtime.JSX.Element;
 
 type InlineEditButtonProps = Omit<React$1.ButtonHTMLAttributes<HTMLButtonElement>, "children">;
 declare function InlineEditButton({ "aria-label": ariaLabel, title, ...rest }: InlineEditButtonProps): react_jsx_runtime.JSX.Element;

@@ -2812,22 +2812,28 @@ var actionMeta = {
 };
 function ActionIconButton({
   action,
+  size = "default",
+  tone = "default",
   loading = false,
   selected = false,
   "aria-label": ariaLabel,
   title,
+  className,
   ...rest
 }) {
   const { Icon, label } = actionMeta[action];
   const resolvedLabel = ariaLabel != null ? ariaLabel : label;
+  const cn = ["ds-ActionIconButton", className].filter(Boolean).join(" ");
   return /* @__PURE__ */ jsx36(
     "button",
     {
       type: "button",
       "data-action": action,
+      "data-size": size,
+      "data-tone": tone,
       "data-selected": selected ? "true" : void 0,
       "data-loading": loading ? "true" : void 0,
-      className: "ds-ActionIconButton",
+      className: cn,
       "aria-label": resolvedLabel,
       "aria-busy": loading || void 0,
       title: title != null ? title : label,
