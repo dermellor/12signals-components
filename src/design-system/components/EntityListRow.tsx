@@ -93,6 +93,7 @@ export type EntityListRowProps = {
   columns: EntityListColumn[];
   icon?: React.ReactNode;
   title: React.ReactNode;
+  detail?: React.ReactNode;
   cells?: React.ReactNode[];
   trailingIcon?: React.ReactNode;
   ariaLabel?: string;
@@ -104,6 +105,7 @@ export function EntityListRow({
   columns,
   icon,
   title,
+  detail,
   cells = [],
   trailingIcon,
   ariaLabel,
@@ -121,6 +123,7 @@ export function EntityListRow({
           <Text as="span" size="md" weight="semibold" className="ds-EntityListRow-title">
             {title}
           </Text>
+          {detail && <div className="ds-EntityListRow-detail">{detail}</div>}
         </div>
       </div>
       {columns.slice(1).map((column, index) => (
@@ -156,7 +159,7 @@ export function EntityListRow({
   return (
     <div
       {...rest}
-      className={["ds-EntityListRow", className].filter(Boolean).join(" ")}
+      className={["ds-EntityListRow group/row", className].filter(Boolean).join(" ")}
       data-clickable={href || renderLink ? "true" : "false"}
       style={getGridStyle(columns, style)}
     >

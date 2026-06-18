@@ -268,8 +268,9 @@
   gap: var(--space-md);
 }
 .ds-EntityListRow-mainContent {
-  display: grid;
-  gap: var(--space-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   min-width: 0;
 }
 .ds-EntityListRow-title {
@@ -277,6 +278,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+.ds-EntityListRow-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  min-width: 0;
 }
 .ds-EntityListRow-cellContent {
   min-width: 0;
@@ -1089,6 +1097,28 @@
 }
 .ds-FilterBadge[data-variant="add"] .ds-FilterBadgeToggle:hover {
   background: hsl(var(--success) / 0.08);
+}
+
+/* Subtle variant — soft pink/rose tones for inline product badges */
+.ds-FilterBadge[data-variant="subtle"][data-state="active"] {
+  background: hsl(var(--primary) / 0.08);
+  border-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+.ds-FilterBadge[data-variant="subtle"][data-state="inactive"] {
+  background: hsl(var(--background));
+  border-color: hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+.ds-FilterBadge[data-variant="subtle"][data-state="inactive"] .ds-FilterBadgeToggle:hover {
+  background: hsl(var(--primary) / 0.04);
+}
+.ds-FilterBadge[data-variant="subtle"][data-state="active"] .ds-FilterBadgeToggle:hover {
+  background: hsl(var(--primary) / 0.12);
+}
+.ds-FilterBadge[data-variant="subtle"] .ds-FilterBadgeToggle:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.3);
+  outline-offset: -2px;
 }
 
 /* Input */

@@ -7,7 +7,7 @@ type FilterBadgeProps = {
   onToggle: () => void;
   onEdit?: () => void;
   onRemove?: () => void;
-  variant?: "default" | "add";
+  variant?: "default" | "add" | "subtle";
   size?: "sm" | "md";
   toggleAriaLabel?: string;
   editAriaLabel?: string;

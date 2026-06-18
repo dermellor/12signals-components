@@ -2144,6 +2144,7 @@ function EntityListRow({
   columns,
   icon,
   title,
+  detail,
   cells = [],
   trailingIcon,
   ariaLabel,
@@ -2157,7 +2158,10 @@ function EntityListRow({
   const content = /* @__PURE__ */ jsxs18(Fragment4, { children: [
     /* @__PURE__ */ jsxs18("div", { className: "ds-EntityListRow-cell ds-EntityListRow-primary", "data-align": (_b = (_a = columns[0]) == null ? void 0 : _a.align) != null ? _b : "start", children: [
       icon && /* @__PURE__ */ jsx28("div", { className: "ds-EntityListRow-icon", children: icon }),
-      /* @__PURE__ */ jsx28("div", { className: "ds-EntityListRow-mainContent", children: /* @__PURE__ */ jsx28(Text, { as: "span", size: "md", weight: "semibold", className: "ds-EntityListRow-title", children: title }) })
+      /* @__PURE__ */ jsxs18("div", { className: "ds-EntityListRow-mainContent", children: [
+        /* @__PURE__ */ jsx28(Text, { as: "span", size: "md", weight: "semibold", className: "ds-EntityListRow-title", children: title }),
+        detail && /* @__PURE__ */ jsx28("div", { className: "ds-EntityListRow-detail", children: detail })
+      ] })
     ] }),
     columns.slice(1).map((column, index) => {
       var _a2, _b2;
@@ -2179,7 +2183,7 @@ function EntityListRow({
     "div",
     {
       ...rest,
-      className: ["ds-EntityListRow", className].filter(Boolean).join(" "),
+      className: ["ds-EntityListRow group/row", className].filter(Boolean).join(" "),
       "data-clickable": href || renderLink ? "true" : "false",
       style: getGridStyle(columns, style),
       children: main

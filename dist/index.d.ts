@@ -74,7 +74,7 @@ type FilterBadgeProps = {
     onToggle: () => void;
     onEdit?: () => void;
     onRemove?: () => void;
-    variant?: "default" | "add";
+    variant?: "default" | "add" | "subtle";
     size?: "sm" | "md";
     toggleAriaLabel?: string;
     editAriaLabel?: string;
@@ -527,13 +527,14 @@ type EntityListRowProps = {
     columns: EntityListColumn[];
     icon?: React$1.ReactNode;
     title: React$1.ReactNode;
+    detail?: React$1.ReactNode;
     cells?: React$1.ReactNode[];
     trailingIcon?: React$1.ReactNode;
     ariaLabel?: string;
     href?: string;
     renderLink?: (children: React$1.ReactNode, className: string) => React$1.ReactNode;
 } & Omit<React$1.HTMLAttributes<HTMLDivElement>, "title">;
-declare function EntityListRow({ columns, icon, title, cells, trailingIcon, ariaLabel, href, renderLink, className, style, ...rest }: EntityListRowProps): react_jsx_runtime.JSX.Element;
+declare function EntityListRow({ columns, icon, title, detail, cells, trailingIcon, ariaLabel, href, renderLink, className, style, ...rest }: EntityListRowProps): react_jsx_runtime.JSX.Element;
 
 type RichTextProps = React$1.HTMLAttributes<HTMLDivElement> & {
     as?: keyof JSX.IntrinsicElements;
