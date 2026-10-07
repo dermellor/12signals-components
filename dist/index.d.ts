@@ -393,13 +393,12 @@ type MatrixDrilldownOption = {
 type MatrixDrilldownMenuProps = {
     options: MatrixDrilldownOption[];
     onValueChange?: (value: string) => void;
-    label: React$1.ReactNode;
     ariaLabel: string;
     align?: "left" | "right";
     disabled?: boolean;
     className?: string;
 };
-declare function MatrixDrilldownMenu({ options, onValueChange, label, ariaLabel, align, disabled, className, }: MatrixDrilldownMenuProps): react_jsx_runtime.JSX.Element;
+declare function MatrixDrilldownMenu({ options, onValueChange, ariaLabel, align, disabled, className, }: MatrixDrilldownMenuProps): react_jsx_runtime.JSX.Element;
 type MatrixDrilldownPathItem = {
     id: string;
     label: React$1.ReactNode;

@@ -1626,7 +1626,7 @@ TableCaption.displayName = "TableCaption";
 // src/design-system/components/MatrixTable.tsx
 import * as React13 from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown as ChevronDown2, ListTree } from "lucide-react";
+import { Plus as Plus2 } from "lucide-react";
 import { jsx as jsx19, jsxs as jsxs12 } from "react/jsx-runtime";
 function cx2(base, className) {
   return className ? `${base} ${className}` : base;
@@ -1729,7 +1729,6 @@ function MatrixTableAction({
 function MatrixDrilldownMenu({
   options,
   onValueChange,
-  label,
   ariaLabel,
   align = "right",
   disabled,
@@ -1779,7 +1778,7 @@ function MatrixDrilldownMenu({
     };
   }, [align, open]);
   return /* @__PURE__ */ jsxs12("div", { ref: rootRef, className: cx2("ds-MatrixDrilldownMenu", className), children: [
-    /* @__PURE__ */ jsxs12(
+    /* @__PURE__ */ jsx19(
       "button",
       {
         type: "button",
@@ -1787,16 +1786,13 @@ function MatrixDrilldownMenu({
         "aria-haspopup": "menu",
         "aria-expanded": open,
         "aria-label": ariaLabel,
+        title: ariaLabel,
         disabled: isDisabled,
         "data-open": open ? "true" : void 0,
         onClick: () => {
           if (!isDisabled) setOpen((prev) => !prev);
         },
-        children: [
-          /* @__PURE__ */ jsx19(ListTree, { "aria-hidden": true, focusable: false, className: "ds-MatrixDrilldownPrimaryIcon" }),
-          /* @__PURE__ */ jsx19("span", { className: "ds-MatrixDrilldownLabel", children: label }),
-          /* @__PURE__ */ jsx19(ChevronDown2, { "aria-hidden": true, focusable: false, className: "ds-MatrixDrilldownChevron" })
-        ]
+        children: /* @__PURE__ */ jsx19(Plus2, { "aria-hidden": true, focusable: false, className: "ds-MatrixDrilldownPrimaryIcon" })
       }
     ),
     open && !isDisabled && pos ? createPortal(

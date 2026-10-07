@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, ListTree } from "lucide-react";
+import { Plus } from "lucide-react";
 
 function cx(base: string, className?: string) {
   return className ? `${base} ${className}` : base;
@@ -196,7 +196,6 @@ export type MatrixDrilldownOption = {
 type MatrixDrilldownMenuProps = {
   options: MatrixDrilldownOption[];
   onValueChange?: (value: string) => void;
-  label: React.ReactNode;
   ariaLabel: string;
   align?: "left" | "right";
   disabled?: boolean;
@@ -206,7 +205,6 @@ type MatrixDrilldownMenuProps = {
 export function MatrixDrilldownMenu({
   options,
   onValueChange,
-  label,
   ariaLabel,
   align = "right",
   disabled,
@@ -269,15 +267,14 @@ export function MatrixDrilldownMenu({
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={ariaLabel}
+        title={ariaLabel}
         disabled={isDisabled}
         data-open={open ? "true" : undefined}
         onClick={() => {
           if (!isDisabled) setOpen((prev) => !prev);
         }}
       >
-        <ListTree aria-hidden focusable={false} className="ds-MatrixDrilldownPrimaryIcon" />
-        <span className="ds-MatrixDrilldownLabel">{label}</span>
-        <ChevronDown aria-hidden focusable={false} className="ds-MatrixDrilldownChevron" />
+        <Plus aria-hidden focusable={false} className="ds-MatrixDrilldownPrimaryIcon" />
       </button>
       {open && !isDisabled && pos
         ? createPortal(
