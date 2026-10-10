@@ -6,7 +6,7 @@ import {
 } from "./chunk-MM7NI62B.js";
 import {
   ClaimTimeline
-} from "./chunk-4DK3PNPV.js";
+} from "./chunk-5K2NGWFL.js";
 import {
   CompetitorInfoCard
 } from "./chunk-A52TU3AK.js";
@@ -33,9 +33,12 @@ import {
 } from "./chunk-OCIO7S25.js";
 import {
   AB_TEST_COLORS,
+  AB_TEST_SETTLE_CAP_DAYS,
+  AB_TEST_SETTLE_FACTOR,
+  AB_TEST_SETTLE_FLOOR_DAYS,
   claimCompareKey,
   detectABTestGroups
-} from "./chunk-APIHSY7T.js";
+} from "./chunk-TZZIACY2.js";
 import {
   addDays,
   addWeeks,
@@ -236,6 +239,9 @@ import {
 } from "./chunk-LRWW7BLR.js";
 export {
   AB_TEST_COLORS,
+  AB_TEST_SETTLE_CAP_DAYS,
+  AB_TEST_SETTLE_FACTOR,
+  AB_TEST_SETTLE_FLOOR_DAYS,
   ActionIconButton,
   ActivityCard,
   Alert,

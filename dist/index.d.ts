@@ -47,7 +47,7 @@ export { LOGO_VARIANTS, Logo } from './components/Logo.js';
 export { Wordmark } from './components/Wordmark.js';
 export { Breadcrumb, BreadcrumbItem } from './components/Breadcrumb.js';
 export { tokens } from './tokens.js';
-export { ABTestGroup, AB_TEST_COLORS, ClaimRange, NormalClaimEntry, TimelineEntry, claimCompareKey, detectABTestGroups } from './competitor/claim-utils.js';
+export { ABTestGroup, AB_TEST_COLORS, AB_TEST_SETTLE_CAP_DAYS, AB_TEST_SETTLE_FACTOR, AB_TEST_SETTLE_FLOOR_DAYS, ClaimRange, NormalClaimEntry, TimelineEntry, claimCompareKey, detectABTestGroups } from './competitor/claim-utils.js';
 export { ClaimTimeline } from './competitor/ClaimTimeline.js';
 export { CATEGORY_LABELS, KPI_CATEGORIES, KpiCategoryDef, KpiEntry, KpiSnapshot, formatKpiValue, getCustomers, getEmployees, getKpiSnapshot, getRevenue, getRevenueGrowthYoY, qualifierPrefix } from './competitor/kpi-utils.js';
 export { JOB_FUNCTION_LABELS, JOB_FUNCTION_VARIANT_MAP, JobFunctionVariant, UNKNOWN_JOB_FUNCTION_CODE } from './competitor/job-functions.js';
